@@ -1,0 +1,52 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+
+Table dim_time {
+  time_id INTEGER PK
+  period_name VARCHAR(100) 
+  period_date DATE
+  year YEAR
+  quarter CHAR(2)
+}
+
+// Assess the two if we can combine them to one table that references to the two facts table available
+Table dim_dates {
+  date_id INTEGER PK
+  full_date DATE
+  year YEAR
+  quarter INTEGER
+  month INTEGER
+  day INTEGER
+  weekday VARCHAR(25)
+  is_weekend BOOLEAN 
+}
+
+Table dim_departments {
+  department_id INTEGER PK
+  department_code VARCHAR(15)
+  department_name VARCHAR(255)
+}
+
+Table dim_metrics {
+  metric_id INTEGER PK
+  metric_name VARCHAR(50)
+  description TEXT
+}
+
+Table dim_initiatives {
+  initiative_id INTEGER PK
+  initiative_name VARCHAR(255)
+  start_date DATE
+  status VARCHAR(15)
+}
+
+Table fact_transparency_scores {
+  score_id AUTO_INCREMENT PK
+  time_id INTEGER [ref: > dim_time.time_id]
+  department_id INTEGER [ref: > dim_departments.department_id]
+  metric_id INTEGER [ref: > dim_metrics.metric_id]
+  initiative_id INTEGER [ref: > dim_initiatives.initiative_id]
+  score NUMERIC(3, 2)
+  respondents INTEGER
+}
