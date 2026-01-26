@@ -1,43 +1,40 @@
 // Use DBML to define your database structure
 // Docs: https://dbml.dbdiagram.io/docs
 
-Table dim_sectors {
-  sector_id INTEGER PK
-  sector VARCHAR(100)
-}
 
-Table dim_dimensions {
-  dimension_id INTEGER PK
-  sector_id INTEGER [ref: > dim_sectors.sector_id]
-  dimension VARCHAR(50)
-}
-
-Table dim_survey_dates {
-  survey_date_id INTEGER PK
-  survey_date DATE
+Table dim_time {
+  time_id INTEGER PK
+  period_name VARCHAR(100)
+  period_date DATE
+  year YEAR
+  quarter CHAR(2)
 }
 
 Table dim_departments {
   department_id INTEGER PK
-  department VARCHAR(255)
+  department_code VARCHAR(15)
+  department_name VARCHAR(255)
 }
 
-Table dim_respondent_role {
-  respondent_role_id INTEGER PK
-  respondent_dept_id INTEGER [ref: > dim_departments.department_id]
-  respondent_role VARCHAR(50)
+Table dim_metrics {
+  metric_id INTEGER PK
+  metric_name VARCHAR(50)
+  description TEXT
 }
 
-Table dim_comments {
-  comment_id INTEGER PK
-  comment TEXT
+Table dim_initiatives {
+  initiative_id INTEGER PK
+  initiative_name VARCHAR(255)
+  start_date DATE
+  status VARCHAR(15)
 }
 
-Table facts_data_transparency_surveys {
-  dimension_id INTEGER [ref: > dim_dimensions.dimension_id]
-  survey_date_id INTEGER [ref: > dim_survey_dates.survey_date_id]
-  respondent_role_id INTEGER [ref: > dim_respondent_role.respondent_role_id]
-  comment_id INTEGER [ref: - dim_comments.comment_id]
-  findability_score INTEGER
-  understanding_score INTEGER
+Table fact_transparency_scores {
+  score_id INTEGER PK
+  time_id INTEGER [ref: > dim_time.time_id]
+  department_id INTEGER [ref: > dim_departments.department_id]
+  metric_id INTEGER [ref: > dim_metrics.metric_id]
+  initiative_id INTEGER [ref: > dim_initiatives.initiative_id]
+  score NUMERIC(2, 1)
+  respondents INTEGER
 }
