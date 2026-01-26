@@ -1,0 +1,43 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table dim_sectors {
+  sector_id INTEGER PK
+  sector VARCHAR(100)
+}
+
+Table dim_dimensions {
+  dimension_id INTEGER PK
+  sector_id INTEGER [ref: > dim_sectors.sector_id]
+  dimension VARCHAR(50)
+}
+
+Table dim_survey_dates {
+  survey_date_id INTEGER PK
+  survey_date DATE
+}
+
+Table dim_departments {
+  department_id INTEGER PK
+  department VARCHAR(255)
+}
+
+Table dim_respondent_role {
+  respondent_role_id INTEGER PK
+  respondent_dept_id INTEGER [ref: > dim_departments.department_id]
+  respondent_role VARCHAR(50)
+}
+
+Table dim_comments {
+  comment_id INTEGER PK
+  comment TEXT
+}
+
+Table facts_data_transparency_surveys {
+  dimension_id INTEGER [ref: > dim_dimensions.dimension_id]
+  survey_date_id INTEGER [ref: > dim_survey_dates.survey_date_id]
+  respondent_role_id INTEGER [ref: > dim_respondent_role.respondent_role_id]
+  comment_id INTEGER [ref: - dim_comments.comment_id]
+  findability_score INTEGER
+  understanding_score INTEGER
+}
