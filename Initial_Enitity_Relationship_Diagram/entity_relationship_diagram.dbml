@@ -1,75 +1,40 @@
-// Indicator: Percentage of increase in barangays with completed Barangay Master Development Plans
-// Lead Department: OPPDC
-// Support Department: All Departments
+// Department whol will use this data: OPPDC
+// Indicator: Percentage of reduction in inflation rates through price monitoring and direct selling of basic commodities
 
-enum classification {
-  Rural
-  Urban
+Table local_government_units {
+  local_government_unit_id integer [pk, increment]
+  local_government_unit varchar(50) // Abucay, Balanga, etc.
+  district_number integer // 1, 2, 3, etc.
 }
 
-enum status {
-  None
-  Draft
-  Approved
-  Completed
-  Implementation
+Table commodity_types {
+  commodity_type_id integer [pk, increment]
+  commodity_type varchar(255) // IMPORTED COMMERCIAL RICE (per kg), HIGHLAND VEGETABLES (per kg)
 }
 
-enum source {
-  LGU
-  National
-  NGO
-  Provate
-  Mixed
+Table agricultural_products {
+  agricultural_product_id integer [pk, increment]
+  commodity_type_id integer [ref: > commodity_types.commodity_type_id]
+  agricultural_product varchar(255)
 }
 
-enum type_of_analysis {
-  DailyReview
-  WeeklyAssessment
-  MonthlyReport
-  QuarterlyReview
-  AnnualAssessment
+Table dates {
+  date_id integer [pk, increment]
+  full_date date
+  year year
+  month integer
+  week_number integer
 }
 
-// Barangay who wants to plan or implement a Master Development Plan
-Table barangays {
-  barangay_id integer [pk, increment]
-  barangay_name varchar(100)
-  municipality varchar(100)
-  province varchar(100)
-  region varchar(100)
-  population bigint
-  classification classification
-  is_active boolean
-}
+// Create helper table
 
-// Barangay Master Development Plan
-Table master_development_plans {
-  plan_id integer [pk, increment]
-  barangay_id integer [ref: > barangays.barangay_id]
-  plan_period varchar(60)
-  current_status status
-  date_started date
-  date_approved date
-  date_completed date
-  funding_source source
-  budget decimal(15, 2)
-  remarks text
-  created_by varchar(255)
-  created_date date
-  updated_by varchar(255)
-  updated_date date
-}
-
-// Current Reported Progress of the Master Development Plan of the certain Barangay
-Table plan_progress {
-  progress_id integer [pk, increment]
-  plan_id integer [ref: > master_development_plans.plan_id]
-  progress_date date
-  completion_percentage decimal (5, 1)
-  budget_utilization decimal(5, 2)
-  current_challenges text
-  remarks text
-  reported_by varchar(100)
-  reported_datetime datetime
+Table prices {
+  price_id integer [pk, increment]
+  local_government_unit_id integer [ref: > local_government_units.local_government_unit_id]
+  agricultural_product_id integer [ref: > agricultural_products.agricultural_product_id]
+  observation_date_id integer [ref: > dates.date_id]
+  coverage_period_start_date integer [ref: > dates.date_id]
+  coverage_period_end_date integer [ref: > dates.date_id]
+  average_price decimal(11, 2)
+  prevailing_price decimal(11, 2)
 }
