@@ -1,52 +1,48 @@
-// Use DBML to define your database structure
-// Docs: https://dbml.dbdiagram.io/docs
-
-
-Table dim_time {
-  time_id INTEGER PK
-  period_name VARCHAR(100) 
-  period_date DATE
-  year YEAR
-  quarter CHAR(2)
-}
-
-// Assess the two if we can combine them to one table that references to the two facts table available
 Table dim_dates {
   date_id INTEGER PK
   full_date DATE
   year YEAR
-  quarter INTEGER
+  quarter CHAR(2)
   month INTEGER
+  month_name VARCHAR(20)
+  week_number INTEGER
   day INTEGER
-  weekday VARCHAR(25)
-  is_weekend BOOLEAN 
+  day_of_week VARCHAR(20)
 }
 
-Table dim_departments {
-  department_id INTEGER PK
-  department_code VARCHAR(15)
-  department_name VARCHAR(255)
+Table dim_barangays {
+  barangay_id INTEGER PK
+  barangay_name VARCHAR(100)
+  city VARCHAR(50)
+  province_name VARCHAR(50)
+  postal_code INT(4)
+  region_name VARCHAR(80)
+  classification CHAR(5)
 }
 
-Table dim_metrics {
-  metric_id INTEGER PK
-  metric_name VARCHAR(50)
-  description TEXT
+
+Table dim_development_plans {
+  plan_id INTEGER PK
+  development_plan_title VARCHAR(255)
+  development_plan_description TEXT
+  inclusive_plan_year VARCHAR(50)
+  status VARCHAR(20)
+  date_started DATE
+  date_approved DATE
+  date_completed DATE
 }
 
-Table dim_initiatives {
-  initiative_id INTEGER PK
-  initiative_name VARCHAR(255)
-  start_date DATE
-  status VARCHAR(15)
+Table dim_status {
+  status_id INTEGER PK
+  status VARCHAR(25)
+  is_active BOOLEAN
+  is_completed BOOLEAN
 }
 
-Table fact_transparency_scores {
-  score_id AUTO_INCREMENT PK
-  time_id INTEGER [ref: > dim_time.time_id]
-  department_id INTEGER [ref: > dim_departments.department_id]
-  metric_id INTEGER [ref: > dim_metrics.metric_id]
-  initiative_id INTEGER [ref: > dim_initiatives.initiative_id]
-  score NUMERIC(3, 2)
-  respondents INTEGER
+Table fact_plan_completions {
+  id INTEGER PK
+  date_id INTEGER [ref: > dim_dates.date_id]
+  barangay_id INTEGER [ref: > dim_barangays.barangay_id]
+  plan_id INTEGER [ref: > dim_development_plans.plan_id]
+  status_id INTEGER [ref: > dim_status.status_id]
 }
