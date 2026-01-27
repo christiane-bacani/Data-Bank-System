@@ -1,61 +1,10 @@
-Table dim_dates {
-  date_id INTEGER PK
-  full_date DATE
-  year YEAR
-  quarter CHAR(2)
-  month INTEGER
-  month_name VARCHAR(20)
-  week_number INTEGER
-  day INTEGER
-  day_of_week VARCHAR(20)
-}
+// Indicator: Percentage of increase in barangays with completed Barangay Master Development Plans
+// Lead Department: OPPDC
+// Support Department: All Departments
 
-Table dim_barangays {
-  barangay_id INTEGER PK
-  barangay_name VARCHAR(100)
-  city VARCHAR(50)
-  province_name VARCHAR(50)
-  postal_code INT(4)
-  region_name VARCHAR(80)
-  classification CHAR(5)
-}
-
-
-Table dim_development_plans {
-  plan_id INTEGER PK
-  development_plan_title VARCHAR(255)
-  development_plan_description TEXT
-  inclusive_plan_year VARCHAR(50)
-  status VARCHAR(20)
-  date_started DATE
-  date_approved DATE
-  date_completed DATE
-}
-
-Table dim_status {
-  status_id INTEGER PK
-  status VARCHAR(25)
-  is_active BOOLEAN
-  is_completed BOOLEAN
-}
-
-Table fact_plan_completions {
-  id INTEGER PK
-  date_id INTEGER [ref: > dim_dates.date_id]
-  barangay_id INTEGER [ref: > dim_barangays.barangay_id]
-  plan_id INTEGER [ref: > dim_development_plans.plan_id]
-  status_id INTEGER [ref: > dim_status.status_id]
-}
-
-Table barangays {
-  barangay_id integer [pk, increment]
-  barangay_name varchar(100)
-  municipality varchar(100)
-  province varchar(100)
-  region varchar(100)
-  population bigint
-  classification varchar(20)
-  is_active boolean
+enum classification {
+  Rural
+  Urban
 }
 
 enum status {
@@ -74,6 +23,27 @@ enum source {
   Mixed
 }
 
+enum type_of_analysis {
+  DailyReview
+  WeeklyAssessment
+  MonthlyReport
+  QuarterlyReview
+  AnnualAssessment
+}
+
+// Barangay who wants to plan or implement a Master Development Plan
+Table barangays {
+  barangay_id integer [pk, increment]
+  barangay_name varchar(100)
+  municipality varchar(100)
+  province varchar(100)
+  region varchar(100)
+  population bigint
+  classification classification
+  is_active boolean
+}
+
+// Barangay Master Development Plan
 Table master_development_plans {
   plan_id integer [pk, increment]
   barangay_id integer [ref: > barangays.barangay_id]
@@ -87,14 +57,18 @@ Table master_development_plans {
   remarks text
   created_by varchar(255)
   created_date date
+  updated_by varchar(255)
+  updated_date date
 }
 
+// Current Reported Progress of the Master Development Plan of the certain Barangay
 Table plan_progress {
   progress_id integer [pk, increment]
   plan_id integer [ref: > master_development_plans.plan_id]
   progress_date date
-  status varchar(50)
-  completion_percentage decimal (4, 1)
+  completion_percentage decimal (5, 1)
+  budget_utilization decimal(5, 2)
+  current_challenges text
   remarks text
   reported_by varchar(100)
   reported_datetime datetime
