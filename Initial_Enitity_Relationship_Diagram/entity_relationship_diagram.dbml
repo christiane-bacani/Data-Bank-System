@@ -46,3 +46,56 @@ Table fact_plan_completions {
   plan_id INTEGER [ref: > dim_development_plans.plan_id]
   status_id INTEGER [ref: > dim_status.status_id]
 }
+
+Table barangays {
+  barangay_id integer [pk, increment]
+  barangay_name varchar(100)
+  municipality varchar(100)
+  province varchar(100)
+  region varchar(100)
+  population bigint
+  classification varchar(20)
+  is_active boolean
+}
+
+enum status {
+  None
+  Draft
+  Approved
+  Completed
+  Implementation
+}
+
+enum source {
+  LGU
+  National
+  NGO
+  Provate
+  Mixed
+}
+
+Table master_development_plans {
+  plan_id integer [pk, increment]
+  barangay_id integer [ref: > barangays.barangay_id]
+  plan_period varchar(60)
+  current_status status
+  date_started date
+  date_approved date
+  date_completed date
+  funding_source source
+  budget decimal(15, 2)
+  remarks text
+  created_by varchar(255)
+  created_date date
+}
+
+Table plan_progress {
+  progress_id integer [pk, increment]
+  plan_id integer [ref: > master_development_plans.plan_id]
+  progress_date date
+  status varchar(50)
+  completion_percentage decimal (4, 1)
+  remarks text
+  reported_by varchar(100)
+  reported_datetime datetime
+}
