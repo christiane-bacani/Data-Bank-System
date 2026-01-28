@@ -1,6 +1,12 @@
 // Department whol will use this data: OPPDC
 // Indicator: Percentage of reduction in inflation rates through price monitoring and direct selling of basic commodities
 
+enum helper {
+  Previous
+  Current
+  Other
+}
+
 Table local_government_units {
   local_government_unit_id integer [pk, increment]
   local_government_unit varchar(50) // Abucay, Balanga, etc.
@@ -26,7 +32,10 @@ Table dates {
   week_number integer // 54
 }
 
-// Create helper table
+Table helpers {
+  helper_id integer [pk, increment]
+  helper helper // Previous, Current, Other
+}
 
 Table prices {
   price_id integer [pk, increment]
