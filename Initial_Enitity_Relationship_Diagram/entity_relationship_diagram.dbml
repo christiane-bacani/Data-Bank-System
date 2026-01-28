@@ -9,6 +9,12 @@ enum helper {
   Other
 }
 
+Table sectors {
+  sector_id integer [pk, increment]
+  sector varchar(255) // Development Administration, Economic, Social
+  dimension varchar(255) // Governance, Standard of Living
+}
+
 Table local_government_units {
   local_government_unit_id integer [pk, increment]
   local_government_unit varchar(50) // Abucay, Balanga, etc.
@@ -30,6 +36,7 @@ Table dates {
   date_id integer [pk, increment]
   full_date date // 1/4/2026
   year year // 2025
+  quarter integer // 3
   month integer // 3
   week_number integer // 54
 }
@@ -41,6 +48,7 @@ Table helpers {
 
 Table prices {
   price_id integer [pk, increment]
+  sector_id integer [ref: > sectors.sector_id]
   local_government_unit_id integer [ref: > local_government_units.local_government_unit_id]
   agricultural_product_id integer [ref: > agricultural_products.agricultural_product_id]
   observation_date_id integer [ref: > dates.date_id]
@@ -51,6 +59,9 @@ Table prices {
   average_price decimal(11, 2) // 53.50
   prevailing_price decimal(11, 2) // 53.50
 }
+
+
+
 
 
 // Department who will use this data: Legal & PHRMO
@@ -71,10 +82,11 @@ Table ticket_names {
 
 Table ticket_summaries {
   ticket_summary_id integer [pk, increment]
+  sector_id integer [ref: > sectors.sector_id]
   dates_id integer [ref: > dates.date_id]
   ticket_name_id integer [ref: > ticket_names.ticket_name_id]
-  acted_upon bigint
-  under_processing bigint
-  unacted bigint
-  total_ticket bigint
+  acted_upon bigint // 3
+  under_processing bigint // 2
+  unacted bigint // 4
+  total_ticket bigint // 9
 }
