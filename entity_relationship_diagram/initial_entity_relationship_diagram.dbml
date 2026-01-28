@@ -1,13 +1,32 @@
-// Department who will use this data: OPPDC
-// Indicator: Percentage of reduction in inflation rates through price monitoring and direct selling of basic commodities
-// Data Source: OPPDC - Development Research and Statistics Division Spreadsheet
-// How to verify this data for the integrity: Check the Provincial Price Monitoring System of Development Research and Statistics Divsion from OPPDC for comparison
+enum day_of_week {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
 
 enum helper {
   Previous
   Current
   Other
 }
+
+enum crime_category {
+  IndexCrime
+  OtherCrimeSlashIndex
+}
+
+
+
+
+
+// Department who will use this data: OPPDC
+// Indicator: Percentage of reduction in inflation rates through price monitoring and direct selling of basic commodities
+// Data Source: OPPDC - Development Research and Statistics Division Spreadsheet
+// How to verify this data for the integrity: Check the Provincial Price Monitoring System of Development Research and Statistics Divsion from OPPDC for comparison
 
 Table sectors {
   sector_id integer [pk, increment]
@@ -34,11 +53,12 @@ Table agricultural_products {
 
 Table dates {
   date_id integer [pk, increment]
-  full_date date // 1/4/2026
+  full_date date // // YYYY/MM/DD
   year year // 2025
   quarter integer // 3
   month integer // 3
   week_number integer // 54
+  day_of_week day_of_week // Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, and Sunday
 }
 
 Table helpers {
@@ -51,7 +71,7 @@ Table prices {
   sector_id integer [ref: > sectors.sector_id]
   local_government_unit_id integer [ref: > local_government_units.local_government_unit_id]
   agricultural_product_id integer [ref: > agricultural_products.agricultural_product_id]
-  observation_date_id integer [ref: > dates.date_id]
+  observation_datetime_id integer [ref: > dates.date_id]
   coverage_period_start_date integer [ref: > dates.date_id]
   coverage_period_end_date integer [ref: > dates.date_id]
   helper_id integer [ref: > helpers.helper_id]
@@ -89,4 +109,42 @@ Table ticket_summaries {
   under_processing bigint // 2
   unacted bigint // 4
   total_ticket bigint // 9
+}
+
+
+
+
+
+// Department who will use this data: MBDA
+// Indicator: % reduction in crime rates through collaboration with law enforcement
+// Data Source: 
+// How to verify this data for the integrity: 
+
+Table police_stations {
+  police_station_id integer [pk, increment]
+  police_station varchar(255) // Balanga City Police Station 1
+  barangay varchar(255) // San Jose, Munting Batangas, Tuyo
+}
+
+Table crime_categories {
+  crime_category_id integer [pk, increment]
+  crime_category crime_category // Index Crime, Other Crime/Index
+}
+
+Table stages_of_felony {
+  stage_of_felony_id integer [pk, increment]
+  stage_of_felony varchar(100) // Consummated 
+}
+
+Table crime_offenses {
+  crime_offense_id integer [pk, increment]
+  crime_category_id integer [ref: > crime_categories.crime_category_id]
+  stage_of_felony_id integer [ref: > stages_of_felony.stage_of_felony_id]
+  crime_offense varchar(100) // Adultery, Rape, Murder
+}
+
+Table crime_incidents {
+  crime_incident_id integer [pk, increment]
+  date_commited_id integer [ref: > dates.date_id]
+  time_commited time // 13:00
 }
