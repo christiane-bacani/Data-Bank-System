@@ -1,5 +1,7 @@
-// Department whol will use this data: OPPDC
+// Department who will use this data: OPPDC
 // Indicator: Percentage of reduction in inflation rates through price monitoring and direct selling of basic commodities
+// Data Source: OPPDC - Development Research and Statistics Division Spreadsheet
+// How to verify this data for the integrity: Check the Provincial Price Monitoring System of Development Research and Statistics Divsion from OPPDC for comparison
 
 enum helper {
   Previous
@@ -44,7 +46,25 @@ Table prices {
   observation_date_id integer [ref: > dates.date_id]
   coverage_period_start_date integer [ref: > dates.date_id]
   coverage_period_end_date integer [ref: > dates.date_id]
+  helper_id integer [ref: > helpers.helper_id]
   currency varchar(25) // PHP
   average_price decimal(11, 2) // 53.50
   prevailing_price decimal(11, 2) // 53.50
+}
+
+
+// Department: Legal & PHRMO
+// Indicator: % increase in citizen concerns addressed via the 8888 hotline
+// Data Source: Annual Performance Report of 8888 Citizens' Complaint Center (8888 CCC) from Legal & PHRMO Office
+// How to verify this data for the integrity: Check the Performance report for a certain period of month sent by 8888 Citizens' Complaint Center (8888 CCC)
+
+Table ticket_classifications {
+  ticket_classification_id integer [pk, increment]
+  ticket_classification varchar(255) // 2024 Graft and Corruption, 2024 LGU Concerns
+}
+
+Table ticket_names {
+  ticket_name_id integer [pk, increment]
+  ticket_classification_id integer [ref: > ticket_classifications.ticket_classification_id]
+  ticket_name varchar(255) // 2024 Against Government Official, 2024 - Agains Government Employee
 }
