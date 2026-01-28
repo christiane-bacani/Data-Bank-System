@@ -53,7 +53,7 @@ Table prices {
 }
 
 
-// Department: Legal & PHRMO
+// Department who will use this data: Legal & PHRMO
 // Indicator: % increase in citizen concerns addressed via the 8888 hotline
 // Data Source: Annual Performance Report of 8888 Citizens' Complaint Center (8888 CCC) from Legal & PHRMO Office
 // How to verify this data for the integrity: Check the Performance report for a certain period of month sent by 8888 Citizens' Complaint Center (8888 CCC)
@@ -67,4 +67,14 @@ Table ticket_names {
   ticket_name_id integer [pk, increment]
   ticket_classification_id integer [ref: > ticket_classifications.ticket_classification_id]
   ticket_name varchar(255) // 2024 Against Government Official, 2024 - Agains Government Employee
+}
+
+Table ticket_summaries {
+  ticket_summary_id integer [pk, increment]
+  dates_id integer [ref: > dates.date_id]
+  ticket_name_id integer [ref: > ticket_names.ticket_name_id]
+  acted_upon bigint
+  under_processing bigint
+  unacted bigint
+  total_ticket bigint
 }
