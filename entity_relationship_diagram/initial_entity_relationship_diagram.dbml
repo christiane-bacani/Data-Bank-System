@@ -239,4 +239,4 @@ Table injury_types {
 Table injuries {
   injury_id integer [pk, increment]
   // Reference to injuries table
-}g
+}
