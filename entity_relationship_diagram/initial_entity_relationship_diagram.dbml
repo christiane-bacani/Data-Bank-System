@@ -19,13 +19,17 @@ enum crime_category {
   OtherCrimeSlashIndex
 }
 
-enum location_category {
-  Barangay
-  Road
-  Intersection
-  Municipality
+enum accident_type {
+  Vehicular
+  Fire
+  Medical
 }
 
+enum accident_severity {
+  Minor
+  Major
+  Fatal
+}
 
 
 
@@ -168,13 +172,28 @@ Table crime_incidents {
 
 
 
-// Department who will use this data: PDRRM, MBDA
+// Department who will use this data: PDRRM, MBDA, PNP
 // Indicator: % reductions on accidents (place of occurrence)
 // Data Source: 
 // How to verify this data for the integrity:
 
+Table accident_types {
+  accident_type_id integer [pk, increment]
+  accident_type accident_type // Vehicular, Fire, Medical
+}
+
+Table accident_severity {
+  accident_severity_id integer [pk, increment]
+  accident_severity accident_severity // Minor, Major, Fatal
+}
+
 Table accident_locations {
-    accident_location_id integer [pk, increment]
-    accident_location text // Roman Highway 5 KM, Balanga City, etc.
-    location_category location_category // 
+  accident_location_id integer [pk, increment]
+  accident_date_id integer [ref: > dates.date_id]
+  // Accident Types
+  // Accident Severity
+  city_municipality varchar(100) // Balanga City, Abucay, Orani
+  barangay varchar(100) // San Jose, Bagong Silang
+  latitude decimal(10, 8) // 14.681234
+  longitude decimal(10, 8) // 120.534567
 }
