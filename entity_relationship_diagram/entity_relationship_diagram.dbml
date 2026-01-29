@@ -224,6 +224,10 @@ Table accidents {
 // Frequency: During SitRep
 // How to verify this data for the integrity:
 
+Table cities_municipalities {
+  city_municipality_id integer [pk, increment]
+}
+
 Table barangays {
   barangay_id integer [pk, increment]
   barangay_name varchar(255) // San Jose
