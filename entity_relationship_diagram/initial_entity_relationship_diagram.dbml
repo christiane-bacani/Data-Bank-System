@@ -222,3 +222,15 @@ Table accidents {
 // Indicator: % reduction of injury among affected population during calamity
 // Frequency: During SitRep
 // How to verify this data for the integrity:
+
+Table calamities {
+  calamity_id integer [pk, increment]
+  start_date_id integer [ref: > dates.date_id]
+  end_date_id integer [ref: > dates.date_id]
+  calamity_name varchar(255)
+  calamity_type calamity_type
+}
+
+Table injury_reports {
+  injury_report_id integer [pk, increment]
+}
