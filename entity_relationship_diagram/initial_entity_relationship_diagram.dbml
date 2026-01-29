@@ -126,6 +126,12 @@ Table police_stations {
   barangay varchar(255) // San Jose, Munting Batangas, Tuyo
 }
 
+Table crime_datetimes {
+  crime_datetime_id integer [pk, increment]
+  date_commited date // 2026-01-29
+  time_commited time // 13:00
+}
+
 Table crime_categories {
   crime_category_id integer [pk, increment]
   crime_category crime_category // Index Crime, Other Crime/Index
@@ -145,9 +151,18 @@ Table crime_offenses {
 
 Table crime_incidents {
   crime_incident_id integer [pk, increment]
+  sectors_id integer [ref: > sectors.sector_id]
   police_station_id integer [ref: > police_stations.police_station_id]
-  date_commited_id integer [ref: > dates.date_id]
-  time_commited time // 13:00
+  crime_datetime_id integer [ref: > crime_datetimes.crime_datetime_id]
   crime_offense_id integer [ref: > crime_offenses.crime_offense_id]
   modus varchar(255) // Caught in motel
 }
+
+
+
+
+
+// Department who will use this data: PDRRMO, MBDA
+// Indicator: 
+// Data Source: 
+// How to verify this data for the integrity:
