@@ -39,6 +39,12 @@ enum calamity_type {
   ManMadeCalamities
 }
 
+enum status {
+  Active
+  Resolved
+  Monitoring
+}
+
 /*
 Table sectors {
   sector_id integer [pk, increment]
@@ -219,7 +225,14 @@ Table accidents {
 
 Table calamities {
   calamity_id integer [pk, increment]
-  calamity_name varchar(255) // Typhoon "Ruby", Earthquake 7.
   start_date_id integer [ref: > dates.date_id]
   end_date_id integer [ref: > dates.date_id]
+  calamity_name varchar(255) // Typhoon "Ruby", Earthquake 7.5 magnitude
+  status status // Active, Resolved, Monitoring
+}
+
+Table barangays {
+  barangay_id integer [pk, increment]
+  barangay_name varchar(150) // San Jose
+  city_municipality varchar(150) // Balanga City, Orani
 }
