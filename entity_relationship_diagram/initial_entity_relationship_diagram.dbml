@@ -31,6 +31,14 @@ enum accident_severity {
   Fatal
 }
 
+enum calamity_type {
+  NaturalCalamities
+  HydrologicalCalamities
+  GeologicalCalamities
+  BiologicalCalamities
+  ManMadeCalamities
+}
+
 /*
 Table sectors {
   sector_id integer [pk, increment]
@@ -143,7 +151,7 @@ Table police_stations {
 
 Table crime_datetimes {
   crime_datetime_id integer [pk, increment]
-  date_commited date // 2026-01-29
+  date_commited_id integer [ref: > dates.date_id]
   time_commited time // 13:00
 }
 
@@ -169,17 +177,17 @@ Table crime_incidents {
   police_station_id integer [ref: > police_stations.police_station_id]
   crime_datetime_id integer [ref: > crime_datetimes.crime_datetime_id]
   crime_offense_id integer [ref: > crime_offenses.crime_offense_id]
-  modus varchar(255) // Caught in motel
+  modus varchar(255) // Caught in motel, etc.
 }
 
 
 
 
 
-// Department who will use this data: PDRRM (Confirm sa kanila kung ano measurement from Sir Jap), MBDA (Place of occurence: Latitude/Longitude), PNP (Place of Occurence: Barangay)
+// Department who will use this data: PDRRM (Place of occurence: ), MBDA (Place of occurence: Latitude/Longitude), PNP (Place of Occurence: Barangay)
 // Indicator: % reductions on accidents (place of occurrence)
 // Frequency: Monthly
-// Data Source: 
+// Data Source:
 // How to verify this data for the integrity:
 
 Table accident_types {
@@ -194,7 +202,6 @@ Table accident_severities {
 
 Table accidents {
   accident_id integer [pk, increment]
-  // Reference it to sectors table
   accident_date_id integer [ref: > dates.date_id]
   accident_types integer [ref: > accident_types.accident_type_id]
   accident_severity_id integer [ref: > accident_severities.accident_severity_id]
@@ -202,4 +209,17 @@ Table accidents {
   barangay varchar(100) // San Jose, Bagong Silang
   latitude decimal(10, 8) // 14.681234
   longitude decimal(10, 8) // 120.534567
+}
+
+
+// Department who will use this data: PDRRM, MBDA
+// Indicator: % reduction of injury among affected population during calamity
+// Frequency: During SitRep
+// How to verify this data for the integrity:
+
+Table calamities {
+  calamity_id integer [pk, increment]
+  calamity varchar(255) // Severe Tropical Storm Paeng 2024, 5.9 Magnitude Earthquake
+  calamity_type calamity_type // Natural Calamities, Hydrological Calamities
+  calamity_subtype varchar(150) // Tropical Cyclone, Floods, etc.
 }
