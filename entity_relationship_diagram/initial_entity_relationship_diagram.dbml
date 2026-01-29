@@ -31,6 +31,14 @@ enum accident_severity {
   Fatal
 }
 
+/*
+Table sectors {
+  sector_id integer [pk, increment]
+  sector varchar(255) // Development Administration, Economic, Social
+  dimension varchar(255) // Governance, Standard of Living
+}
+*/
+
 
 
 
@@ -40,12 +48,6 @@ enum accident_severity {
 // Frequency: Annually
 // Data Source: OPPDC - Development Research and Statistics Division Spreadsheet
 // How to verify this data for the integrity: Check the Provincial Price Monitoring System of Development Research and Statistics Divsion from OPPDC for comparison
-
-Table sectors {
-  sector_id integer [pk, increment]
-  sector varchar(255) // Development Administration, Economic, Social
-  dimension varchar(255) // Governance, Standard of Living
-}
 
 Table local_government_units {
   local_government_unit_id integer [pk, increment]
@@ -81,7 +83,6 @@ Table helpers {
 
 Table prices {
   price_id integer [pk, increment]
-  sector_id integer [ref: > sectors.sector_id]
   local_government_unit_id integer [ref: > local_government_units.local_government_unit_id]
   agricultural_product_id integer [ref: > agricultural_products.agricultural_product_id]
   observation_datetime_id integer [ref: > dates.date_id]
@@ -116,7 +117,6 @@ Table ticket_names {
 
 Table ticket_summaries {
   ticket_summary_id integer [pk, increment]
-  sector_id integer [ref: > sectors.sector_id]
   dates_id integer [ref: > dates.date_id]
   ticket_name_id integer [ref: > ticket_names.ticket_name_id]
   acted_upon bigint // 3
@@ -166,7 +166,6 @@ Table crime_offenses {
 
 Table crime_incidents {
   crime_incident_id integer [pk, increment]
-  sectors_id integer [ref: > sectors.sector_id]
   police_station_id integer [ref: > police_stations.police_station_id]
   crime_datetime_id integer [ref: > crime_datetimes.crime_datetime_id]
   crime_offense_id integer [ref: > crime_offenses.crime_offense_id]
@@ -195,6 +194,7 @@ Table accident_severities {
 
 Table accidents {
   accident_id integer [pk, increment]
+  // Reference it to sectors table
   accident_date_id integer [ref: > dates.date_id]
   accident_types integer [ref: > accident_types.accident_type_id]
   accident_severity_id integer [ref: > accident_severities.accident_severity_id]
