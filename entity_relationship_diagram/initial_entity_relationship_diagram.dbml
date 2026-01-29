@@ -213,6 +213,7 @@ Table accidents {
   accident_severity_id integer [ref: > accident_severities.accident_severity_id]
   city_municipality varchar(100) // Balanga City, Abucay, Orani
   barangay varchar(100) // San Jose, Bagong Silang
+  location text // Front of Jollibee Bagong Silang
   latitude decimal(10, 8) // 14.681234
   longitude decimal(10, 8) // 120.534567
 }
