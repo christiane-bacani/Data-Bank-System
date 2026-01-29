@@ -219,7 +219,24 @@ Table accidents {
 
 Table calamities {
   calamity_id integer [pk, increment]
+  // reference to date using calamity_date_id
   calamity varchar(255) // Severe Tropical Storm Paeng 2024, 5.9 Magnitude Earthquake
   calamity_type calamity_type // Natural Calamities, Hydrological Calamities
   calamity_subtype varchar(150) // Tropical Cyclone, Floods, etc.
 }
+
+Table barangays {
+  barangay_id integer [pk, increment]
+  barangay varchar(100) // San Jose, Mabatang
+  barangay_population bigint
+  city_municipality varchar(100) // Balanga City, Orion
+}
+
+Table injury_types {
+  injury_type_id integer [pk, increment]
+  
+}
+Table injuries {
+  injury_id integer [pk, increment]
+  // Reference to injuries table
+}g
