@@ -237,5 +237,5 @@ Table injury_reports {
   report_date date // YYYY/MM/DD
   total_injuries bigint // 131
   moving_average_injuries decimal(11, 2)
-  moving_average_window varchar(25) // 7 Days
+  moving_average_window varchar(25) // 1 Day
 }
