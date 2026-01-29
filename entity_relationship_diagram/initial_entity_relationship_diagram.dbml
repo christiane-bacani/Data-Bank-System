@@ -19,6 +19,12 @@ enum crime_category {
   OtherCrimeSlashIndex
 }
 
+enum location_category {
+  Barangay
+  Road
+  Intersection
+  Municipality
+}
 
 
 
@@ -162,7 +168,13 @@ Table crime_incidents {
 
 
 
-// Department who will use this data: PDRRMO, MBDA
-// Indicator: 
+// Department who will use this data: PDRRM, MBDA
+// Indicator: % reductions on accidents (place of occurrence)
 // Data Source: 
 // How to verify this data for the integrity:
+
+Table accident_locations {
+    accident_location_id integer [pk, increment]
+    accident_location text // Roman Highway 5 KM, Balanga City, etc.
+    location_category location_category // 
+}
