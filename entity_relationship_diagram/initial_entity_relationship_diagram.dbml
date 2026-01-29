@@ -33,8 +33,11 @@ enum accident_severity {
 
 
 
+
+
 // Department who will use this data: OPPDC
 // Indicator: Percentage of reduction in inflation rates through price monitoring and direct selling of basic commodities
+// Frequency: Annually
 // Data Source: OPPDC - Development Research and Statistics Division Spreadsheet
 // How to verify this data for the integrity: Check the Provincial Price Monitoring System of Development Research and Statistics Divsion from OPPDC for comparison
 
@@ -96,6 +99,7 @@ Table prices {
 
 // Department who will use this data: Legal & PHRMO
 // Indicator: % increase in citizen concerns addressed via the 8888 hotline
+// Frequency: Annually
 // Data Source: Annual Performance Report of 8888 Citizens' Complaint Center (8888 CCC) from Legal & PHRMO Office
 // How to verify this data for the integrity: Check the Performance report for a certain period of month sent by 8888 Citizens' Complaint Center (8888 CCC)
 
@@ -127,6 +131,7 @@ Table ticket_summaries {
 
 // Department who will use this data: MBDA/PDRRMO
 // Indicator: % reduction in crime rates through collaboration with law enforcement
+// Frequency: Annually
 // Data Source: PNP Crime Reports from PNP
 // How to verify this data for the integrity: Cross-check the data given by the PNP to the OPPDC - Development Research and Statistics Division
 
@@ -172,8 +177,9 @@ Table crime_incidents {
 
 
 
-// Department who will use this data: PDRRM, MBDA, PNP
+// Department who will use this data: PDRRM (Confirm sa kanila kung ano measurement from Sir Jap), MBDA (Place of occurence: Latitude/Longitude), PNP (Place of Occurence: Barangay)
 // Indicator: % reductions on accidents (place of occurrence)
+// Frequency: Monthly
 // Data Source: 
 // How to verify this data for the integrity:
 
@@ -182,16 +188,16 @@ Table accident_types {
   accident_type accident_type // Vehicular, Fire, Medical
 }
 
-Table accident_severity {
+Table accident_severities {
   accident_severity_id integer [pk, increment]
   accident_severity accident_severity // Minor, Major, Fatal
 }
 
-Table accident_locations {
-  accident_location_id integer [pk, increment]
+Table accidents {
+  accident_id integer [pk, increment]
   accident_date_id integer [ref: > dates.date_id]
-  // Accident Types
-  // Accident Severity
+  accident_types integer [ref: > accident_types.accident_type_id]
+  accident_severity_id integer [ref: > accident_severities.accident_severity_id]
   city_municipality varchar(100) // Balanga City, Abucay, Orani
   barangay varchar(100) // San Jose, Bagong Silang
   latitude decimal(10, 8) // 14.681234
