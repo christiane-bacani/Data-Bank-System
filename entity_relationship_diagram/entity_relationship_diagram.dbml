@@ -31,6 +31,10 @@ enum accident_severity {
   Fatal
 }
 
+enum calamity_type {
+  // Implement the calamity type and subtype
+}
+
 enum injury_type {
   Fracture
   Laceration
@@ -223,8 +227,8 @@ Table calamities {
   start_date_id integer [ref: > dates.date_id]
   end_date_id integer [ref: > dates.date_id]
   calamity_name varchar(255) // Typhoon Yolanda, Earthquake with a Magnitude of 7.2
+  calamity_type calamity_type
   description text // Typhoon Yolanda destroys multiple districts inside the Province of Bataan and Pampanga
-
 }
 
 // Department who will use this data: PDRRM, MBDA
