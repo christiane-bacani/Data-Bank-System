@@ -246,6 +246,7 @@ Table injury_reports {
   injury_report_title varchar(255) // Daily Situational Report
   description text // Daily Situational Report for Common Injuries Occured During...
   total_no_of_injuries bigint // 151332
+  moving_avg_no_of_injuries_per_day decimal(11, 2) // 1435.23
 }
 
 // Department who will use this data: PDRRM, MBDA
