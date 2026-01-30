@@ -218,6 +218,14 @@ Table accidents {
   longitude decimal(10, 8) // 120.534567
 }
 
+Table calamities {
+  calamity_id integer [pk, increment]
+  start_date_id integer [ref: > dates.date_id]
+  end_date_id integer [ref: > dates.date_id]
+  calamity_name varchar(255) // Typhoon Yolanda, Earthquake with a Magnitude of 7.2
+  description text // Typhoon Yolanda destroys multiple districts inside the Province of Bataan and Pampanga
+
+}
 
 // Department who will use this data: PDRRM, MBDA
 // Indicator: % reduction of injury among affected population during calamity
