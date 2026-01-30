@@ -32,7 +32,17 @@ enum accident_severity {
 }
 
 enum calamity_type {
-  // Implement the calamity type and subtype
+  Cyclone
+  Typhoon
+  Tornado
+  Flood
+  Drought
+  Earthquake
+  VolcanicEruption
+  Landslide
+  Pandemic
+  IndustrialAccident
+  Terrorism
 }
 
 enum injury_type {
@@ -227,7 +237,7 @@ Table calamities {
   start_date_id integer [ref: > dates.date_id]
   end_date_id integer [ref: > dates.date_id]
   calamity_name varchar(255) // Typhoon Yolanda, Earthquake with a Magnitude of 7.2
-  calamity_type calamity_type
+  calamity_type calamity_type // Typhoon, Tordano, Earthquake, Landslide
   description text // Typhoon Yolanda destroys multiple districts inside the Province of Bataan and Pampanga
 }
 
