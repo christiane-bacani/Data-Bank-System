@@ -45,6 +45,13 @@ enum calamity_type {
   Terrorism
 }
 
+enum unit_type {
+  Province
+  District
+  Municipality
+  Barangay
+}
+
 enum injury_type {
   Fracture
   Laceration
@@ -153,7 +160,7 @@ Table ticket_summaries {
 
 
 
-// Department who will use this data: MBDA/PDRRMO
+// Department who will use this data: MBDA/PDRRMO/PNP
 // Indicator: % reduction in crime rates through collaboration with law enforcement
 // Frequency: Annually
 // Data Source: PNP Crime Reports from PNP
@@ -200,7 +207,7 @@ Table crime_incidents {
 
 
 
-// Department who will use this data: PDRRM (Place of occurence: ), MBDA (Place of occurence: Latitude/Longitude), PNP (Place of Occurence: Barangay)
+// Department who will use this data: PDRRM (Place of occurence: ?), MBDA (Place of occurence: Latitude/Longitude), PNP (Place of Occurence: Barangay)
 // Indicator: % reductions on accidents (place of occurrence)
 // Frequency: Monthly
 // Data Source:
@@ -234,34 +241,6 @@ Table accidents {
 // Frequency: During SitRep
 // How to verify this data for the integrity:
 
-Table provinces {
-  province_id integer [pk, increment]
-  province varchar(20) // Bataan
-  current_population bigint // 148336
-  updated_at date // YYYY/MM/DD
-}
-
-Table districts {
-  district_id integer [pk, increment]
-  district varchar(20) // District I, Distrinct II
-  current_population bigint // 148335
-  updated_at date // YYYY/MM/DD
-}
-
-Table municipalities {
-  municipality_id integer [pk, ref: - local_government_units.local_government_unit_id]
-  municipality varchar(80) // Balanga City, Abucay, Orani
-  current_population bigint // 148334
-  updated_at date // YYYY/MM/DD
-}
-
-Table barangays {
-  barangay_id integer [pk, increment]
-  barangay_name varchar(255) // San Jose, Bagong Silang
-  current_population bigint // 148333
-  updated_at date // YYYY/MM/DD
-}
-
 Table calamities {
   calamity_id integer [pk, increment]
   calamity_name varchar(255) // Typhoon Yolanda, Earthquake with a Magnitude of 7.2
@@ -271,17 +250,25 @@ Table calamities {
   end_date date // YYYY/MM/DD
 }
 
+Table unit_types {
+  unit_type_id integer [pk]
+  unit_type unit_type // Province, District, Municipality, and Barangay
+}
+
+Table reporting_units {
+  reporting_unit_id integer [pk]
+  unit_type integer [ref: > unit_types.unit_type_id]
+  unit_name varchar(50) // Bataan, District I, District II, District III, Balanga City, Abucay, San Jose
+  parent_unit_id integer
+}
+
 Table injury_reports {
   injury_report_id integer [pk, increment]
   reported_date_id integer [ref: > dates.date_id]
-  reported_by_id integer
+  reporting_unit_id integer [ref: > reporting_units.reporting_unit_id]
+  calamity_id integer [ref: > calamities.calamity_id]
   injury_report_title varchar(255) // Daily Situational Report
   description text // Daily Situational Report for Common Injuries Occured During...
   total_no_of_injuries bigint // 151332
   moving_avg_no_of_injuries_per_day decimal(11, 2) // 1435.23
 }
-
-Ref: injury_reports.reported_by_id > provinces.province_id
-Ref: injury_reports.reported_by_id > municipalities.municipality_id
-Ref: injury_reports.reported_by_id > districts.district_id
-Ref: injury_reports.reported_by_id > barangays.barangay_id
