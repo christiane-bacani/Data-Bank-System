@@ -257,7 +257,7 @@ Table unit_types {
 
 Table reporting_units {
   reporting_unit_id integer [pk]
-  unit_type integer [ref: > unit_types.unit_type_id]
+  unit_type unit_type // Province, District, Municipality, and Barangay
   unit_name varchar(50) // Bataan, District I, District II, District III, Balanga City, Abucay, San Jose
   parent_unit_id integer
 }
