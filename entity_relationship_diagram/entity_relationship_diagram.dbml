@@ -250,11 +250,6 @@ Table calamities {
   end_date date // YYYY/MM/DD
 }
 
-Table unit_types {
-  unit_type_id integer [pk]
-  unit_type unit_type // Province, District, Municipality, and Barangay
-}
-
 Table reporting_units {
   reporting_unit_id integer [pk]
   unit_type unit_type // Province, District, Municipality, and Barangay
