@@ -274,7 +274,7 @@ Table calamities {
 Table injury_reports {
   injury_report_id integer [pk, increment]
   reported_date_id integer [ref: > dates.date_id]
-  reported_by_id integer // province_id, district_id, municipality_id, barangay_id
+  reported_by_id integer
   injury_report_title varchar(255) // Daily Situational Report
   description text // Daily Situational Report for Common Injuries Occured During...
   total_no_of_injuries bigint // 151332
