@@ -234,18 +234,32 @@ Table accidents {
 // Frequency: During SitRep
 // How to verify this data for the integrity:
 
+Table municipalities {
+  municipality_id integer [pk, increment]
+  municipality varchar(80) // Balanga City, Abucay, Orani
+  total_current_population bigint // 148334
+  //
+}
+
+Table barangays {
+  barangay_id integer [pk, increment]
+  barangay_name varchar(255) // San Jose, Bagong Silang
+  total_current_population bigint // 148333
+  updated_at date // YYYY/MM/DD
+}
+
 Table calamities {
   calamity_id integer [pk, increment]
-  start_date_id integer [ref: > dates.date_id]
-  end_date_id integer [ref: > dates.date_id]
   calamity_name varchar(255) // Typhoon Yolanda, Earthquake with a Magnitude of 7.2
   calamity_type calamity_type // Typhoon, Tordano, Earthquake, Landslide
-  description text // Typhoon Yolanda destroys multiple districts inside the Province of Bataan and Pampanga
+  description text // Typhoon Yolanda destroys multiple districts inside the Province of Bataan and Pampanga}
+  start_date date // YYYY/MM/DD
+  end_date date // YYYY/MM/DD
 }
 
 Table injury_reports {
   injury_report_id integer [pk, increment]
-  // reported_by_id integer //
+  reported_date_id integer [ref: > dates.date_id]
   injury_report_title varchar(255) // Daily Situational Report
   description text // Daily Situational Report for Common Injuries Occured During...
   total_no_of_injuries bigint // 151332
