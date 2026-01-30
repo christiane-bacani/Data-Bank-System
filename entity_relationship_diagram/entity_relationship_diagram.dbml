@@ -107,9 +107,9 @@ Table helpers {
 
 Table prices {
   price_id integer [pk, increment]
-  local_government_unit_id integer [ref: > local_government_units.local_government_unit_id]
   agricultural_product_id integer [ref: > agricultural_products.agricultural_product_id]
-  observation_datetime_id integer [ref: > dates.date_id]
+  local_government_unit_id integer [ref: > local_government_units.local_government_unit_id]
+  observation_date_id integer [ref: > dates.date_id] 
   coverage_period_start_date integer [ref: > dates.date_id]
   coverage_period_end_date integer [ref: > dates.date_id]
   helper_id integer [ref: > helpers.helper_id]
@@ -234,17 +234,31 @@ Table accidents {
 // Frequency: During SitRep
 // How to verify this data for the integrity:
 
+Table provinces {
+  province_id integer [pk, increment]
+  province varchar(20) // Bataan
+  current_population bigint // 148336
+  updated_at date // YYYY/MM/DD
+}
+
+Table districts {
+  district_id integer [pk, increment]
+  district varchar(20) // District I, Distrinct II
+  current_population bigint // 148335
+  updated_at date // YYYY/MM/DD
+}
+
 Table municipalities {
-  municipality_id integer [pk, increment]
+  municipality_id integer [pk, ref: - local_government_units.local_government_unit_id]
   municipality varchar(80) // Balanga City, Abucay, Orani
-  total_current_population bigint // 148334
-  //
+  current_population bigint // 148334
+  updated_at date // YYYY/MM/DD
 }
 
 Table barangays {
   barangay_id integer [pk, increment]
   barangay_name varchar(255) // San Jose, Bagong Silang
-  total_current_population bigint // 148333
+  current_population bigint // 148333
   updated_at date // YYYY/MM/DD
 }
 
