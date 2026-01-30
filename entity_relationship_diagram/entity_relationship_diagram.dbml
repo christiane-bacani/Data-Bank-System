@@ -245,7 +245,6 @@ Table districts {
   district_id integer [pk, increment]
   district varchar(20) // District I, Distrinct II
   current_population bigint // 148335
-
   updated_at date // YYYY/MM/DD
 }
 
@@ -274,14 +273,15 @@ Table calamities {
 
 Table injury_reports {
   injury_report_id integer [pk, increment]
-  reported_by_id integer  
   reported_date_id integer [ref: > dates.date_id]
+  reported_by_id integer // province_id, district_id, municipality_id, barangay_id
   injury_report_title varchar(255) // Daily Situational Report
   description text // Daily Situational Report for Common Injuries Occured During...
   total_no_of_injuries bigint // 151332
   moving_avg_no_of_injuries_per_day decimal(11, 2) // 1435.23
 }
 
-Ref: injury_reports.injury_report_id > municipalities.municipality_id
-Ref: injury_reports.injury_report_id > districts.district_id
-Ref: injury_reports.injury_report_id > barangays.barangay_id
+Ref: injury_reports.reported_by_id > provinces.province_id
+Ref: injury_reports.reported_by_id > municipalities.municipality_id
+Ref: injury_reports.reported_by_id > districts.district_id
+Ref: injury_reports.reported_by_id > barangays.barangay_id
