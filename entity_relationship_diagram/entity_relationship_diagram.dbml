@@ -241,6 +241,13 @@ Table calamities {
   description text // Typhoon Yolanda destroys multiple districts inside the Province of Bataan and Pampanga
 }
 
+Table injury_reports {
+  injury_report_id integer [pk, increment]
+  injury_report_title varchar(255) // Daily Situational Report
+  description text // Daily Situational Report for Common Injuries Occured During...
+  total_no_of_injuries bigint // 151332
+}
+
 // Department who will use this data: PDRRM, MBDA
 // Indicator: % reduction of injury among affected population during calamity
 // Frequency: During SitRep
