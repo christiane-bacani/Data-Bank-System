@@ -283,5 +283,5 @@ Table injury_reports {
 }
 
 Ref: injury_reports.injury_report_id > municipalities.municipality_id
-  Ref: injury_reports.injury_report_id > districts.district_id
-  Ref: injury_reports.injury_report_id > barangays.barangay_id
+Ref: injury_reports.injury_report_id > districts.district_id
+Ref: injury_reports.injury_report_id > barangays.barangay_id
