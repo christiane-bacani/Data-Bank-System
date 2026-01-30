@@ -55,10 +55,6 @@ enum injury_type {
   Others
 }
 
-
-
-
-
 /*
 Table sectors {
   sector_id integer [pk, increment]
@@ -232,6 +228,12 @@ Table accidents {
   longitude decimal(10, 8) // 120.534567
 }
 
+
+// Department who will use this data: PDRRM, MBDA
+// Indicator: % reduction of injury among affected population during calamity
+// Frequency: During SitRep
+// How to verify this data for the integrity:
+
 Table calamities {
   calamity_id integer [pk, increment]
   start_date_id integer [ref: > dates.date_id]
@@ -243,43 +245,9 @@ Table calamities {
 
 Table injury_reports {
   injury_report_id integer [pk, increment]
+  // reported_by_id integer //
   injury_report_title varchar(255) // Daily Situational Report
   description text // Daily Situational Report for Common Injuries Occured During...
   total_no_of_injuries bigint // 151332
   moving_avg_no_of_injuries_per_day decimal(11, 2) // 1435.23
 }
-
-// Department who will use this data: PDRRM, MBDA
-// Indicator: % reduction of injury among affected population during calamity
-// Frequency: During SitRep
-// How to verify this data for the integrity:
-
-/*
-Table cities_municipalities {
-  city_municipality_id integer [pk, increment]
-  city_municipality_name varchar(150) // Balanga City
-  total_population bigint // 131000
-}
-
-Table barangays {
-  barangay_id integer [pk, increment]
-  barangay_name varchar(255) // San Jose
-  total_population bigint // 547
-}
-
-Table calamities {
-  calamity_id integer [pk, increment]
-  start_date_id integer [ref: > dates.date_id]
-  end_date_id integer [ref: > dates.date_id]
-  calamity_name varchar(255) // Typhoon Yolanda, Earthquke Magntude 7.2
-  calamity_type calamity_type // Typhoons, Tornadoes, etc.
-}
-
-Table injury_reports {
-  injury_report_id integer [pk, increment]
-  report_date_id integer [ref: > dates.date_id]
-  total_injuries bigint // 131
-  moving_average_no_of_injuries decimal(11, 2) // 132.52
-  moving_average_window varchar(25) // 1 Day
-}
-*/
