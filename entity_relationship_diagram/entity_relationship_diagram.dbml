@@ -176,6 +176,10 @@ Table service_programs {
   program_type program_type // Outreach, Training
 }
 
+Table beneficiaries {
+  beneficiary_id integer [pk, increment]
+}
+
 Table departments {
   department_id integer [pk, increment]
   department_name varchar(100) // Office of the Provincial Planning and Development Coordinator
