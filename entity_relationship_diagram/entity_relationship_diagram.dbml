@@ -300,10 +300,10 @@ Table accidents {
 }
 
 
-// Department who will use this data: PDRRM, MBDA
-// Indicator: % reduction of injury among affected population during calamity
+// Department who will use this data: PDRRM + MBDA, PDRRM
+// Indicator: % reduction of injury among affected population during calamity, % reduction on casualty during calamity
 // Frequency: During SitRep
-// How to verify this data for the integrity:
+// How to verify this data for the integrity: Check the Situational Reports of PDRRM + MBDA, PDRRM and validate it by checking the total no of injuries/casualties happen during each sitrep
 
 Table calamities {
   calamity_id integer [pk, increment]
@@ -321,13 +321,20 @@ Table reporting_units {
   parent_unit_id integer
 }
 
-Table injury_reports {
-  injury_report_id integer [pk, increment]
-  reported_date_id integer [ref: > dates.date_id]
-  reporting_unit_id integer [ref: > reporting_units.reporting_unit_id]
+Table agencies {
+  agency_id integer [pk, increment]
+  agency_name varchar(50) // PDRRMO, MBDA, and PNP
+}
+
+Table situational_reports {
+  situational_report_id integer [pk, increment]
   calamity_id integer [ref: > calamities.calamity_id]
-  injury_report_title varchar(255) // Daily Situational Report
+  reporting_unit_id integer [ref: > reporting_units.reporting_unit_id]
+  reported_by_id integer [ref: > agencies.agency_id]
+  reported_date_id integer [ref: > dates.date_id]
+  report_sequence biginteger // 1, 2, 3 (The order of the situational report: reporting unit + per calamity)
+  situational_report_title varchar(255) // Daily Situational Report
   description text // Daily Situational Report for Common Injuries Occured During...
-  total_no_of_injuries bigint // 151332
-  moving_avg_no_of_injuries_per_day decimal(11, 2) // 1435.23
+  total_no_of_injuries bigint // 1434
+  total_no_of_casualties bigint // 4341
 }
