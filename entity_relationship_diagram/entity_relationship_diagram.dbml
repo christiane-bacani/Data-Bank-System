@@ -62,6 +62,11 @@ enum injury_type {
   Others
 }
 
+enum program_type {
+  Outreach
+  Training
+}
+
 /*
 Table sectors {
   sector_id integer [pk, increment]
@@ -178,6 +183,17 @@ Table employees {
   birth_date date // YYYY-MM-DD
 }
 
+Table service_programs {
+  program_id integer [pk, increment]
+  program_outreach_name varchar(150)
+  program_type program_type // Outreach, Training
+  start_date date // YYYY-MM-DD
+  end_date date // YYYY-MM-DD
+}
+
+Table program_participations {
+  participation_id integer [pk, increment]
+}
 
 
 
