@@ -305,6 +305,7 @@ Table accidents {
 // Frequency: During SitRep
 // How to verify this data for the integrity: Check the Situational Reports of PDRRM + MBDA, PDRRM and validate it by checking the total no of injuries/casualties happen during each sitrep
 
+// Todo: Add the population for this indicator 'reduction of injury among affected population during calamity'
 Table calamities {
   calamity_id integer [pk, increment]
   calamity_name varchar(255) // Typhoon Yolanda, Earthquake with a Magnitude of 7.2
