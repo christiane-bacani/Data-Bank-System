@@ -168,6 +168,14 @@ Table ticket_summaries {
 // Data Source: 
 // How to verify this data for the integrity: 
 
+Table service_programs {
+  program_id integer [pk, increment]
+  start_date_id integer [ref: > dates.date_id] // YYYY-MM-DD
+  end_date_id date [ref: > dates.date_id] // YYYY-MM-DD
+  program_outreach_name varchar(150)
+  program_type program_type // Outreach, Training
+}
+
 Table departments {
   department_id integer [pk, increment]
   department_name varchar(100) // Office of the Provincial Planning and Development Coordinator
@@ -177,22 +185,16 @@ Table departments {
 
 Table employees {
   employee_id integer [pk, increment]
-  // department_id 
+  department_id integer [ref: > departments.department_id]
   full_name varchar(255) // Christiane Rhely Joselle A. Bacani
   position varchar(100) // Data Engineer Intern
   birth_date date // YYYY-MM-DD
 }
 
-Table service_programs {
-  program_id integer [pk, increment]
-  program_outreach_name varchar(150)
-  program_type program_type // Outreach, Training
-  start_date date // YYYY-MM-DD
-  end_date date // YYYY-MM-DD
-}
-
 Table program_participations {
   participation_id integer [pk, increment]
+  program_id integer [ref: > service_programs.program_id]
+  employee_id integer [ref: > employees.employee_id]
 }
 
 
