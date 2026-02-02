@@ -203,6 +203,11 @@ Table beneficiaries {
   beneficiary_name varchar(255) // Aeta Magbukun
 }
 
+Table program_months {
+  program_month_id integer [pk, increment]
+  program_month_name program_month_name // January, February, March
+}
+
 Table departments {
   department_id integer [pk, increment]
   department_name varchar(100) // Office of the Provincial Planning and Development Coordinator
@@ -216,11 +221,6 @@ Table employees {
   full_name varchar(255) // Christiane Rhely Joselle A. Bacani
   position varchar(100) // Data Engineer Intern
   birth_date date // YYYY-MM-DD
-}
-
-Table program_months {
-  program_month_id integer [pk, increment]
-  program_month_name program_month_name // January, February, March
 }
 
 Table program_participations {
