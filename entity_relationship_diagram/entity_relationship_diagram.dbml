@@ -14,6 +14,26 @@ enum helper {
   Other
 }
 
+enum program_type {
+  Outreach
+  Training
+}
+
+enum program_month_name {
+  January
+  February
+  March
+  April
+  May
+  June
+  July
+  August
+  September
+  October
+  November
+  December  
+}
+
 enum crime_category {
   IndexCrime
   OtherCrimeSlashIndex
@@ -50,36 +70,6 @@ enum unit_type {
   District
   Municipality
   Barangay
-}
-
-enum injury_type {
-  Fracture
-  Laceration
-  HeadTrauma
-  Burn
-  CrushInjury
-  Respiratory
-  Others
-}
-
-enum program_type {
-  Outreach
-  Training
-}
-
-enum program_month_name {
-  January
-  February
-  March
-  April
-  May
-  June
-  July
-  August
-  September
-  October
-  November
-  December  
 }
 
 /*
