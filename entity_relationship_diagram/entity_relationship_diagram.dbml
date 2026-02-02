@@ -67,6 +67,21 @@ enum program_type {
   Training
 }
 
+enum program_month_name {
+  January
+  February
+  March
+  April
+  May
+  June
+  July
+  August
+  September
+  October
+  November
+  December  
+}
+
 /*
 Table sectors {
   sector_id integer [pk, increment]
@@ -178,6 +193,7 @@ Table service_programs {
 
 Table program_heads {
   program_head_id integer [pk, increment]
+  program_id integer [ref: > service_programs.program_id]
   program_head varchar(255) // Ms. Angel O.L Lara, Ar. Mc Jefferson Valerio
 }
 
@@ -202,8 +218,14 @@ Table employees {
   birth_date date // YYYY-MM-DD
 }
 
+Table program_months {
+  program_month_id integer [pk, increment]
+  program_month_name program_month_name // January, February, March
+}
+
 Table program_participations {
   participation_id integer [pk, increment]
+  program_month_id integer [ref: > program_months.program_month_id]
   program_id integer [ref: > service_programs.program_id]
   employee_id integer [ref: > employees.employee_id]
 }
