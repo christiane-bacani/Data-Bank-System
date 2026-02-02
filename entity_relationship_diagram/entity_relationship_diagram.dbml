@@ -163,10 +163,16 @@ Table ticket_summaries {
 
 
 // Department who will use this data: PHRMO
-// Indicator: % increase in citizen concerns addressed via the 8888 hotline
-// Frequency:
-// Data Source: 
-// How to verify this data for the integrity: 
+// Indicator: % improvement in government employee service quality
+// Frequency: Annually
+// Data Source: PHRMO Outreach Program Data for Employee Participation Rate 
+// How to verify this data for the integrity: Cross check the data from the PHRMO for their annual overall employee participation rate
+
+Table beneficiaries {
+  beneficiary_id integer [pk, increment]
+  program_id integer [ref: > service_programs.program_id]
+  beneficiary_name varchar(255) // Aeta Magbukun
+}
 
 Table service_programs {
   program_id integer [pk, increment]
@@ -174,10 +180,6 @@ Table service_programs {
   end_date_id date [ref: > dates.date_id] // YYYY-MM-DD
   program_outreach_name varchar(150)
   program_type program_type // Outreach, Training
-}
-
-Table beneficiaries {
-  beneficiary_id integer [pk, increment]
 }
 
 Table departments {
