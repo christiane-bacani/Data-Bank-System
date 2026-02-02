@@ -156,6 +156,19 @@ Table ticket_summaries {
   total_ticket bigint // 9
 }
 
+Table departments {
+  department_id integer [pk, increment]
+  department_name varchar(100) // Office of the Provincial Planning and Development Coordinator
+  department_code varchar(50) // OPPDC
+}
+
+Table employees {
+  employee_id integer [pk, increment]
+  // department_id 
+  full_name varchar(255) // Christiane Rhely Joselle A. Bacani
+  position varchar(100) // Data Engineer Intern
+}
+
 
 
 
