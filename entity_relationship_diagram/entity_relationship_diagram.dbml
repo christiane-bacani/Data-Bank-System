@@ -145,23 +145,28 @@ Table prices {
 
 
 // Department who will use this data: OPPDC
-// Indicator: Percentage of reduction in inflation rates through price monitoring and direct selling of basic commodities
+// Indicator: % increase in barangays with completed Barangay Master Development Plans
 // Frequency: Annually
-// Data Source: OPPDC - Development Research and Statistics Division Spreadsheet
-// How to verify this data for the integrity: Check the Provincial Price Monitoring System of Development Research and Statistics Divsion from OPPDC for comparison
+// Data Source: District Office submitted by every municipality for their barangays
+// How to verify this data for the integrity: It will be verified by OPPDC if the development plan passed by the municipalities per barangay is legit implemented, completed, etc.
 
+Table municipalities {
+  municipality_id integer [pk, increment]
+  municipality_name varchar(150) // City of Balanga, Orani, Samal, Abucay
+  total_barangays integer // 23, 29, 14, 9
+}
 
 Table barangays {
   barangay_id integer [pk, increment]
-  district_no integer // 1, 2, 3
-  municipality_name varchar(150) // City of Balanga, Abucay, Orion
-  barangay_name varchar(150) // San Jose, Tuyo, Capitangan, Salian, Bilolo
+  municipality_id integer [ref: > municipalities.municipality_id]
+  barangay_name varchar(255) // San Jose, Bilolo, Salian, Capitangan
 }
 
 Table barangay_development_plans {
-  plan_id inetger [pk, increment]
+  plan_id integer [pk, increment]
   date_completed_id integer [ref: > dates.date_id]
   barangay_id integer [ref: > barangays.barangay_id]
+  plan_name varchar(255) //
   fiscal_year YEAR // 2024
   plan_status plan_status // Not Started, Draft, In Review, Returned, and Completed
 }
