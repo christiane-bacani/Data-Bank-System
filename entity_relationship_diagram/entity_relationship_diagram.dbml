@@ -392,10 +392,11 @@ Table social_media_programs {
   description text // Info Drive is ...
 }
 
-Table annual_social_media_performances {
-  performance_id integer [pk, increment]
+Table social_media_performance_reports {
+  report_id integer [pk, increment]
+  reported_date_id integer [ref: > dates.date_id]
   platform_id integer [ref: > social_media_platforms.platform_id]
-  program_id integer [ref: > social_media_platforms.platform_id]
-  total_reach bigint
-  total_engagements bigint
+  program_id integer [ref: > social_media_programs.program_id]
+  total_reach bigint // 153554
+  total_engagements bigint // 45535123
 }
