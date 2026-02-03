@@ -379,9 +379,3 @@ Table situational_reports {
 // Indicator: % improvement in government service delivery via social media
 // Frequency:
 // How to verify this data for the integrity:
-
-Table social_media_platforms {
-  platform_id integer [pk, increment]
-  platform_name varchar(50)
-  base_url text
-}
