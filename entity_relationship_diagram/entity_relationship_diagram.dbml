@@ -392,9 +392,15 @@ Table social_media_programs {
   description text // Info Drive is ...
 }
 
+Table performance_report_datetimes {
+  report_datetime_id integer [pk, increment]
+  report_date_id integer [ref: > dates.date_id]
+  report_timestamp timestamp // HH:MM:SSs
+}
+
 Table social_media_performance_reports {
   report_id integer [pk, increment]
-  reported_date_id integer [ref: > dates.date_id]
+  report_datetime_id integer [ref: > performance_report_datetimes.report_datetime_id]
   platform_id integer [ref: > social_media_platforms.platform_id]
   program_id integer [ref: > social_media_programs.program_id]
   total_reach bigint // 153554
