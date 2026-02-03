@@ -72,6 +72,14 @@ enum unit_type {
   Barangay
 }
 
+enum plan_status {
+  NotStarted
+  Draft
+  InReview
+  Returned
+  Completed
+}
+
 /*
 Table sectors {
   sector_id integer [pk, increment]
@@ -142,18 +150,21 @@ Table prices {
 // Data Source: OPPDC - Development Research and Statistics Division Spreadsheet
 // How to verify this data for the integrity: Check the Provincial Price Monitoring System of Development Research and Statistics Divsion from OPPDC for comparison
 
-Table districts {
-  district_id integer [pk]
-  district_name varchar(50) // District 1, District 2, and District 3
+
+Table barangays {
+  barangay_id integer [pk, increment]
+  district_no integer // 1, 2, 3
+  municipality_name varchar(150) // City of Balanga, Abucay, Orion
+  barangay_name varchar(150) // San Jose, Tuyo, Capitangan, Salian, Bilolo
 }
 
-Table municipalities {
-  municipality_id integer [pk, increment]
-  district_id integer [ref: > districts.district_id]
-  municipality_name varchar(150) // Hermosa, Orani, Abucay, City of Balanga, etc.
+Table barangay_development_plans {
+  plan_id inetger [pk, increment]
+  date_completed_id integer [ref: > dates.date_id]
+  barangay_id integer [ref: > barangays.barangay_id]
+  fiscal_year YEAR // 2024
+  plan_status plan_status // Not Started, Draft, In Review, Returned, and Completed
 }
-
-
 
 
 
