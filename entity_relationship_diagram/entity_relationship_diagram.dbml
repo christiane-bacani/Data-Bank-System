@@ -370,3 +370,12 @@ Table situational_reports {
   total_no_of_injuries bigint // 1434
   total_no_of_casualties bigint // 4341
 }
+
+
+
+
+
+// Department: Provincial Information Office (PIO)
+// Indicator: % improvement in government service delivery via social media
+// Frequency:
+// How to verify this data for the integrity:
