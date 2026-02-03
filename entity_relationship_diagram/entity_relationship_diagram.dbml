@@ -399,4 +399,8 @@ Table social_media_performance_reports {
   program_id integer [ref: > social_media_programs.program_id]
   total_reach bigint // 153554
   total_engagements bigint // 45535123
+  total_inquiries bigint // 8733
+  closed_inquiries bigint //  7500
+  pending_inquiries bigint // 1000
+  open_inquiries bigint // 233
 }
