@@ -379,3 +379,23 @@ Table situational_reports {
 // Indicator: % improvement in government service delivery via social media
 // Frequency:
 // How to verify this data for the integrity:
+
+Table social_media_platforms {
+  platform_id integer [pk, increment]
+  platform_name varchar(50) // Facebook, Instagram
+}
+
+Table social_media_programs {
+  program_id integer [pk, increment]
+  program_name varchar(255) // FY 2025 Info Drive
+  target_market varchar(255) //  Youth, Seniors
+  description text // Info Drive is ...
+}
+
+Table annual_social_media_performances {
+  performance_id integer [pk, increment]
+  platform_id integer [ref: > social_media_platforms.platform_id]
+  program_id integer [ref: > social_media_platforms.platform_id]
+  total_reach bigint
+  total_engagements bigint
+}
