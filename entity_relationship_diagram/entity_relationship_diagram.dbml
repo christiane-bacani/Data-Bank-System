@@ -136,6 +136,24 @@ Table prices {
 }
 
 
+// Department who will use this data: OPPDC
+// Indicator: Percentage of reduction in inflation rates through price monitoring and direct selling of basic commodities
+// Frequency: Annually
+// Data Source: OPPDC - Development Research and Statistics Division Spreadsheet
+// How to verify this data for the integrity: Check the Provincial Price Monitoring System of Development Research and Statistics Divsion from OPPDC for comparison
+
+Table districts {
+  district_id integer [pk]
+  district_name varchar(50) // District 1, District 2, and District 3
+}
+
+Table municipalities {
+  municipality_id integer [pk, increment]
+  district_id integer [ref: > districts.district_id]
+  municipality_name varchar(150) // Hermosa, Orani, Abucay, City of Balanga, etc.
+}
+
+
 
 
 
