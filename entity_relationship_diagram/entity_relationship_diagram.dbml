@@ -322,16 +322,10 @@ Table reporting_units {
   parent_unit_id integer
 }
 
-Table agencies {
-  agency_id integer [pk, increment]
-  agency_name varchar(50) // PDRRMO, MBDA, and PNP
-}
-
 Table situational_reports {
   situational_report_id integer [pk, increment]
   calamity_id integer [ref: > calamities.calamity_id]
   reporting_unit_id integer [ref: > reporting_units.reporting_unit_id]
-  reported_by_id integer [ref: > agencies.agency_id]
   reported_date_id integer [ref: > dates.date_id]
   report_sequence biginteger // 1, 2, 3 (The order of the situational report: reporting unit + per calamity)
   situational_report_title varchar(255) // Daily Situational Report
