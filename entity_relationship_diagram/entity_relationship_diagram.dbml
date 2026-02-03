@@ -152,6 +152,7 @@ Table prices {
 
 Table municipalities {
   municipality_id integer [pk, increment]
+  district varchar(25) // District 1, District 2, and District 3
   municipality_name varchar(150) // City of Balanga, Orani, Samal, Abucay
   total_barangays integer // 23, 29, 14, 9
 }
