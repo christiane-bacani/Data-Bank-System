@@ -100,6 +100,16 @@ enum injury_type {
   Other
 }
 
+enum system_status {
+  Planned
+  Development
+  Testing
+  Pilot
+  Deployed
+  FullyImplemented
+  Discontinued
+}
+
 enum plan_status {
   NotStarted
   Draft
@@ -108,7 +118,7 @@ enum plan_status {
   Completed
 }
 
-enum system_status {
+enum system_statuses {
   Planned
   UnderProcurement
   Development
@@ -441,46 +451,6 @@ Table injury_details {
 
 
 
-// Department: Provincial Information Office (PIO)
-// Indicator: % improvement in government service delivery via social media
-// Frequency: ?
-// How to verify this data for the integrity:
-
-Table social_media_platforms {
-  platform_id integer [pk, increment]
-  platform_name varchar(50) // Facebook, Instagram
-}
-
-Table social_media_programs {
-  program_id integer [pk, increment]
-  program_name varchar(255) // FY 2025 Info Drive
-  target_market varchar(255) //  Youth, Seniors
-  description text // Info Drive is ...
-}
-
-Table performance_report_datetimes {
-  report_datetime_id integer [pk, increment]
-  report_date_id integer [ref: > dates.date_id]
-  report_timestamp timestamp // HH:MM:SSs
-}
-
-Table social_media_performance_reports {
-  report_id integer [pk, increment]
-  report_datetime_id integer [ref: > performance_report_datetimes.report_datetime_id]
-  platform_id integer [ref: > social_media_platforms.platform_id]
-  program_id integer [ref: > social_media_programs.program_id]
-  total_reach bigint // 153554
-  total_engagements bigint // 45535123
-  total_inquiries bigint // 8733
-  closed_inquiries bigint //  7500
-  pending_inquiries bigint // 1000
-  open_inquiries bigint // 233
-}
-
-
-
-
-
 // Department: Provincial Information Technology Office (PITO)
 // Indicator: % increase in implementation of digital governance systems
 // Frequency: ?
@@ -504,4 +474,7 @@ Table system_implementations {
   system_id integer [ref: > digital_systems.system_id]
   planned_start_id integer [ref: > dates.date_id]
   planned_end_id integer [ref: > dates.date_id]
+  actual_start_date_id integer [ref: > dates.date_id]
+  actual_end_date_id integer [ref: > dates.date_id]
+  current_status system_status // Planned, Development, Testing, Pilot, Deployed, FullyImplemmented, Discontinued
 }
