@@ -107,6 +107,8 @@ enum system_status {
   Pilot
   Deployed
   FullyImplemented
+  ActiveMaintenance
+  LimitedOperation
   Discontinued
 }
 
