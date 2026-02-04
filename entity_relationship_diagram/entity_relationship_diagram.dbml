@@ -72,6 +72,20 @@ enum unit_type {
   Barangay
 }
 
+enum injury_type {
+  Fracture
+  Laceration
+  Burns
+  Contusion
+  Sprain
+  HeadTrauma
+  Drowning
+  Electrocution
+  Hyphothermia
+  Respiratory
+  Other
+}
+
 enum plan_status {
   NotStarted
   Draft
@@ -381,8 +395,16 @@ Table situational_reports {
   total_no_of_casualties bigint // 4341
 }
 
+Table injury_types {
+  injury_type_id integer [pk, increment]
+  injury_type injury_type // Fracture, Laceration, Burns, Contusion
+}
 
-
+Table injury_details {
+  injury_detail_id integer [pk, increment]
+  situational_report_id integer [ref: > situational_reports.situational_report_id]
+  injury_type_id integer [ref: > injury_types.injury_type_id]
+}
 
 
 // Department: Provincial Information Office (PIO)
