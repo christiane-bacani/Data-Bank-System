@@ -72,6 +72,20 @@ enum unit_type {
   Barangay
 }
 
+enum casualty_type {
+  Injured
+  Dead
+  Missing
+  ConfirmedDead
+}
+
+enum injury_severity {
+  Minor
+  Moderate
+  Sever
+  Critical
+}
+
 enum injury_type {
   Fracture
   Laceration
@@ -391,8 +405,23 @@ Table situational_reports {
   report_sequence biginteger // 1, 2, 3 (The order of the situational report: reporting unit + per calamity)
   situational_report_title varchar(255) // Daily Situational Report
   description text // Daily Situational Report for Common Injuries Occured During...
-  total_no_of_injuries bigint // 1434
-  total_no_of_casualties bigint // 4341
+}
+
+Table casualty_types {
+  casualty_type_id integer [pk, increment]
+  casualty_type casualty_type
+}
+
+Table casualty_details {
+  casualty_detail_id integer [pk, increment]
+  situational_report_id integer [ref: > situational_reports.situational_report_id]
+  casualty_type_id integer [ref: > casualty_types.casualty_type_id]
+  casualty_count bigint // 43421
+}
+
+Table injury_severities {
+  injury_severity_id integer [pk, increment]
+  injury_severity injury_severity
 }
 
 Table injury_types {
@@ -403,8 +432,13 @@ Table injury_types {
 Table injury_details {
   injury_detail_id integer [pk, increment]
   situational_report_id integer [ref: > situational_reports.situational_report_id]
+  injury_severity_id integer [ref: > injury_severities.injury_severity_id]
   injury_type_id integer [ref: > injury_types.injury_type_id]
+  injury_count bigint // 12343
 }
+
+
+
 
 
 // Department: Provincial Information Office (PIO)
