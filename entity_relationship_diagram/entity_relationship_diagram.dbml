@@ -410,3 +410,12 @@ Table social_media_performance_reports {
   pending_inquiries bigint // 1000
   open_inquiries bigint // 233
 }
+
+
+
+
+
+// Department: Provincial Information Technology Office (PITO)
+// Indicator: % increase in implementation of digital governance systems
+// Frequency: ?
+// How to verify this data for the integrity:
