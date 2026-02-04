@@ -491,16 +491,17 @@ Table system_categories {
   system_category varchar(255) // Document Management, Human Resources, Financial Management
 }
 
-Table system_statuses {
-  system_status_id integer [pk, increment]
-  system_status system_status // ?
-}
-
 Table digital_systems {
   system_id integer [pk, increment]
   system_category_id integer [ref: > system_categories.system_category_id]
-  planned_date_start_id integer [ref: > dates.date_id]
-  actual_deployment_date_id intege [ref: > dates.date_id]
   system_name varchar(255) // eSig, HRIS, FMIS, Procurement System
   description text // Implement systems to enhance digital governance
+  total_budget_allocated decimal(15, 2) // PHP 4,124,555,374,211.93
+}
+
+Table system_implementations {
+  implementation_id integer [pk, increment]
+  system_id integer [ref: > digital_systems.system_id]
+  planned_start_id integer [ref: > dates.date_id]
+  planned_end_id integer [ref: > dates.date_id]
 }
