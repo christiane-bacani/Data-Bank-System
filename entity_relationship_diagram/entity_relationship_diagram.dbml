@@ -215,7 +215,8 @@ Table barangay_development_plans {
   plan_id integer [pk, increment]
   date_completed_id integer [ref: > dates.date_id]
   barangay_id integer [ref: > barangays.barangay_id]
-  plan_name varchar(255) //
+  plan_name varchar(255) // Brgy. San Jose Educational Plan
+  descriptino text // San Jose establish a 
   fiscal_year YEAR // 2024
   plan_status plan_status // Not Started, Draft, In Review, Returned, and Completed
 }
