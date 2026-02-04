@@ -353,7 +353,7 @@ Table calamities {
 }
 
 Table reporting_units {
-  reporting_unit_id integer [pk]
+  reporting_unit_id integer [pk, increment]
   unit_type unit_type // Province, District, Municipality, and Barangay
   unit_name varchar(50) // Bataan, District I, District II, District III, Balanga City, Abucay, San Jose
   parent_unit_id integer
@@ -419,3 +419,21 @@ Table social_media_performance_reports {
 // Indicator: % increase in implementation of digital governance systems
 // Frequency: ?
 // How to verify this data for the integrity:
+
+Table system_categories {
+  system_category_id integer [pk, increment]
+  system_category varchar(255) // Document Management, Human Resources, Financial Management
+}
+
+Table system_statuses {
+  system_status_id integer [pk, increment]
+}
+
+Table digital_systems {
+  system_id integer [pk, increment]
+  system_category_id integer [ref: > system_categories.system_category_id]
+  planned_date_start_id integer [ref: > dates.date_id]
+  actual_deployment_date_id intege [ref: > dates.date_id]
+  system_name varchar(255) // eSig, HRIS, FMIS, Procurement System
+  description text // Implement systems to enhance digital governance
+ }
