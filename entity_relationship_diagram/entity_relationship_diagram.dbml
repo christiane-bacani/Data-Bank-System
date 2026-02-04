@@ -462,8 +462,8 @@ Table injury_details {
 
 // Department: Provincial Information Technology Office (PITO)
 // Indicator: % increase in implementation of digital governance systems
-// Frequency: ?
-// How to verify this data for the integrity:
+// Frequency: Annually
+// How to verify this data for the integrity: Validate the system review if the system is already deployed/implemented and it isa sustaining
 
 Table system_categories {
   system_category_id integer [pk, increment]
