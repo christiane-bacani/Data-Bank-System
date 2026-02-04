@@ -377,7 +377,7 @@ Table situational_reports {
 
 // Department: Provincial Information Office (PIO)
 // Indicator: % improvement in government service delivery via social media
-// Frequency:
+// Frequency: ?
 // How to verify this data for the integrity:
 
 Table social_media_platforms {
