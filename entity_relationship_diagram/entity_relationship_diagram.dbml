@@ -481,17 +481,26 @@ Table digital_systems {
 Table system_implementations {
   implementation_id integer [pk, increment]
   system_id integer [ref: > digital_systems.system_id]
-  planned_start_date date
-  planned_end_date date
-  actual_start_date date
-  actual_end_date date
-  system_status system_status // Planned, Development, Testing, Pilot, Deployed, FullyImplemmented, End of Life
+  planned_start_id integer [ref: > dates.date_id]
+  planned_end_id integer [ref: > dates.date_id]
+  actual_start_date_id integer [ref: > dates.date_id]
+  actual_end_date_id integer [ref: > dates.date_id]
+  current_status system_status // Latest status for quick cls
 }
 
-Table annual_system_reviews {
+Table system_reviews {
   review_id integer [pk, increment]
   system_id integer [ref: > digital_systems.system_id]
-  review_date_id integer [ref: > dates.date_id]
-  is_sustaining boolean // TRUE = Working/Maintained
-  remarks text // Fully functional, Server needs replacement
+  system_current_status system_status
 }
+
+/*
+Table system_status_history {
+  history_id integer [pk, increment]
+  system_id integer [ref: > digital_systems.system_id]
+  status_date_id integer [ref: > dates.date_id]
+  previous_status system_status
+  new_status system_status 
+  remarks text // Reason for change (e.g. "Server Decommissioned", "Official Launch")
+}
+*/
