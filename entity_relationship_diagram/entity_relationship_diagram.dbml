@@ -109,7 +109,7 @@ enum system_status {
   FullyImplemented
   ActiveMaintenance
   LimitedOperation
-  Discontinued
+  EndOfLife
 }
 
 enum plan_status {
@@ -128,6 +128,12 @@ enum system_statuses {
   Deployed
   FullyImplemented
   Discontinued
+}
+
+enum maintenance_types {
+  Preventive
+  Corrective
+  Update
 }
 
 /*
@@ -475,9 +481,17 @@ Table digital_systems {
 Table system_implementations {
   implementation_id integer [pk, increment]
   system_id integer [ref: > digital_systems.system_id]
-  planned_start_id integer [ref: > dates.date_id]
-  planned_end_id integer [ref: > dates.date_id]
-  actual_start_date_id integer [ref: > dates.date_id]
-  actual_end_date_id integer [ref: > dates.date_id]
-  current_status system_status // Planned, Development, Testing, Pilot, Deployed, FullyImplemmented, Discontinued
+  planned_start_date date
+  planned_end_date date
+  actual_start_date date
+  actual_end_date date
+  system_status system_status // Planned, Development, Testing, Pilot, Deployed, FullyImplemmented, End of Life
+}
+
+Table annual_system_reviews {
+  review_id integer [pk, increment]
+  system_id integer [ref: > digital_systems.system_id]
+  review_date_id integer [ref: > dates.date_id]
+  is_sustaining boolean // TRUE = Working/Maintained
+  remarks text // Fully functional, Server needs replacement
 }
