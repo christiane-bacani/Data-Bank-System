@@ -413,9 +413,9 @@ Table situational_reports {
   calamity_id integer [ref: > calamities.calamity_id]
   reporting_unit_id integer [ref: > reporting_units.reporting_unit_id]
   reported_date_id integer [ref: > dates.date_id]
-  report_sequence biginteger // 1, 2, 3 (The order of the situational report: reporting unit + per calamity)
   situational_report_title varchar(255) // Daily Situational Report
   description text // Daily Situational Report for Common Injuries Occured During...
+  report_sequence biginteger // 1, 2, 3 (The order of the situational report: reporting unit + per calamity)
 }
 
 Table casualty_types {
