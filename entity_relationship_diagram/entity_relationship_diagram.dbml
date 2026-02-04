@@ -80,6 +80,16 @@ enum plan_status {
   Completed
 }
 
+enum system_status {
+  Planned
+  UnderProcurement
+  Development
+  Testing
+  Deployed
+  FullyImplemented
+  Discontinued
+}
+
 /*
 Table sectors {
   sector_id integer [pk, increment]
@@ -427,6 +437,7 @@ Table system_categories {
 
 Table system_statuses {
   system_status_id integer [pk, increment]
+  system_status system_status // ?
 }
 
 Table digital_systems {
