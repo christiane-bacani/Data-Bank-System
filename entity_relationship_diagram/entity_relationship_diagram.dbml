@@ -450,7 +450,7 @@ Table injury_details {
 
 
 // Department: Provincial Information Technology Office (PITO)
-// Indicator: % increase in implementation of digital governance systems
+// Indicator:   
 // Frequency:
 // How to verify this data for the integrity:
 
@@ -484,3 +484,13 @@ Table system_implementation_logs {
   remarks text // Deployed to Testing Server, Initial rollout to PITO employees only
 }
 */
+
+Table digital_system_types {
+  system_type_id integer [pk, increment]
+  system_type varchar(100) // Digital Identity and Verification, Digital Payment Systems
+}
+
+Table digital_systems {
+  digital_system_id integer [pk, increment]
+  digital_system_type_id integer [ref: > digital_system_types.system_type_id]
+}
