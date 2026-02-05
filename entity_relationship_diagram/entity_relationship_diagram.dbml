@@ -452,66 +452,24 @@ Table injury_details {
 // Department: Provincial Information Technology Office (PITO)
 // Indicator: % increase in implementation of digital governance systems
 // Frequency: Random day every week
-// How to verify this data for the integrity:
-
-/*
-Table system_types {
-  system_type_id integer [pk, increment]
-  system_type varchar(150) // E-Government Platforms, Digital Identity and Verification, Digital Payment Systems
-}
-
-Table digital_systems {
-  system_id integer [pk, increment]
-  system_type integer [ref: > system_types.system_type_id]
-  system_name varchar(255) // eSig, HRIS, FMIS
-  description text // Explanation of the system's functions
-  target_implementation_date date // YYYY-MM-DD
-  is_active boolean // TRUE, FALSE
-}
-
-Table system_statuses {
-  system_status_id integer [pk, increment]
-  system_status system_status // Planned, Procurement, Design, Development, Testing, etc.
-}
-
-Table system_implementation_logs {
-  log_id integer [pk, increment]
-  system_id integer [ref: > digital_systems.system_id]
-  previous_status_id integer [ref: > system_statuses.system_status_id]
-  current_status_id integer [ref: > system_statuses.system_status_id]
-  changed_date_id integer [ref: > dates.date_id]
-  changed_by varchar(100) // Name of the person who provided this new record to update the status of the existing digital governance system
-  remarks text // Deployed to Testing Server, Initial rollout to PITO employees only
-}
-*/
-
-Table digital_system_types {
-  system_type_id integer [pk, increment]
-  system_type varchar(100) // Digital Identity and Verification, Digital Payment Systems
-}
+// How to verify this data for the integrity: Perform system review using REST APIs
 
 Table digital_systems {
   digital_system_id integer [pk, increment]
-  digital_system_type_id integer [ref: > digital_system_types.system_type_id]
-  digital_system_name varchar(255) // Bataeno Pass, HRIS, eSig
+  system_name varchar(150) // HRIS, FMIS
+  api_endpoint text // https://hris.gov.ph/api/health
+  api_key_encrypted text // enc_sk_abc123..
   is_active boolean // TRUE, FALSE
 }
 
-Table system_health_checks {
-  health_check_id integer [pk, increment]
+Table system_checks {
+  check_id integer [pk, increment]
   digital_system_id integer [ref: > digital_systems.digital_system_id]
   check_date_id integer [ref: > dates.date_id]
-  check_timestamp timestamp // 13:53:23.111
+  check_time time // HH:MM:SS
   is_system_active boolean // TRUE, FALSE
-  response_code integer // 200, 201, 204, 301, 302, 400
-}
-
-Table system_activity_logs {
-  activity_log_id integer [pk, increment]
-  digital_system_id integer [ref: > digital_systems.digital_system_id]
-  check_date_id integer [ref: > dates.date_id]
-  check_timestamp timestamp // HH:MM:SS
-  user_id varchar(100)
-  username_masked varchar(25)
-  last_activity_timestamp timestamp // HH:MM:SS
+  response_code integer // 200, 201, 204
+  last_user_id varchar(100) // USR-2024-00542
+  last_username_masked varchar(255) // Ch***********
+  last_activity_datetime datetime // YYYY-MM-DD HH:MM:SS
 }
