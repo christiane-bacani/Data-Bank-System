@@ -109,14 +109,19 @@ enum plan_status {
 }
 
 enum system_status {
+  Proposed
+  Rejected
   Planned
+  Procurement
+  Design
   Development
   Testing
   Pilot
   Deployed
   FullyImplemented
   ActiveMaintenance
-  LimitedOperation
+  OnHold
+  Discontinued
   EndOfLife
 }
 
@@ -465,7 +470,7 @@ Table digital_systems {
 
 Table system_statuses {
   system_status_id integer [pk, increment]
-  system_status system_status
+  system_status system_status // Planned, Procurement, Design, Development, Testing, etc.
 }
 
 Table system_implementation_logs {
