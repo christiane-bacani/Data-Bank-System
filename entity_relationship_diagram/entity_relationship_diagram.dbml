@@ -493,4 +493,25 @@ Table digital_system_types {
 Table digital_systems {
   digital_system_id integer [pk, increment]
   digital_system_type_id integer [ref: > digital_system_types.system_type_id]
+  digital_system_name varchar(255) // Bataeno Pass, HRIS, eSig
+  is_active boolean // TRUE, FALSE
+}
+
+Table system_health_checks {
+  health_check_id integer [pk, increment]
+  digital_system_id integer [ref: > digital_systems.digital_system_id]
+  check_date_id integer [ref: > dates.date_id]
+  check_timestamp timestamp // 13:53:23.111
+  is_system_active boolean // TRUE, FALSE
+  response_code integer // 200, 201, 204, 301, 302, 400
+}
+
+Table system_activity_logs {
+  activity_log_id integer [pk, increment]
+  digital_system_id integer [ref: > digital_systems.digital_system_id]
+  check_date_id integer [ref: > dates.date_id]
+  check_timestamp timestamp // HH:MM:SS
+  user_id varchar(100)
+  username_masked varchar(25)
+  last_activity_timestamp timestamp // HH:MM:SS
 }
