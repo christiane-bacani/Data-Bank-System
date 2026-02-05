@@ -454,6 +454,7 @@ Table injury_details {
 // Frequency:
 // How to verify this data for the integrity:
 
+/*
 Table system_types {
   system_type_id integer [pk, increment]
   system_type varchar(150) // E-Government Platforms, Digital Identity and Verification, Digital Payment Systems
@@ -482,3 +483,4 @@ Table system_implementation_logs {
   changed_by varchar(100) // Name of the person who provided this new record to update the status of the existing digital governance system
   remarks text // Deployed to Testing Server, Initial rollout to PITO employees only
 }
+*/
