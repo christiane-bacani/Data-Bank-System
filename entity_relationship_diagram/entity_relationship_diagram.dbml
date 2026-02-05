@@ -465,7 +465,7 @@ Table digital_systems {
 
 Table system_statuses {
   system_status_id integer [pk, increment]
-  system_status current_status
+  system_status system_status
 }
 
 Table system_implementation_logs {
@@ -474,5 +474,6 @@ Table system_implementation_logs {
   previous_status_id integer [ref: > system_statuses.system_status_id]
   current_status_id integer [ref: > system_statuses.system_status_id]
   changed_date_id integer [ref: > dates.date_id]
-  changed_by varchar(100) // Name of the person who 
+  changed_by varchar(100) // Name of the person who provided this new record to update the status of the existing digital governance system
+  remarks text // Deployed to Testing Server, Initial rollout to PITO employees only
 }
