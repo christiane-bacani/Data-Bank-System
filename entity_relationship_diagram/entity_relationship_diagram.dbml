@@ -125,6 +125,20 @@ enum system_status {
   EndOfLife
 }
 
+enum period_type {
+  Annually
+  Quarterly
+  Monthly
+  Weekly
+}
+
+enum period_quarter {
+  Q1
+  Q2
+  Q3
+  Q4
+}
+
 /*
 Table sectors {
   sector_id integer [pk, increment]
@@ -456,20 +470,32 @@ Table injury_details {
 
 Table digital_systems {
   digital_system_id integer [pk, increment]
-  system_name varchar(150) // HRIS, FMIS
+  system_name varchar(255) // HRIS, eSig, Procurement System
   api_endpoint text // https://hris.gov.ph/api/health
-  api_key_encrypted text // enc_sk_abc123..
-  is_active boolean // TRUE, FALSE
+  api_key text // enc_sk_abc123...
 }
 
 Table system_checks {
   check_id integer [pk, increment]
   digital_system_id integer [ref: > digital_systems.digital_system_id]
-  check_date_id integer [ref: > dates.date_id]
-  check_time time // HH:MM:SS
+  check_date_id integer [ref: > dates.date_id]  // ← Connects to dates
+  check_timestamp timestamp // YYYY-MM-DD HH:MM:SS
   is_system_active boolean // TRUE, FALSE
-  response_code integer // 200, 201, 204
-  last_user_id varchar(100) // USR-2024-00542
-  last_username_masked varchar(255) // Ch***********
-  last_activity_datetime datetime // YYYY-MM-DD HH:MM:SS
+  response_code integer // 201, 200, 401
+  last_user_id varchar(255) // USR-2024-00542
+  last_username varchar(150) // Ch***********
+  last_activity_timestamp timestamp // YYYY-MM-DD HH:MM:SS
+}
+
+Table digital_governance_measurements {
+  measurement_id integer [pk, increment]
+  measurement_date_id integer [ref: > dates.date_id]  // ← Connects to dates
+  period_type period_type // Annually, Quarterly, Monthly
+  period_year year // YYYY
+  period_quarter integer // 1, 2, 3, 4
+  period_month integer // 1-12
+  total_systems bigint // 6
+  implemented_count bigint // 4
+  percentage_increase decimal(6, 2) // 300.00
+  measurement_trend measurement_trend // Increase, Decrease, Same
 }
