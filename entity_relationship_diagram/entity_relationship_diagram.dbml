@@ -100,6 +100,14 @@ enum injury_type {
   Other
 }
 
+enum plan_status {
+  NotStarted
+  Draft
+  InReview
+  Returned
+  Completed
+}
+
 enum system_status {
   Planned
   Development
@@ -110,30 +118,6 @@ enum system_status {
   ActiveMaintenance
   LimitedOperation
   EndOfLife
-}
-
-enum plan_status {
-  NotStarted
-  Draft
-  InReview
-  Returned
-  Completed
-}
-
-enum system_statuses {
-  Planned
-  UnderProcurement
-  Development
-  Testing
-  Deployed
-  FullyImplemented
-  Discontinued
-}
-
-enum maintenance_types {
-  Preventive
-  Corrective
-  Update
 }
 
 /*
@@ -464,3 +448,31 @@ Table injury_details {
 // Indicator: % increase in implementation of digital governance systems
 // Frequency:
 // How to verify this data for the integrity:
+
+Table system_types {
+  system_type_id integer [pk, increment]
+  system_type varchar(150) // E-Government Platforms, Digital Identity and Verification, Digital Payment Systems
+}
+
+Table digital_systems {
+  system_id integer [pk, increment]
+  system_type integer [ref: > system_types.system_type_id]
+  system_name varchar(255) // eSig, HRIS, FMIS
+  description text // Explanation of the system's functions
+  target_implementation_date date // YYYY-MM-DD
+  is_active boolean // TRUE, FALSE
+}
+
+Table system_statuses {
+  system_status_id integer [pk, increment]
+  system_status current_status
+}
+
+Table system_implementation_logs {
+  log_id integer [pk, increment]
+  system_id integer [ref: > digital_systems.system_id]
+  previous_status_id integer [ref: > system_statuses.system_status_id]
+  current_status_id integer [ref: > system_statuses.system_status_id]
+  changed_date_id integer [ref: > dates.date_id]
+  changed_by varchar(100) // Name of the person who 
+}
