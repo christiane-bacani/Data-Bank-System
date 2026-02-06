@@ -1,0 +1,9 @@
+// Indicator: Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities
+// Frequency: Annually
+// How to verify the data?: Provincial Online Price Monitoring System
+
+Table agricultural_products {
+  agricultural_product_id integer [pk, increment]
+  commodity_type varchar(255) // IMPORTED COMMERCIAL RICE (per kg), FISH (per kg), SPICES (per kg)
+  agriculcultural_product varchar(255) // Premium (Yellow tag), Bangus, Garlic (Native)
+}
