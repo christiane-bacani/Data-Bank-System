@@ -119,7 +119,7 @@ Table fact_barangay_development_plans {
 // Indicator: Increase percentage in citizen concerns addressed via the 8888 hotline
 // Lead Department: PHRMO
 // Frequency: Annually
-// How to verify the data?: Submitted Performance Report transmitted by the 8888 Citizen's Complaint Center
+// How to verify the data?: Submitted Performance Report transmitted by the 8888 Citizen's Complaint Center to the PGO
 // ============================================
 
 Table dim_ticket_classifications {
