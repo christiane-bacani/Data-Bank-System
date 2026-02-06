@@ -2,19 +2,19 @@
 // Frequency: Annually
 // How to verify the data?: Provincial Online Price Monitoring System
 
-Table local_government_units {
+Table dim_local_government_units {
   government_unit_id integer [pk, increment]
   local_government_unid varchar(150) // Abucay, Bagac, Balanga
   district varchar(50) // District 1, District 2, District 3
 }
 
-Table agricultural_products {
+Table dim_agricultural_products {
   agricultural_product_id integer [pk, increment]
   commodity_type varchar(255) // IMPORTED COMMERCIAL RICE (per kg), FISH (per kg), SPICES (per kg)
   agriculcultural_product varchar(255) // Premium (Yellow tag), Bangus, Garlic (Native)
 }
 
-Table price_dates {
+Table dim_price_dates {
   date_id integer [pk, increment]
   full_date date // 2026-01-04, 2027-01-04, 2028-01-04
   year year // 2026, 2027, 2028
@@ -22,7 +22,7 @@ Table price_dates {
   week integer // 2, 3, 4
 }
 
-Table helpers {
+Table dim_helpers {
   helper_id integer [pk, increment]
   helper varhcar(50) // Other, Previous, Current
 }
