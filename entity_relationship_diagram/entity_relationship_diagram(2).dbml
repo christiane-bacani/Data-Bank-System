@@ -1,3 +1,4 @@
+/*
 table dim_government_sectors {
   sector_id integer [pk, increment]
   sector varchar(100) // Development Admininstration, Economic, Social
@@ -41,9 +42,9 @@ Table fact_prices {
   sector_id integer [ref: > dim_government_sectors.sector_id]
   government_unit_id integer [ref: > dim_local_government_units.government_unit_id]
   agricultural_product_id integer [ref: > dim_agricultural_products.agricultural_product_id]
-  observation_date_id integer [ref: > dim_dates.date_id]
-  coverage_period_start_date_id integer [ref: > dim_dates.date_id]
-  coverage_period_end_date_id integer [ref: > dim_dates.date_id]
+  observation_date_id integer [ref: > dim_price_dates.date_id]
+  coverage_period_start_date_id integer [ref: > dim_price_dates.date_id]
+  coverage_period_end_date_id integer [ref: > dim_price_dates.date_id]
   helper_id integer [ref: > dim_helpers.helper_id]
   average_price decimal(8, 2) // 300.00, 63.33, 198.75
   prevailing_price decimal (8, 2) // 300.00, 63.33, 200
@@ -66,13 +67,20 @@ Table dim_municipalities {
   municipality varchar(25) // Hermosa, Orani, Samal
 }
 
+
+Table dim_plan_dates {
+  date_id integer [pk, increment]
+  plan_date date // 2025-09-04
+  fiscal_year year // 2025
+}
+
 Table fact_barangay_development_plans {
   plan_id integer [pk, increment]
   sector_id integer [ref: > dim_government_sectors.sector_id]
   municipality_id integer [ref: > dim_municipalities.municipality_id]
-  observation_date_id integer [ref: > dim_dates.date_id]
-  coverage_start_date_id integer [ref: > dim_dates.date_id]
-  coverage_end_date_id integer [ref: > dim_dates.date_id]
+  observation_date_id integer [ref: > dim_plan_dates.date_id]
+  coverage_start_date_id integer [ref: > dim_plan_dates.date_id]
+  coverage_end_date_id integer [ref: > dim_plan_dates.date_id]
   barangays_with_completed_plans bigint // 13, 14, 14
   total_barangays bigint /// 23, 29, 14
 }
@@ -87,21 +95,219 @@ Table fact_barangay_development_plans {
 
 Table dim_ticket_classifications {
   ticket_classification_id integer [pk, increment]
-  ticket_classification varchar(255) // 2025 Graft and Corruption, 2025 Integrity and Conduct, 2025 Frontline Service Procedures
+  ticket_classification varchar(255)
 }
 
 Table dim_ticket_names {
   ticket_name_id integer [pk, increment]
   ticket_classification_id integer [ref: > dim_ticket_classifications.ticket_classification_id]
+  ticket_name varchar(255) // 2025 Graft and Corruption, 2025 Integrity and Conduct, 2025 Frontline Service Procedures
+}
+
+Table dim_report_dates {
+  date_id integer [pk, increment]
+  report_date date // 2025-10-29
+  report_time time // 09:46:22
+}
+
+Table coverage_dates {
+  date_id integer [pk, increment]
+  coverage_date date // 2026-10-29
+  fiscal_year year // 2026
 }
 
 Table fact_performance_reports {
   performance_report_id integer [pk, increment]
   ticket_name_id integer [ref: > dim_ticket_names.ticket_name_id]
-  observation_date_id integer [ref: > dim_dates.date_id]
-  coverage_start_date_id integer [ref: > dim_dates.date_id]
-  coverage_end_date_id integer [ref: > dim_dates.date_id]
+  report_date_id integer [ref: > dim_report_dates.date_id]
+  coverage_start_date_id integer [ref: > coverage_dates.date_id]
+  coverage_end_date_id integer [ref: > coverage_dates.date_id]
   tickets_resolved_count bigint
   tickets_in_progress_count bigint
   tickets_pending_count bigint
+}
+*/
+// ============================================
+// SHARED DIMENSIONS
+// ============================================
+
+Table dim_dates {
+  date_id integer [pk, increment]
+  full_date date [unique]
+  year integer
+  quarter integer
+  month integer
+  month_name varchar(20)
+  week_number integer
+  day_of_week integer
+  day_name varchar(20)
+  fiscal_year integer
+  is_weekend boolean
+  is_holiday boolean
+  created_at timestamp [default: `now()`]
+}
+
+// ============================================
+// PRICE MONITORING DIMENSIONS
+// ============================================
+
+Table dim_local_government_units {
+  lgu_id integer [pk, increment]
+  lgu_code varchar(20) [unique]
+  lgu_name varchar(150)
+  district_code varchar(50)
+  district_name varchar(50)
+  is_active boolean [default: true]
+  created_at timestamp [default: `now()`]
+  updated_at timestamp
+}
+
+Table dim_agricultural_products {
+  product_id integer [pk, increment]
+  product_code varchar(50) [unique]
+  product_name varchar(255)
+  commodity_type varchar(255)
+  unit_of_measure varchar(20) // kg, liter, piece
+  is_active boolean [default: true]
+  created_at timestamp [default: `now()`]
+  updated_at timestamp
+}
+
+Table dim_price_types {
+  price_type_id integer [pk, increment]
+  price_type_code varchar(20) [unique] // CURRENT, PREVIOUS, OTHER
+  price_type_name varchar(50)
+  description varchar(255)
+  is_active boolean [default: true]
+}
+
+// ============================================
+// PRICE MONITORING FACT TABLE
+// ============================================
+
+Table fact_prices {
+  price_id integer [pk, increment]
+  lgu_id integer [ref: > dim_local_government_units.lgu_id]
+  product_id integer [ref: > dim_agricultural_products.product_id]
+  observation_date_id integer [ref: > dim_dates.date_id]
+  coverage_start_date_id integer [ref: > dim_dates.date_id]
+  coverage_end_date_id integer [ref: > dim_dates.date_id]
+  price_type_id integer [ref: > dim_price_types.price_type_id]
+  
+  average_price decimal(10, 2)
+  prevailing_price decimal(10, 2)
+  min_price decimal(10, 2)
+  max_price decimal(10, 2)
+  
+  created_at timestamp [default: `now()`]
+  updated_at timestamp
+  
+  indexes {
+    (observation_date_id, lgu_id, product_id) [name: 'idx_price_lookup']
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_period']
+  }
+}
+
+// ============================================
+// BARANGAY DEVELOPMENT DIMENSIONS
+// ============================================
+
+Table dim_districts {
+  district_id integer [pk, increment]
+  district_code varchar(20) [unique]
+  district_name varchar(100)
+  is_active boolean [default: true]
+  created_at timestamp [default: `now()`]
+}
+
+Table dim_municipalities {
+  municipality_id integer [pk, increment]
+  municipality_code varchar(20) [unique]
+  municipality_name varchar(100)
+  district_id integer [ref: > dim_districts.district_id]
+  total_barangays integer
+  is_active boolean [default: true]
+  created_at timestamp [default: `now()`]
+  updated_at timestamp
+}
+
+// ============================================
+// BARANGAY DEVELOPMENT FACT TABLE
+// ============================================
+
+Table fact_barangay_development_plans {
+  plan_id integer [pk, increment]
+  municipality_id integer [ref: > dim_municipalities.municipality_id]
+  observation_date_id integer [ref: > dim_dates.date_id]
+  coverage_start_date_id integer [ref: > dim_dates.date_id]
+  coverage_end_date_id integer [ref: > dim_dates.date_id]
+  
+  barangays_with_completed_plans integer
+  total_barangays integer
+  completion_percentage decimal(5, 2) // Calculated field
+  
+  created_at timestamp [default: `now()`]
+  updated_at timestamp
+  
+  indexes {
+    (municipality_id, observation_date_id) [name: 'idx_plan_lookup']
+  }
+}
+
+// ============================================
+// CITIZEN CONCERNS (8888) DIMENSIONS
+// ============================================
+
+Table dim_ticket_classifications {
+  classification_id integer [pk, increment]
+  classification_code varchar(50) [unique]
+  classification_name varchar(255)
+  fiscal_year integer
+  is_active boolean [default: true]
+  created_at timestamp [default: `now()`]
+}
+
+Table dim_ticket_names {
+  ticket_name_id integer [pk, increment]
+  ticket_name varchar(255)
+  classification_id integer [ref: > dim_ticket_classifications.classification_id]
+  is_active boolean [default: true]
+  created_at timestamp [default: `now()`]
+}
+
+Table dim_time {
+  time_id integer [pk, increment]
+  time_value time [unique]
+  hour integer
+  minute integer
+  second integer
+  period varchar(2) // AM/PM
+  time_label varchar(20) // Morning, Afternoon, Evening
+}
+
+// ============================================
+// CITIZEN CONCERNS FACT TABLE
+// ============================================
+
+Table fact_performance_reports {
+  report_id integer [pk, increment]
+  ticket_name_id integer [ref: > dim_ticket_names.ticket_name_id]
+  report_date_id integer [ref: > dim_dates.date_id]
+  coverage_start_date_id integer [ref: > dim_dates.date_id]
+  coverage_end_date_id integer [ref: > dim_dates.date_id]
+  report_time_id integer [ref: > dim_time.time_id]
+
+  tickets_resolved_count integer
+  tickets_in_progress_count integer
+  tickets_pending_count integer
+  total_tickets integer // Calculated: sum of above
+  resolution_rate decimal(5, 2) // Calculated percentage
+  
+  created_at timestamp [default: `now()`]
+  updated_at timestamp
+  
+  indexes {
+    (report_date_id, ticket_name_id) [name: 'idx_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
+  }
 }
