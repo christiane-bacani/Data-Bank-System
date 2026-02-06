@@ -52,4 +52,4 @@ Table fact_prices {
 
 // Indicator: Increase percentage in barangays with completed Barangay Master Development Plans
 // Frequency: Annually 
-// How to verify the data?:
+// Audit: Submitted annual reports of District Offices to measure the number of barangays who completed their master development plan per municipality divided by the total number of barangays per municipality
