@@ -4,17 +4,6 @@ table dim_government_sectors {
   dimension varchar(100) // Governance, Standard of Living, Health
 }
 
-Table dim_dates {
-  date_id integer [pk, increment]
-  full_date date // 2026-01-04, 2027-01-04, 2028-01-04
-  year year // 2026, 2027, 2028
-  quarter char(2) // Q1, Q2, Q3
-  month varchar(50) // January, February, March
-  month_number month // 1, 2, 3
-  week_number integer // 2, 3, 4
-  weekday varchar(255) // Monday, Tuesday, Wednesday
-}
-
 
 
 // Indicator: Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities
@@ -31,6 +20,15 @@ Table dim_agricultural_products {
   agricultural_product_id integer [pk, increment]
   commodity_type varchar(255) // IMPORTED COMMERCIAL RICE (per kg), FISH (per kg), SPICES (per kg)
   agriculcultural_product varchar(255) // Premium (Yellow tag), Bangus, Garlic (Native)
+}
+
+Table dim_price_dates {
+  date_id integer [pk, increment]
+  full_date date // 2026-01-04, 2027-01-04, 2028-01-04
+  year year // 2026, 2027, 2028
+  month varchar(50) // January, February, March
+  month_number month // 1, 2, 3
+  week_number integer // 2, 3, 4
 }
 
 Table dim_helpers {
@@ -99,7 +97,10 @@ Table dim_ticket_names {
 
 Table fact_performance_reports {
   performance_report_id integer [pk, increment]
-  ticket_name_id integer [ref: > dim_ticket_names.ticket_name_id] 
+  ticket_name_id integer [ref: > dim_ticket_names.ticket_name_id]
+  observation_date_id integer [ref: > dim_dates.date_id]
+  coverage_start_date_id integer [ref: > dim_dates.date_id]
+  coverage_end_date_id integer [ref: > dim_dates.date_id]
   tickets_resolved_count bigint
   tickets_in_progress_count bigint
   tickets_pending_count bigint
