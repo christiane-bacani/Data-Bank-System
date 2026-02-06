@@ -1,3 +1,11 @@
+table dim_government_sectors {
+  sector_id integer [pk, increment]
+  sector varchar(100) // Development Admininstration, Economic, Social
+  dimension varchar(100) // Governance, Standard of Living, Health
+}
+
+
+
 // Indicator: Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities
 // Frequency: Annually
 // How to verify the data?: Provincial Online Price Monitoring System
@@ -31,4 +39,10 @@ Table fact_prices {
   price_id integer [pk, increment]
   government_unit_id integer [ref: > dim_local_government_units.government_unit_id]
   agricultural_product_id integer [ref: > dim_agricultural_products.agricultural_product_id]
+  observation_date_id integer [ref: > dim_price_dates.date_id]
+  coverage_period_start_date_id integer [ref: > dim_price_dates.date_id]
+  coverage_period_end_date_id integer [ref: > dim_price_dates.date_id]
+  helper_id integer [ref: > dim_helpers.helper_id]
+  average_price decimal(8, 2) // 300.00, 63.33, 198.75
+  prevailing_price decimal (8, 2) // 300.00, 63.33, 200
 }
