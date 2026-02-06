@@ -493,7 +493,6 @@ Table digital_governance_measurements {
   period_type period_type // Annually, Quarterly, Monthly
   period_year year // YYYY
   period_quarter integer // 1, 2, 3, 4
-  period_month integer // 1-12
   total_systems bigint // 6
   implemented_count bigint // 4
   percentage_increase decimal(6, 2) // 300.00
