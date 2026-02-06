@@ -4,6 +4,17 @@ table dim_government_sectors {
   dimension varchar(100) // Governance, Standard of Living, Health
 }
 
+Table dim_dates {
+  date_id integer [pk, increment]
+  full_date date // 2026-01-04, 2027-01-04, 2028-01-04
+  year year // 2026, 2027, 2028
+  quarter char(2) // Q1, Q2, Q3
+  month varchar(50) // January, February, March
+  month_number month // 1, 2, 3
+  week_number integer // 2, 3, 4
+  weekday varchar(255) // Monday, Tuesday, Wednesday
+}
+
 
 
 // Indicator: Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities
@@ -22,14 +33,6 @@ Table dim_agricultural_products {
   agriculcultural_product varchar(255) // Premium (Yellow tag), Bangus, Garlic (Native)
 }
 
-Table dim_price_dates {
-  date_id integer [pk, increment]
-  full_date date // 2026-01-04, 2027-01-04, 2028-01-04
-  year year // 2026, 2027, 2028
-  month_number month // 1, 2, 3
-  week_number integer // 2, 3, 4
-}
-
 Table dim_helpers {
   helper_id integer [pk, increment]
   helper varhcar(50) // Other, Previous, Current
@@ -40,9 +43,9 @@ Table fact_prices {
   sector_id integer [ref: > dim_government_sectors.sector_id]
   government_unit_id integer [ref: > dim_local_government_units.government_unit_id]
   agricultural_product_id integer [ref: > dim_agricultural_products.agricultural_product_id]
-  observation_date_id integer [ref: > dim_price_dates.date_id]
-  coverage_period_start_date_id integer [ref: > dim_price_dates.date_id]
-  coverage_period_end_date_id integer [ref: > dim_price_dates.date_id]
+  observation_date_id integer [ref: > dim_dates.date_id]
+  coverage_period_start_date_id integer [ref: > dim_dates.date_id]
+  coverage_period_end_date_id integer [ref: > dim_dates.date_id]
   helper_id integer [ref: > dim_helpers.helper_id]
   average_price decimal(8, 2) // 300.00, 63.33, 198.75
   prevailing_price decimal (8, 2) // 300.00, 63.33, 200
@@ -67,4 +70,9 @@ Table dim_municipalities {
 
 Table fact_barangay_development_plans {
   plan_id integer [pk, increment]
+  sector_id integer [ref: > dim_government_sectors.sector_id]
+  municipality_id integer [ref: > dim_municipalities.municipality_id]
+  observation_date_id integer [ref: > dim_dates.date_id]
+  coverage_start_date_id integer [ref: > dim_dates.date_id]
+  coverage_end_date_id integer [ref: > dim_dates.date_id]
 }
