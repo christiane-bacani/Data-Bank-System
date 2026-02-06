@@ -26,3 +26,9 @@ Table dim_helpers {
   helper_id integer [pk, increment]
   helper varhcar(50) // Other, Previous, Current
 }
+
+Table prices {
+  price_id integer [pk, increment]
+  government_unit_id integer [ref: > dim_local_government_units.government_unit_id]
+  agricultural_product_id integer [ref: > dim_agricultural_products.agricultural_product_id]
+}
