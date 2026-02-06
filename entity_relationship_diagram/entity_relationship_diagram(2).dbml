@@ -1,52 +1,54 @@
 // ============================================
-// SHARED DIMENSIONS
+// Central Dimension Table
 // ============================================
 
 Table dim_dates {
   date_id integer [pk, increment]
-  full_date date [unique]
-  year integer
-  quarter integer
-  month integer
-  month_name varchar(20)
-  week_number integer
-  day_of_week integer
-  day_name varchar(20)
-  fiscal_year integer
-  is_weekend boolean
-  is_holiday boolean
-  created_at timestamp [default: `now()`]
+  full_date date // 2026-02-06, 2027-03-09, 2028-04-10 
+  year integer // 2026, 2027, 2028
+  quarter char(2) // Q1, Q2, Q3
+  month integer // 2, 3, 4
+  month_name varchar(20) // February, March, April
+  week_number integer // 16, 17, 18
+  day_name varchar(20) // Monday, Tuesday, Wednesday
+  is_weekend boolean // FALSE, FALSE, FALSE
+  is_holiday boolean // FALSE, FALSE, FALSE
+  created_at datetime [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
+  updated_at datetime // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
 }
 
+
+
+
+
 // ============================================
-// PRICE MONITORING DIMENSIONS
+// Indicator: Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities
+// Lead Department: OPPDC
+// Frequency: Annually
+// How to verify the data?: Go to Provincial Online Price Monitoring System
 // ============================================
 
 Table dim_local_government_units {
   lgu_id integer [pk, increment]
-  lgu_code varchar(20) [unique]
-  lgu_name varchar(150)
-  district_code varchar(50)
-  district_name varchar(50)
-  is_active boolean [default: true]
-  created_at timestamp [default: `now()`]
-  updated_at timestamp
+  district_name varchar(50) // District 1, District 2, District 1
+  lgu_name varchar(150) // Abucay, Balanga, Orani
+  created_at datetime [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
+  updated_at datetime // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
 }
 
 Table dim_agricultural_products {
   product_id integer [pk, increment]
-  product_code varchar(50) [unique]
-  product_name varchar(255)
-  commodity_type varchar(255)
-  unit_of_measure varchar(20) // kg, liter, piece
-  is_active boolean [default: true]
-  created_at timestamp [default: `now()`]
-  updated_at timestamp
+  commodity_type varchar(255) // IMPORTED COMMERCIAL RICE, FISH (per kg), HIGHLAND VEGETABLES (per kg)
+  product_name varchar(255) // Special (Blue tag), Galunggong (Local), Pechay (Baguio)
+  created_at datetime [default: `now()`] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
+  updated_at datetime // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
 }
 
 Table dim_helpers {
   helper_id integer [pk, increment]
   helper varchar(20) // CURRENT, PREVIOUS, OTHER
+  created_at datetime [default: 'now()'] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13 
+  updated_at datetime // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
 }
 
 Table fact_prices {
@@ -57,12 +59,10 @@ Table fact_prices {
   coverage_start_date_id integer [ref: > dim_dates.date_id]
   coverage_end_date_id integer [ref: > dim_dates.date_id]
   helper_id integer [ref: > dim_helpers.helper_id]
-
-  average_price decimal(10, 2)
-  prevailing_price decimal(10, 2)
-
-  created_at timestamp [default: `now()`]
-  updated_at timestamp
+  average_price decimal(10, 2) // 216.00, 172.50, 216
+  prevailing_price decimal(10, 2) // 225.00, 170.00, 220
+  created_at timestamp [default: `now()`] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13 
+  updated_at timestamp // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
 
   indexes {
     (observation_date_id, lgu_id, product_id) [name: 'idx_price_lookup']
@@ -74,23 +74,24 @@ Table fact_prices {
 
 // ============================================
 // Indicator: Increase percentage in barangays with completed Barangay Master Development Plans
+// Lead Department: OPPDC
 // Frequency: Annually
 // How to verify the data?: Submitted reports of District Offices about the number of barangays who completed their master development plan per municipalities divided by the number of barangays per municipalities
 // ============================================
 
 Table dim_districts {
   district_id integer [pk, increment]
-  district_name varchar(100)
-  created_at timestamp [default: `now()`]
+  district_name varchar(100) // District 1, District 2, District 3
+  created_at datetime // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
+  updated_at datetime // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
 }
 
 Table dim_municipalities {
   municipality_id integer [pk, increment]
-  municipality_name varchar(100)
   district_id integer [ref: > dim_districts.district_id]
-  total_barangays integer
-  created_at timestamp [default: `now()`]
-  updated_at timestamp
+  municipality_name varchar(100) // Hermosa, City of Balanga, Bagac
+  created_at datetime [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
+  updated_at datetime // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
 }
 
 Table fact_barangay_development_plans {
@@ -99,14 +100,11 @@ Table fact_barangay_development_plans {
   observation_date_id integer [ref: > dim_dates.date_id]
   coverage_start_date_id integer [ref: > dim_dates.date_id]
   coverage_end_date_id integer [ref: > dim_dates.date_id]
-  
-  barangays_with_completed_plans integer
-  total_barangays integer
-  completion_percentage decimal(5, 2) // Calculated field
-
-  created_at timestamp [default: `now()`]
-  updated_at timestamp
-
+  barangays_with_completed_plans integer // 13, 21, 10
+  total_barangays integer // 23, 25, 14
+  completion_percentage decimal(5, 2) // 56.52, 84.00, 71.49
+  created_at timestamp [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
+  updated_at timestamp // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
   indexes {
     (municipality_id, observation_date_id) [name: 'idx_plan_lookup']
     (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
@@ -119,6 +117,7 @@ Table fact_barangay_development_plans {
 
 // ============================================
 // Indicator: Increase percentage in citizen concerns addressed via the 8888 hotline
+// Lead Department: PHRMO
 // Frequency: Annually
 // How to verify the data?: Submitted Performance Report transmitted by the 8888 Citizen's Complaint Center
 // ============================================
@@ -134,16 +133,12 @@ Table dim_ticket_names {
   ticket_name_id integer [pk, increment]
   ticket_name varchar(255)
   classification_id integer [ref: > dim_ticket_classifications.classification_id]
-  is_active boolean [default: true]
   created_at timestamp [default: `now()`]
 }
 
 Table dim_time {
   time_id integer [pk, increment]
-  time_value time [unique]
-  hour integer
-  minute integer
-  second integer
+  time_value time [unique] // 12:04:33
   period varchar(2) // AM/PM
   time_label varchar(20) // Morning, Afternoon, Evening
 }
