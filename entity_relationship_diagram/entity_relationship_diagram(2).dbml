@@ -75,4 +75,6 @@ Table fact_barangay_development_plans {
   observation_date_id integer [ref: > dim_dates.date_id]
   coverage_start_date_id integer [ref: > dim_dates.date_id]
   coverage_end_date_id integer [ref: > dim_dates.date_id]
+  barangays_with_completed_plans bigint // 13, 14, 14
+  total_barangays bigint /// 23, 29, 14
 }
