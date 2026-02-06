@@ -78,3 +78,21 @@ Table fact_barangay_development_plans {
   barangays_with_completed_plans bigint // 13, 14, 14
   total_barangays bigint /// 23, 29, 14
 }
+
+
+
+
+
+// Indicator: Increase percentage in citizen concerns addressed via the 8888 hotline
+// Frequency: Annually
+// How to verify the data?: 
+
+Table ticket_classifications {
+  ticket_classification_id integer [pk, increment]
+  ticket_classification varchar(255) // 2025 Graft and Corruption, 2025 Integrity and Conduct, 2025 Frontline Service Procedures
+}
+
+Table ticket_names {
+  ticket_name_id integer [pk, increment]
+  ticket_classification_id integer [ref: > ticket_classifications.ticket_classification_id]
+}
