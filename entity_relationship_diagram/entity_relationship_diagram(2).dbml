@@ -52,4 +52,19 @@ Table fact_prices {
 
 // Indicator: Increase percentage in barangays with completed Barangay Master Development Plans
 // Frequency: Annually 
-// Audit: Submitted annual reports of District Offices to measure the number of barangays who completed their master development plan per municipality divided by the total number of barangays per municipality
+// How to verify the data?: Submitted annual reports of District Offices to measure the number of barangays who completed their master development plan per municipality divided by the total number of barangays per municipality
+
+Table dim_districts {
+  district_id integer [pk]
+  district varchar(100) // District 1, District 2, District 3
+}
+
+Table dim_municipalities {
+  municipality_id integer [pk, increment]
+  district_id integer [ref: > dim_districts.district_id]
+  municipality varchar(25) // Hermosa, Orani, Samal
+}
+
+Table fact_barangay_development_plans {
+  plan_id integer [pk, increment]
+}
