@@ -26,8 +26,8 @@ Table dim_price_dates {
   date_id integer [pk, increment]
   full_date date // 2026-01-04, 2027-01-04, 2028-01-04
   year year // 2026, 2027, 2028
-  month month // 1, 2, 3
-  week integer // 2, 3, 4
+  month_number month // 1, 2, 3
+  week_number integer // 2, 3, 4
 }
 
 Table dim_helpers {
@@ -37,6 +37,7 @@ Table dim_helpers {
 
 Table fact_prices {
   price_id integer [pk, increment]
+  sector_id integer [ref: > dim_government_sectors.sector_id]
   government_unit_id integer [ref: > dim_local_government_units.government_unit_id]
   agricultural_product_id integer [ref: > dim_agricultural_products.agricultural_product_id]
   observation_date_id integer [ref: > dim_price_dates.date_id]
@@ -46,3 +47,9 @@ Table fact_prices {
   average_price decimal(8, 2) // 300.00, 63.33, 198.75
   prevailing_price decimal (8, 2) // 300.00, 63.33, 200
 }
+
+
+
+// Indicator: Increase percentage in barangays with completed Barangay Master Development Plans
+// Frequency: Annually 
+// How to verify the data?:
