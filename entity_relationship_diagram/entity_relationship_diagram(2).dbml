@@ -87,12 +87,20 @@ Table fact_barangay_development_plans {
 // Frequency: Annually
 // How to verify the data?: 
 
-Table ticket_classifications {
+Table dim_ticket_classifications {
   ticket_classification_id integer [pk, increment]
   ticket_classification varchar(255) // 2025 Graft and Corruption, 2025 Integrity and Conduct, 2025 Frontline Service Procedures
 }
 
-Table ticket_names {
+Table dim_ticket_names {
   ticket_name_id integer [pk, increment]
-  ticket_classification_id integer [ref: > ticket_classifications.ticket_classification_id]
+  ticket_classification_id integer [ref: > dim_ticket_classifications.ticket_classification_id]
+}
+
+Table fact_performance_reports {
+  performance_report_id integer [pk, increment]
+  ticket_name_id integer [ref: > dim_ticket_names.ticket_name_id] 
+  tickets_resolved_count bigint
+  tickets_in_progress_count bigint
+  tickets_pending_count bigint
 }
