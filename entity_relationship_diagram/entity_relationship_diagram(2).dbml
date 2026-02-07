@@ -148,9 +148,9 @@ Table fact_performance_reports {
   report_id integer [pk, increment]
   ticket_name_id integer [ref: > dim_ticket_names.ticket_name_id]
   report_date_id integer [ref: > dim_dates.date_id]
-  report_time_id integer [ref: > dim_time.time_id]
   coverage_start_date_id integer [ref: > dim_dates.date_id]
   coverage_end_date_id integer [ref: > dim_dates.date_id]
+  report_time_id integer [ref: > dim_time.time_id]
   tickets_resolved_count integer // 23, 24, 25
   tickets_in_progress_count integer // 0, 1, 2
   tickets_pending_count integer // 3, 2, 1
