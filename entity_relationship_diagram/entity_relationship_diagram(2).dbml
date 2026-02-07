@@ -164,3 +164,19 @@ Table fact_performance_reports {
     (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
   }
 }
+
+
+
+// ============================================
+// Indicator: Improvement percentage in government employee service quality
+// Lead Department: PHRMO
+// Frequency: Annually
+// How to verify the data?: Information Table for the Outreach Program provided by the PHRMO
+// ============================================
+
+Table beneficiaries {
+  beneficiary_id integer [pk, increment]
+  beneficiary varchar(255) // Aeta Magbukun,  Children of SOS Orphanage, Staff of Bahay Puso
+  created_at datetime // 2026-02-07 18:03:03, 2026-02-07 19:03:03, 2026-02-07 20:03:03
+  updated_at datetime // 2026-02-07 18:03:03, 2026-02-07 19:03:03, 2026-02-07 20:03:03
+}
