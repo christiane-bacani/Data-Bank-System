@@ -171,7 +171,6 @@ Table beneficiaries {
   beneficiary_id integer [pk, increment]
   beneficiary varchar(255) // Aeta Magbukun,  Children of SOS Orphanage, Staff of Bahay Puso
   created_at datetime // 2026-02-07 18:03:03, 2026-02-07 19:03:03, 2026-02-07 20:03:03
-  updated_at datetime // 2026-02-07 18:03:03, 2026-02-07 19:03:03, 2026-02-07 20:03:03
 }
 
 Table implementing_departments {
@@ -179,7 +178,6 @@ Table implementing_departments {
   department_name varchar(150) // Provincial Information Office, Office of the Provincial Planning and Development Coordinator, Bataan Public-Private Partnership Investment Center
   department_code varchar(25) // PIO, OPPDC, BPPPIC
   created_at datetime // 2026-02-07 18:03:03, 2026-02-07 19:03:03, 2026-02-07 20:03:03
-  updated_at datetime // 2026-02-07 18:03:03, 2026-02-07 19:03:03, 2026-02-07 20:03:03
 }
 
 Table program_heads {
@@ -187,7 +185,6 @@ Table program_heads {
   department_id integer [ref: > implementing_departments.department_id ]
   program_head varchar(100) // Ms. Angel O.L Lara, Ar. Mc Jefferson M. Valerio, Mr. Abul Khayr Amalon M. Alonto I
   created_at datetime [default: 'now()'] // 2026-02-07 19:24:24, 2026-02-07 19:54:24, 2026-02-07 20:24:24 
-  updated_at datetime // 2026-02-07 19:24:24, 2026-02-07 19:54:24, 2026-02-07 20:24:24
 }
 
 Table locations {
