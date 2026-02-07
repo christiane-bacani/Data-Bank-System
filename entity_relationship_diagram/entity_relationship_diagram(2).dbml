@@ -14,7 +14,6 @@ Table dim_dates {
   is_weekend boolean // FALSE, FALSE, FALSE
   is_holiday boolean // FALSE, FALSE, FALSE
   created_at datetime [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
-  updated_at datetime // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
 }
 
 
@@ -48,7 +47,6 @@ Table dim_helpers {
   helper_id integer [pk, increment]
   helper varchar(20) // CURRENT, PREVIOUS, OTHER
   created_at datetime [default: 'now()'] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13 
-  updated_at datetime // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
 }
 
 Table fact_prices {
@@ -82,7 +80,7 @@ Table fact_prices {
 Table dim_districts {
   district_id integer [pk, increment]
   district_name varchar(100) // District 1, District 2, District 3
-  created_at datetime // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
+  created_at datetime [default: 'now()'] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
   updated_at datetime // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
 }
 
@@ -137,11 +135,12 @@ Table dim_ticket_names {
   updated_at datetime // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
 }
 
-Table dim_time {
+Table dim_times {
   time_id integer [pk, increment]
   time_value time [unique] // 12:04:33
   period varchar(2) // AM/PM
   time_label varchar(20) // Morning, Afternoon, Evening
+  created_at datetime [default: 'now()'] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
 }
 
 Table fact_performance_reports {
@@ -150,7 +149,7 @@ Table fact_performance_reports {
   report_date_id integer [ref: > dim_dates.date_id]
   coverage_start_date_id integer [ref: > dim_dates.date_id]
   coverage_end_date_id integer [ref: > dim_dates.date_id]
-  report_time_id integer [ref: > dim_time.time_id]
+  report_time_id integer [ref: > dim_times.time_id]
   tickets_resolved_count integer // 23, 24, 25
   tickets_in_progress_count integer // 0, 1, 2
   tickets_pending_count integer // 3, 2, 1
@@ -179,4 +178,20 @@ Table beneficiaries {
   beneficiary varchar(255) // Aeta Magbukun,  Children of SOS Orphanage, Staff of Bahay Puso
   created_at datetime // 2026-02-07 18:03:03, 2026-02-07 19:03:03, 2026-02-07 20:03:03
   updated_at datetime // 2026-02-07 18:03:03, 2026-02-07 19:03:03, 2026-02-07 20:03:03
+}
+
+Table implementing_departments {
+  department_id integer [pk, increment]
+  department_name varchar(150) // Provincial Information Office, Office of the Provincial Planning and Development Coordinator, Bataan Public-Private Partnership Investment Center
+  department_code varchar(25) // PIO, OPPDC, BPPPIC
+  created_at datetime // 2026-02-07 18:03:03, 2026-02-07 19:03:03, 2026-02-07 20:03:03
+  updated_at datetime // 2026-02-07 18:03:03, 2026-02-07 19:03:03, 2026-02-07 20:03:03
+}
+
+Table program_heads {
+  program_head_id integer [pk, increment]
+  department_id integer [ref: > implementing_departments.department_id ]
+  program_head varchar(100) // Ms. Angel O.L Lara, Ar. Mc Jefferson M. Valerio, Mr. Abul Khayr Amalon M. Alonto I
+  created_at datetime [default: 'now()'] // 2026-02-07 19:24:24, 2026-02-07 19:54:24, 2026-02-07 20:24:24 
+  updated_at datetime // 2026-02-07 19:24:24, 2026-02-07 19:54:24, 2026-02-07 20:24:24
 }
