@@ -32,7 +32,6 @@ Table dim_local_government_units {
   district_name varchar(50) // District 1, District 2, District 1
   lgu_name varchar(150) // Abucay, Balanga, Orani
   created_at datetime [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
-  updated_at datetime // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
 }
 
 Table dim_agricultural_products {
@@ -40,7 +39,6 @@ Table dim_agricultural_products {
   commodity_type varchar(255) // IMPORTED COMMERCIAL RICE, FISH (per kg), HIGHLAND VEGETABLES (per kg)
   product_name varchar(255) // Special (Blue tag), Galunggong (Local), Pechay (Baguio)
   created_at datetime [default: `now()`] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
-  updated_at datetime // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
 }
 
 Table dim_helpers {
@@ -81,7 +79,6 @@ Table dim_districts {
   district_id integer [pk, increment]
   district_name varchar(100) // District 1, District 2, District 3
   created_at datetime [default: 'now()'] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
-  updated_at datetime // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
 }
 
 Table dim_municipalities {
@@ -89,7 +86,6 @@ Table dim_municipalities {
   district_id integer [ref: > dim_districts.district_id]
   municipality_name varchar(100) // Hermosa, City of Balanga, Bagac
   created_at datetime [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
-  updated_at datetime // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
 }
 
 Table fact_barangay_development_plans {
@@ -194,4 +190,10 @@ Table program_heads {
   program_head varchar(100) // Ms. Angel O.L Lara, Ar. Mc Jefferson M. Valerio, Mr. Abul Khayr Amalon M. Alonto I
   created_at datetime [default: 'now()'] // 2026-02-07 19:24:24, 2026-02-07 19:54:24, 2026-02-07 20:24:24 
   updated_at datetime // 2026-02-07 19:24:24, 2026-02-07 19:54:24, 2026-02-07 20:24:24
+}
+
+Table locations {
+  location_id integer [pk, increment]
+  location varchar(100) // Limay, Mariveles, Various parts of Bataan
+  created_at datetime [default: 'now()'] // 2026-02-07 19:49:44, 2026-02-08 19:49:44, 2026-02-09 19:49:44
 }
