@@ -120,7 +120,6 @@ Table dim_ticket_classifications {
   classification_id integer [pk, increment]
   classification_name varchar(255) // 2025 Graft and Corruption, 2025 Integrity and Conduct, 2025 Frontline Service Procedures
   created_at datetime [default: `now()`] // 2026-02-07 16:41:23, 2026-02-07 16:41:33, 2026-02-07 16:41:43
-  updated_at datetime // 2026-02-07 16:41:23, 2026-02-07 16:41:33, 2026-02-07 16:41:43
 }
 
 Table dim_ticket_names {
@@ -128,7 +127,6 @@ Table dim_ticket_names {
   classification_id integer [ref: > dim_ticket_classifications.classification_id]
   ticket_name varchar(255) // 2025 Against Government Official, 2025 - Integrity and Conduct - Official, 2025 - Discourtesy
   created_at datetime [default: `now()`] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
-  updated_at datetime // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
 }
 
 Table dim_times {
