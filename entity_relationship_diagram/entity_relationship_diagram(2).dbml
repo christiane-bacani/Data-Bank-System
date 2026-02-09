@@ -205,12 +205,19 @@ Table dim_beneficiaries {
 
 Table facts_participation_rates {
   participation_rate_id integer [pk, increment]
+  report_date_id integer [ref: > dim_dates.date_id]
   program_month_id integer [ref: > dim_program_months.program_month_id]
   location_id integer [ref: > dim_locations.location_id]
   office_id integer [ref: > dim_implementing_offices.office_id]
   program_head_id integer [ref: > dim_program_heads.program_head_id]
   beneficiary_id integer [ref: > dim_beneficiaries.beneficiary_id]
-  number_of_participated_employees bigint
-  number_of_eligible_employees bigint
-  participation_rate decimal(4, 2)
+  number_of_participated_employees bigint // 54, 35, 38
+  number_of_eligible_employees bigint // 188, 143, 146
+  participation_rate decimal(4, 2) // 28.72, 24.48, 26.02
+  created_at timestamp // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
+  updated_at timestamp // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
+
+  indexes {
+    (report_date_id, program_month_id) [name: 'idx_report_lookup']
+  }
 }
