@@ -167,6 +167,22 @@ Table fact_performance_reports {
 // How to verify the data?: Information Table for the Outreach Program provided by the PHRMO
 // ============================================
 
+Table program_months {
+  program_month_id integer [pk, increment]
+  program_month varchar(150) // January, February, March
+}
+
+Table dim_locations {
+  location_id integer [pk, increment]
+  location varchar(75) // Limay, Mariveles, Bahay Puso
+}
+
+table dim_implementing_offices {
+  office_id integer [pk, increment]
+  office_code varchar(50) // PIO, OPPDC, BPPIC
+  office_name varchar(150) // Provincial Information Office, Office of the Provincial Planning and Development Coordinator, Bataan Public-Private Partnership and Investment Center
+}
+
 Table facts_participation_rates {
   participation_rate_id integer [pk, increment]
 }
