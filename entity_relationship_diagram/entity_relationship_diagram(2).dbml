@@ -197,6 +197,20 @@ Table dim_program_heads {
   created_at timestamp // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
 }
 
+Table dim_beneficiaries {
+  beneficiary_id integer [pk, increment]
+  beneficiary varchar(255) // Aeta Magbukun, Children of SOS Orpganage, Children of King's Garden Orphanage
+  created_at timestamp // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
+}
+
 Table facts_participation_rates {
-  participation_rate_id integer [pk, increment] 
+  participation_rate_id integer [pk, increment]
+  program_month_id integer [ref: > dim_program_months.program_month_id]
+  location_id integer [ref: > dim_locations.location_id]
+  office_id integer [ref: > dim_implementing_offices.office_id]
+  program_head_id integer [ref: > dim_program_heads.program_head_id]
+  beneficiary_id integer [ref: > dim_beneficiaries.beneficiary_id]
+  number_of_participated_employees bigint
+  number_of_eligible_employees bigint
+  participation_rate decimal(4, 2)
 }
