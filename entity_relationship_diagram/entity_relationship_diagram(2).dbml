@@ -6,8 +6,8 @@ Table dim_dates {
   date_id integer [pk, increment]
   full_date date [unique] // 2026-02-06, 2027-03-09, 2028-04-10 
   year year // 2026, 2027, 2028
-  fiscal_year year // 2026, 2027, 2028
   quarter char(2) // Q1, Q2, Q3
+
   month integer // 2, 3, 4
   month_name varchar(20) // February, March, April
   week_number integer // 16, 17, 18
@@ -119,18 +119,9 @@ Table dim_ticket_names {
   created_at timestamp [default: `now()`] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
 }
 
-Table dim_times {
-  time_id integer [pk, increment]
-  time_value time [unique] // 12:04:33
-  period varchar(2) // AM/PM
-  time_label varchar(20) // Morning, Afternoon, Evening
-  created_at timestamp [default: `now()`] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
-}
-
 Table fact_performance_reports {
   report_id integer [pk, increment]
   report_date_id integer [not null, ref: > dim_dates.date_id]
-  report_time_id integer [not null, ref: > dim_times.time_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   ticket_name_id integer [not null, ref: > dim_ticket_names.ticket_name_id]
@@ -224,7 +215,6 @@ Table dim_police_stations {
 Table fact_daily_crime_reports {
   crime_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
-  reported_time_id integer [not null, ref: > dim_times.time_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   police_station_id integer [not null, ref: > dim_police_stations.police_station_id]
@@ -235,7 +225,7 @@ Table fact_daily_crime_reports {
   updated_at timestamp // 2026-02-09 13:35:35, 2026-02-10 13:35:35, 2026-02-11 13:35:35
 
   indexes {
-    (reported_date_id, reported_time_id, police_station_id) [name: 'idx_report_lookup']
+    (reported_date_id, police_station_id) [name: 'idx_report_lookup']
     (police_station_id) [name: 'idx_station_lookup']
   }
 }
