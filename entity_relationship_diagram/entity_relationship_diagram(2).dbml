@@ -13,7 +13,7 @@ Table dim_dates {
   day_name varchar(20) // Monday, Tuesday, Wednesday
   is_weekend boolean // FALSE, FALSE, FALSE
   is_holiday boolean // FALSE, FALSE, FALSE
-  created_at datetime [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
+  created_at timestamp [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
 }
 
 
@@ -31,20 +31,20 @@ Table dim_local_government_units {
   lgu_id integer [pk, increment]
   district_name varchar(50) // District 1, District 2, District 1
   lgu_name varchar(150) // Abucay, Balanga, Orani
-  created_at datetime [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
+  created_at timestamp [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
 }
 
 Table dim_agricultural_products {
   product_id integer [pk, increment]
   commodity_type varchar(255) // IMPORTED COMMERCIAL RICE, FISH (per kg), HIGHLAND VEGETABLES (per kg)
   product_name varchar(255) // Special (Blue tag), Galunggong (Local), Pechay (Baguio)
-  created_at datetime [default: `now()`] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
+  created_at timestamp [default: `now()`] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
 }
 
 Table dim_helpers {
   helper_id integer [pk, increment]
   helper varchar(20) // CURRENT, PREVIOUS, OTHER
-  created_at datetime [default: 'now()'] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13 
+  created_at timestamp [default: 'now()'] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13 
 }
 
 Table fact_prices {
@@ -78,14 +78,14 @@ Table fact_prices {
 Table dim_districts {
   district_id integer [pk, increment]
   district_name varchar(100) // District 1, District 2, District 3
-  created_at datetime [default: 'now()'] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
+  created_at timestamp [default: 'now()'] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
 }
 
 Table dim_municipalities {
   municipality_id integer [pk, increment]
   district_id integer [ref: > dim_districts.district_id]
   municipality_name varchar(100) // Hermosa, City of Balanga, Bagac
-  created_at datetime [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
+  created_at timestamp [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
 }
 
 Table fact_barangay_development_plans {
@@ -97,8 +97,8 @@ Table fact_barangay_development_plans {
   barangays_with_completed_plans integer // 13, 21, 10
   total_barangays integer // 23, 25, 14
   completion_percentage decimal(5, 2) // 56.52, 84.00, 71.49
-  created_at datetime [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
-  updated_at datetime // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
+  created_at timestamp [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
+  updated_at timestamp // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
   indexes {
     (municipality_id, observation_date_id) [name: 'idx_plan_lookup']
     (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
@@ -119,14 +119,14 @@ Table fact_barangay_development_plans {
 Table dim_ticket_classifications {
   classification_id integer [pk, increment]
   classification_name varchar(255) // 2025 Graft and Corruption, 2025 Integrity and Conduct, 2025 Frontline Service Procedures
-  created_at datetime [default: `now()`] // 2026-02-07 16:41:23, 2026-02-07 16:41:33, 2026-02-07 16:41:43
+  created_at timestamp [default: `now()`] // 2026-02-07 16:41:23, 2026-02-07 16:41:33, 2026-02-07 16:41:43
 }
 
 Table dim_ticket_names {
   ticket_name_id integer [pk, increment]
   classification_id integer [ref: > dim_ticket_classifications.classification_id]
   ticket_name varchar(255) // 2025 Against Government Official, 2025 - Integrity and Conduct - Official, 2025 - Discourtesy
-  created_at datetime [default: `now()`] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
+  created_at timestamp [default: `now()`] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
 }
 
 Table dim_times {
@@ -134,7 +134,7 @@ Table dim_times {
   time_value time [unique] // 12:04:33
   period varchar(2) // AM/PM
   time_label varchar(20) // Morning, Afternoon, Evening
-  created_at datetime [default: 'now()'] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
+  created_at timestamp [default: 'now()'] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
 }
 
 Table fact_performance_reports {
@@ -149,8 +149,8 @@ Table fact_performance_reports {
   tickets_pending_count integer // 3, 2, 1
   total_tickets integer // 26, 26, 28
   resolution_rate decimal(5, 2) // 88.46, 92.30, 88.29
-  created_at datetime [default: `now()`] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
-  updated_at datetime // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
+  created_at timestamp [default: `now()`] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
+  updated_at timestamp // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
 
   indexes {
     (report_date_id, ticket_name_id) [name: 'idx_report_lookup']
@@ -170,24 +170,28 @@ Table fact_performance_reports {
 Table dim_program_months {
   program_month_id integer [pk, increment]
   program_month varchar(150) // January, February, March
+  created_at timestamp // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
 }
 
 Table dim_locations {
   location_id integer [pk, increment]
   location varchar(75) // Limay, Mariveles, Bahay Puso
+  created_at timestamp // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
 }
 
 table dim_implementing_offices {
   office_id integer [pk, increment]
   office_code varchar(50) // PIO, OPPDC, BPPIC
   office_name varchar(150) // Provincial Information Office, Office of the Provincial Planning and Development Coordinator, Bataan Public-Private Partnership and Investment Center
+  created_at timestamp // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
 }
 
 Table dim_program_heads {
   program_head_id integer [pk, increment]
-  program_head varchar(150) // Ms. Angel O.L Lara, 
+  program_head varchar(150) // Ms. Angel O.L Lara, Ar. Mc Jefferson M. Valerio, Mr. Abul Khayr Amalon M. Alonto II
+  created_at timestamp // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
 }
 
 Table facts_participation_rates {
-  participation_rate_id integer [pk, increment] 
+  participation_rate_id integer [pk, increment]
 }
