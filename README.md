@@ -4,7 +4,15 @@ An analytical data repository for the Provincial Government of Bataan that centr
 
 ## Table of contents
 - [Todo](#todo)
+- [Status](#status)
 
 ## Todo
 - Added index to all quantitative data of facts table
 - Denormalize all normalize dim tables
+
+## Status
+- % increase in barangays with completed Barangay Master Development Plans (OPPDC) - `DONE`
+- % reduction in inflation rates through price monitoring and direct selling of basic commodities (OPPDC) - `Done`
+
+- % increase in citizen concerns addressed via the 8888 hotline (Legal & PHRMO) - `DONE`
+- % improvement in government employee service quality (PHRMO) - `DONE
