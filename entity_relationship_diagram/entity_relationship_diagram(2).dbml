@@ -139,12 +139,11 @@ Table dim_times {
 Table fact_performance_reports {
   report_id integer [pk, increment]
   report_date_id integer [ref: > dim_dates.date_id]
+  report_time_id integer [ref: > dim_times.time_id]
   coverage_start_date_id integer [ref: > dim_dates.date_id]
   coverage_end_date_id integer [ref: > dim_dates.date_id]
   ticket_classification_id integer [ref: > dim_ticket_classifications.classification_id] 
   ticket_name_id integer [ref: > dim_ticket_names.ticket_name_id]
-  
-  report_time_id integer [ref: > dim_times.time_id]
   tickets_resolved_count integer // 23, 24, 25
   tickets_in_progress_count integer // 0, 1, 2
   tickets_pending_count integer // 3, 2, 1
@@ -235,4 +234,14 @@ Table dim_police_stations {
   barangay_name varchar(150) // Malabia, Laon, San Ramon
   police_station varchar(150) // Balanga City Police Station, Abucay Municipal Police Station, Dinalupihan Municipal Police Station
   created_at timestamp // 2026-02-09 13:35:35, 2026-02-10 13:35:35, 2026-02-11 13:35:35
+}
+
+Table facts_daily_crime_reports {
+  crime_report_id integer [pk, increment]
+  reported_date_id integer [ref: > dim_dates.date_id]
+  reported_time_id integer [ref: > dim_times.time_id]
+  police_station_id integer [ref: > dim_police_stations.police_station_id]
+  total_no_of_index_crimes_reported bigint // 1068, 922, 1211 
+  total_no_of_crimes_reported bigint // 345, 822, 1000
+  index_crime_rate decimal(4, 2) // 32.30, 89.15, 82.58
 }
