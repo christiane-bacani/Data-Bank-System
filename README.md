@@ -7,7 +7,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - [Status](#status)
 
 ## Todo
-- Denormalize all normalize dim tables
+- Fix the dim_helpers because it lacks context for non-technical people
 
 ## Status
 - % increase in barangays with completed Barangay Master Development Plans (OPPDC) - `DONE`
