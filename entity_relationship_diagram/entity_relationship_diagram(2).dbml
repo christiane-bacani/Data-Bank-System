@@ -219,5 +219,6 @@ Table facts_participation_rates {
 
   indexes {
     (report_date_id, program_month_id) [name: 'idx_report_lookup']
+    (number_of_participated_employees, number_of_eligible_employees) [name: 'idx_report_metrics']\
   }
 }
