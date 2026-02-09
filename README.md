@@ -10,7 +10,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - Fix the facts table of baragangay development plan to include also the number of barangays with different statuses per district
 
 ## Status
-- % increase in barangays with completed Barangay Master Development Plans (OPPDC) - `DONE`
+- % increase in barangays with completed Barangay Master Development Plans (OPPDC) - `PENDING`
 - % reduction in inflation rates through price monitoring and direct selling of basic commodities (OPPDC) - `Done`
 <br>
 - % increase in citizen concerns addressed via the 8888 hotline (Legal & PHRMO) - `DONE`
