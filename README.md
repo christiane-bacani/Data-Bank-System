@@ -7,7 +7,6 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - [Status](#status)
 
 ## Todo
-- Added index to all quantitative data of facts table
 - Denormalize all normalize dim tables
 
 ## Status
