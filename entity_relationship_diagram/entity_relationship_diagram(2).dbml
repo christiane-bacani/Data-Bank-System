@@ -16,6 +16,11 @@ Table dim_dates {
   created_at timestamp [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
 }
 
+Table dim_departments {
+  department_id integer [pk, increment]
+  department_code varchar(50) // OPPDC, PHRMO, PIO
+  department_name varchar(255) // Office of the Provincial Planning and Development Coordinator, Provincial Human Resource Management Office,
+}
 
 
 
@@ -193,5 +198,5 @@ Table dim_program_heads {
 }
 
 Table facts_participation_rates {
-  participation_rate_id integer [pk, increment]
+  participation_rate_id integer [pk, increment] 
 }
