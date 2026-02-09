@@ -16,11 +16,6 @@ Table dim_dates {
   created_at timestamp [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
 }
 
-Table dim_departments {
-  department_id integer [pk, increment]
-  department_code varchar(50) // OPPDC, PHRMO, PIO
-  department_name varchar(255) // Office of the Provincial Planning and Development Coordinator, Provincial Human Resource Management Office,
-}
 
 
 
@@ -54,11 +49,11 @@ Table dim_helpers {
 
 Table fact_prices {
   price_id integer [pk, increment]
-  lgu_id integer [ref: > dim_local_government_units.lgu_id]
-  product_id integer [ref: > dim_agricultural_products.product_id]
   observation_date_id integer [ref: > dim_dates.date_id]
   coverage_start_date_id integer [ref: > dim_dates.date_id]
   coverage_end_date_id integer [ref: > dim_dates.date_id]
+  lgu_id integer [ref: > dim_local_government_units.lgu_id]
+  product_id integer [ref: > dim_agricultural_products.product_id]
   helper_id integer [ref: > dim_helpers.helper_id]
   average_price decimal(10, 2) // 216.00, 172.50, 216
   prevailing_price decimal(10, 2) // 225.00, 170.00, 220
@@ -95,10 +90,10 @@ Table dim_municipalities {
 
 Table fact_barangay_development_plans {
   plan_id integer [pk, increment]
-  municipality_id integer [ref: > dim_municipalities.municipality_id]
   observation_date_id integer [ref: > dim_dates.date_id]
   coverage_start_date_id integer [ref: > dim_dates.date_id]
   coverage_end_date_id integer [ref: > dim_dates.date_id]
+  municipality_id integer [ref: > dim_municipalities.municipality_id]
   barangays_with_completed_plans integer // 13, 21, 10
   total_barangays integer // 23, 25, 14
   completion_percentage decimal(5, 2) // 56.52, 84.00, 71.49
@@ -144,10 +139,10 @@ Table dim_times {
 
 Table fact_performance_reports {
   report_id integer [pk, increment]
-  ticket_name_id integer [ref: > dim_ticket_names.ticket_name_id]
   report_date_id integer [ref: > dim_dates.date_id]
   coverage_start_date_id integer [ref: > dim_dates.date_id]
   coverage_end_date_id integer [ref: > dim_dates.date_id]
+  ticket_name_id integer [ref: > dim_ticket_names.ticket_name_id]
   report_time_id integer [ref: > dim_times.time_id]
   tickets_resolved_count integer // 23, 24, 25
   tickets_in_progress_count integer // 0, 1, 2
@@ -219,6 +214,6 @@ Table facts_participation_rates {
 
   indexes {
     (report_date_id, program_month_id) [name: 'idx_report_lookup']
-    (number_of_participated_employees, number_of_eligible_employees) [name: 'idx_report_metrics']\
+    (number_of_participated_employees, number_of_eligible_employees) [name: 'idx_report_metrics']
   }
 }
