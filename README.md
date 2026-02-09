@@ -14,7 +14,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - % increase in barangays with completed Barangay Master Development Plans (OPPDC) - `DONE`
 - % reduction in inflation rates through price monitoring and direct selling of basic commodities (OPPDC) - `Done`
 
-
+<br>
 
 - % increase in citizen concerns addressed via the 8888 hotline (Legal & PHRMO) - `DONE`
 - % improvement in government employee service quality (PHRMO) - `DONE'
