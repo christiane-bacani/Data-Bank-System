@@ -8,8 +8,6 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - [Undercurrent of the Data Bank](#Undercurrent-of-the-Data-Bank)
 
 ## Todo
-- Analyze the data model above and check on how to integrate this indicator `% reduction on casualty during calamity`
-- Create the data model for measuring the indicators for reduction pct of injuries/casualties during calamities
 - After creating the data model, check if there's a facts table that needed time dimension
 
 ## Status
