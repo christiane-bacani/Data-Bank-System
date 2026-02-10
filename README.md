@@ -8,7 +8,8 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - [Undercurrent of the Data Bank](#Undercurrent-of-the-Data-Bank)
 
 ## Todo
-- Fix the facts table of baragangay development plan to include also the number of barangays with different statuses per district.
+- Create the data model for measuring the indicators for reduction pct of injuries/casualties during calamities
+- Create notes to store the lead department of that specific indicator and use proper spacing also
 
 ## Status
 - % increase in barangays with completed Barangay Master Development Plans (OPPDC) - `DONE`
