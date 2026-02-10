@@ -5,7 +5,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 ## Table of contents
 - [Todo](#todo)
 - [Status](#status)
-- [Undercurrent of the Data Bank](#undercurrent_of_the_data_bank)
+- [Undercurrent of the Data Bank](#Undeercurrent of the Data Bank)
 
 ## Todo
 - Fix the facts table of baragangay development plan to include also the number of barangays with different statuses per district.
