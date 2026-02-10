@@ -97,6 +97,7 @@ Table fact_barangay_development_plans {
   completion_percentage decimal(5, 2) // 43.48, 52, 42.86
   created_at timestamp [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
   updated_at timestamp // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
+
   indexes {
     (municipality_id, observation_date_id) [name: 'idx_plan_lookup']
     (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
@@ -190,6 +191,7 @@ Table fact_participation_rates {
   participation_rate decimal(5, 2) // 28.72, 24.48, 26.02
   created_at timestamp [default: `now()`] // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
   updated_at timestamp // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
+
   indexes {
     (report_date_id) [name: 'idx_report_lookup']
     (program_start_date_id, program_end_date_id) [name: 'idx_coverage_lookup']
@@ -229,6 +231,7 @@ Table fact_daily_crime_reports {
 
   indexes {
     (reported_date_id, police_station_id) [name: 'idx_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
     (police_station_id) [name: 'idx_station_lookup']
   }
 }
@@ -242,27 +245,41 @@ Table fact_daily_crime_reports {
 // Data Source: Accident Report Submitted by the MBDA, PNP, and PDRRMO
 // ============================================
 
-Table dim_accident_locations {
-  location_id integer [pk, increment]
+Table dim_barangay_locations {
+  barangay_location_id integer [pk, increment]
   district_name varchar(50) // District I, District II, District III,
-  municipality_name varchar(150) // Abucay, City of Balanga, Dinalupihan
+  municipality_name varchar(100) // Abucay, City of Balanga, Dinalupihan
   barangay_name varchar(150) // Calaylayan, San Jose, Poblacion
+  created_at timestamp [default: 'now()'] // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
+}
+
+Table dim_latlong_locations {
+  latlong_location_id integer [pk, increment]
   location text // Intersection of ..., Near barangay hall of San Jose, Dinalupihan Memorial Park
   latitude decimal(9, 6) // 40.758896, 51.508039, 35.661777
   longitude decimal(10, 6) // -73.985130, -0.128020, 139.700478
+  created_at timestamp [default: 'now()'] // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
 }
 
 Table dim_accident_types {
   accident_type_id integer [pk, increment]
   accident_type varchar(150) // Vehicular Accidents, Fire Incidents, Others
+  created_at timestamp [default: 'now()'] // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
 }
 
 Table fact_monthly_accident_reports {
   accident_report_id integer [pk, increment]
-  report_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_date_id integer [not null, ref: > dim_dates.date_id]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  location_id integer [not null, ref: > dim_accident_locations.location_id]
   accident_type_id integer [not null, ref: > dim_accident_types.accident_type_id]
   accident_count bigint // 1477, 2122, 902
+  created_at timestamp [default: 'now()'] // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
+  updated_at timestamp // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
+  
+  indexes {
+    (reported_date_id, accident_type_id) [name: 'idx_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
+    (accident_type_id) [name: 'idx_accident_type_lookup']
+  }
 }
