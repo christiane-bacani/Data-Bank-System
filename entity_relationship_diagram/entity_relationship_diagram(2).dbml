@@ -251,3 +251,18 @@ Table dim_accident_locations {
   latitude decimal(9, 6) // 40.758896, 51.508039, 35.661777
   longitude decimal(10, 6) // -73.985130, -0.128020, 139.700478
 }
+
+Table dim_accident_types {
+  accident_type_id integer [pk, increment]
+  accident_type varchar(150) // Vehicular Accidents, Fire Incidents, Others
+}
+
+Table fact_monthly_accident_reports {
+  accident_report_id integer [pk, increment]
+  report_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  location_id integer [not null, ref: > dim_accident_locations.location_id]
+  accident_type_id integer [not null, ref: > dim_accident_types.accident_type_id]
+  accident_count bigint // 1477, 2122, 902
+}
