@@ -16,4 +16,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - % increase in citizen concerns addressed via the 8888 hotline (Legal & PHRMO) - `DONE`
 - % improvement in government employee service quality (PHRMO) - `DONE`
 <br>
-- % % reduction in crime rates through collaboration with law enforcement (MBDA) - `PENDING`
+- % % reduction in crime rates through collaboration with law enforcement (MBDA) - `DONE`
