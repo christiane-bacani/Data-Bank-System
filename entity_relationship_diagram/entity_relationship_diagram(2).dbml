@@ -49,7 +49,7 @@ Table dim_price_comparison_periods {
   created_at timestamp [default: `now()`] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
 }
 
-Table fact_prices {
+Table fact_prices [note: 'Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities'] {
   price_id integer [pk, increment]
   observation_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -267,7 +267,7 @@ Table dim_accident_types {
   created_at timestamp [default: 'now()'] // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
 }
 
-Table fact_monthly_accident_reports {
+Table fact_accident_reports {
   accident_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -294,3 +294,29 @@ Table fact_monthly_accident_reports {
 // Frequency: During Situational Report (Can be Daily, Weekly, Monthly, Quarterly, and Annually)
 // Data Source: Situational Report Submitted by MBDA and/or PDRRMO
 // ============================================
+
+enum population_type {
+  Province
+  District
+  Municipality
+  Barangay
+}
+
+Table dim_affected_populations {
+  affected_population_id integer [pk, increment]
+  population_type population_type // Province, District, Municipality
+  created_at timestamp // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+}
+
+Table dim_calamities {
+  calamity_id integer [pk, increment]
+  calamity_name varchar(255) // Typhoon Yolanda, Earthquake Magnitude 8.2, Robinson Fire
+  calamity_type varchar(255) // Meteorological, Geological, Technological
+  created_at timestamp // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+}
+
+Table dim_injury_types {
+  injury_type_id integer [pk, increment]
+  injury_type varchar(255) // Drowning, Burns, Thermal Injuries
+  created_at timestamp // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+}
