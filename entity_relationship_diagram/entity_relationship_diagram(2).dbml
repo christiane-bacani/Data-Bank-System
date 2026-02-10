@@ -25,7 +25,8 @@ Table dim_dates {
 // Indicator: Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities
 // Lead Department: OPPDC
 // Frequency: Annually
-// How to verify the data?: Go to Provincial Online Price Monitoring System
+// Data Source: Provincial Online Price Monitoring System
+
 // ============================================
 
 Table dim_local_government_units {
@@ -73,7 +74,7 @@ Table fact_prices {
 // Indicator: Increase percentage in barangays with completed Barangay Master Development Plans
 // Lead Department: OPPDC
 // Frequency: Annually
-// How to verify the data?: Submitted reports of District Offices about the number of barangays who completed their master development plan per municipalities divided by the number of barangays per municipalities
+// Data Source: Submitted reports of District Offices about the number of barangays who completed their master development plan per municipalities divided by the number of barangays per municipalities
 // ============================================
 
 Table dim_municipalities {
@@ -110,7 +111,7 @@ Table fact_barangay_development_plans {
 // Indicator: Increase percentage in citizen concerns addressed via the 8888 hotline
 // Lead Department: PHRMO
 // Frequency: Annually
-// How to verify the data?: Submitted Performance Report transmitted by the 8888 Citizen's Complaint Center to the PGO
+// Data Source: Submitted Performance Report transmitted by the 8888 Citizen's Complaint Center to the PGO
 // ============================================
 
 Table dim_ticket_names {
@@ -147,7 +148,7 @@ Table fact_performance_reports {
 // Indicator: Improvement percentage in government employee service quality
 // Lead Department: PHRMO
 // Frequency: Annually
-// How to verify the data?: Information Table for the Outreach Program provided by the PHRMO
+// Data Source: Information Table for the Outreach Program provided by the PHRMO
 // ============================================
 
 Table dim_locations {
@@ -203,7 +204,7 @@ Table fact_participation_rates {
 // Indicator: Reduction percentage in crime rates through collaboration with law enforcement 
 // Lead Department: PNP and MBDA
 // Frequency: Annually
-// How to verify the data?: Perform audit trailing to the submitted crime reports of PNP/MBDA Daily
+// Data Source: Submitted crime reports of PNP/MBDA Daily
 // ============================================
 
 Table dim_police_stations {
@@ -230,4 +231,23 @@ Table fact_daily_crime_reports {
     (reported_date_id, police_station_id) [name: 'idx_report_lookup']
     (police_station_id) [name: 'idx_station_lookup']
   }
+}
+
+
+
+// ============================================
+// Indicator: Reduction of percentage on accidents (place on occurence)
+// Lead Department: MBDA, PNP, and PDRRMO
+// Frequency: Monthly
+// Data Source: Accident Report Submitted by the MBDA, PNP, and PDRRMO
+// ============================================
+
+Table dim_accident_locations {
+  location_id integer [pk, increment]
+  district_name varchar(50) // District I, District II, District III,
+  municipality_name varchar(150) // Abucay, City of Balanga, Dinalupihan
+  barangay_name varchar(150) // Calaylayan, San Jose, Poblacion
+  location text // Intersection of ..., Near barangay hall of San Jose, Dinalupihan Memorial Park
+  latitude decimal(9, 6) // 40.758896, 51.508039, 35.661777
+  longitude decimal(10, 6) // -73.985130, -0.128020, 139.700478
 }
