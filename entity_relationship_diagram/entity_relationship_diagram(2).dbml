@@ -89,9 +89,11 @@ Table fact_barangay_development_plans {
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   municipality_id integer [not null, ref: > dim_municipalities.municipality_id]
-  barangays_with_no_plans integer
-  barangays_with_completed_plans integer
+  barangays_not_started integer // 10, 0, 6
+  barangays_in_progress intege // 3, 12, 2
+  barangays_with_completed_bdp integer // 10, 13, 6
   total_barangays integer // 23, 25, 14
+  completion_percentage decimal(5, 2) // 43.48, 52, 42.86
   created_at timestamp [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
   updated_at timestamp // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
   indexes {
