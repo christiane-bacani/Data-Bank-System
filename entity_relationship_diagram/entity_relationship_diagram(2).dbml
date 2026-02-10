@@ -334,5 +334,3 @@ Table fact_situational_reports [note: 'Reduction percentage of injury among affe
   created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
   updated_at timestamp // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
 }
-
-// Analyze the data model above and check on how to integrate this indicator `% reduction on casualty during calamity`
