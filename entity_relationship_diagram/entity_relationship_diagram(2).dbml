@@ -84,14 +84,14 @@ Table dim_municipalities {
 }
 
 Table fact_barangay_development_plans {
-  plan_id integer [pk, increment]
+  plan_id integer2 [pk, increment]
   observation_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   municipality_id integer [not null, ref: > dim_municipalities.municipality_id]
-  barangays_with_completed_plans integer // 13, 21, 10
+  barangays_with_no_plans integer
+  barangays_with_completed_plans integer
   total_barangays integer // 23, 25, 14
-  // TODO: Also note who's the barangay who did not complete the plan, still in initial, draft, not starting, etc.
   created_at timestamp [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
   updated_at timestamp // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
   indexes {
