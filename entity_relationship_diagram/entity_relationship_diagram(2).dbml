@@ -84,7 +84,7 @@ Table dim_municipalities {
   created_at timestamp [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
 }
 
-Table fact_barangay_development_plans {
+Table fact_barangay_development_plans [note: 'Increase percentage in barangays with completed Barangay Master Development Plans']{
   plan_id integer2 [pk, increment]
   observation_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -123,7 +123,7 @@ Table dim_ticket_names {
   created_at timestamp [default: `now()`] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
 }
 
-Table fact_performance_reports {
+Table fact_performance_reports [note: 'Increase percentage in citizen concerns addressed via the 8888 hotline']{
   report_id integer [pk, increment]
   report_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -177,7 +177,7 @@ Table dim_beneficiaries {
   created_at timestamp [default: `now()`] // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
 }
 
-Table fact_participation_rates {
+Table fact_participation_rates [note: 'Improvement percentage in government employee service quality']{
   participation_rate_id integer [pk, increment]
   report_date_id integer [not null, ref: > dim_dates.date_id]
   program_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -209,7 +209,7 @@ Table fact_participation_rates {
 // Data Source: Submitted crime reports of PNP/MBDA Daily
 // ============================================
 
-Table dim_police_stations {
+Table dim_police_stations [note: 'Increase percentage in citizen concerns addressed via the 8888 hotline']{
   police_station_id integer [pk, increment]
   municipality_name varchar(150) // City of Balanga, Abucay, Dinalupihan
   barangay_name varchar(150) // Malabia, Laon, San Ramon
@@ -217,7 +217,7 @@ Table dim_police_stations {
   created_at timestamp [default: `now()`] // 2026-02-09 13:35:35, 2026-02-10 13:35:35, 2026-02-11 13:35:35
 }
 
-Table fact_daily_crime_reports {
+Table fact_daily_crime_reports [note: 'Reduction percentage in crime rates through collaboration with law enforcement']{
   crime_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -267,7 +267,7 @@ Table dim_accident_types {
   created_at timestamp [default: 'now()'] // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
 }
 
-Table fact_accident_reports {
+Table fact_accident_reports [note: 'Reduction of percentage on accidents (place on occurence)']{
   accident_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
