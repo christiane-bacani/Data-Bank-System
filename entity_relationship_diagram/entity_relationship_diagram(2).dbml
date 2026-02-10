@@ -49,7 +49,7 @@ Table dim_price_comparison_periods {
   created_at timestamp [default: `now()`] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
 }
 
-Table fact_prices [note: 'Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities'] {
+Table fact_prices [note: 'Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities (OPPDC)'] {
   price_id integer [pk, increment]
   observation_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -84,7 +84,7 @@ Table dim_municipalities {
   created_at timestamp [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
 }
 
-Table fact_barangay_development_plans [note: 'Increase percentage in barangays with completed Barangay Master Development Plans']{
+Table fact_barangay_development_plans [note: 'Increase percentage in barangays with completed Barangay Master Development Plans (OPPDC)'] {
   plan_id integer2 [pk, increment]
   observation_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -123,7 +123,7 @@ Table dim_ticket_names {
   created_at timestamp [default: `now()`] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
 }
 
-Table fact_performance_reports [note: 'Increase percentage in citizen concerns addressed via the 8888 hotline']{
+Table fact_performance_reports [note: 'Increase percentage in citizen concerns addressed via the 8888 hotline (Legal & PHRMO)'] {
   report_id integer [pk, increment]
   report_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -177,7 +177,7 @@ Table dim_beneficiaries {
   created_at timestamp [default: `now()`] // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
 }
 
-Table fact_participation_rates [note: 'Improvement percentage in government employee service quality']{
+Table fact_participation_rates [note: 'Improvement percentage in government employee service quality (PHRMO)'] {
   participation_rate_id integer [pk, increment]
   report_date_id integer [not null, ref: > dim_dates.date_id]
   program_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -204,12 +204,12 @@ Table fact_participation_rates [note: 'Improvement percentage in government empl
 
 // ============================================
 // Indicator: Reduction percentage in crime rates through collaboration with law enforcement 
-// Lead Department: PNP and MBDA
+// Lead Department: MBDA
 // Frequency: Annually
 // Data Source: Submitted crime reports of PNP/MBDA Daily
 // ============================================
 
-Table dim_police_stations [note: 'Increase percentage in citizen concerns addressed via the 8888 hotline']{
+Table dim_police_stations [note: 'Reduction percentage in crime rates through collaboration with law enforcement (MBDA)'] {
   police_station_id integer [pk, increment]
   municipality_name varchar(150) // City of Balanga, Abucay, Dinalupihan
   barangay_name varchar(150) // Malabia, Laon, San Ramon
@@ -217,7 +217,7 @@ Table dim_police_stations [note: 'Increase percentage in citizen concerns addres
   created_at timestamp [default: `now()`] // 2026-02-09 13:35:35, 2026-02-10 13:35:35, 2026-02-11 13:35:35
 }
 
-Table fact_daily_crime_reports [note: 'Reduction percentage in crime rates through collaboration with law enforcement']{
+Table fact_daily_crime_reports {
   crime_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -267,7 +267,7 @@ Table dim_accident_types {
   created_at timestamp [default: 'now()'] // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
 }
 
-Table fact_accident_reports [note: 'Reduction of percentage on accidents (place on occurence)']{
+Table fact_accident_reports [note: 'Reduction of percentage on accidents (place on occurence) (MBDA, PNP, and PDRRMO)'] {
   accident_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -305,18 +305,32 @@ enum population_type {
 Table dim_affected_populations {
   affected_population_id integer [pk, increment]
   population_type population_type // Province, District, Municipality
-  created_at timestamp // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+  population_name varchar(255) // Bataan, District II, City of Balanga
+  created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
 }
 
 Table dim_calamities {
   calamity_id integer [pk, increment]
   calamity_name varchar(255) // Typhoon Yolanda, Earthquake Magnitude 8.2, Robinson Fire
   calamity_type varchar(255) // Meteorological, Geological, Technological
-  created_at timestamp // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+  created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
 }
 
 Table dim_injury_types {
   injury_type_id integer [pk, increment]
   injury_type varchar(255) // Drowning, Burns, Thermal Injuries
-  created_at timestamp // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+  created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+}
+
+Table fact_situational_reports [note: 'Reduction percentage of injury among affected population during calamity (MBDA, PDRRMO)'] {
+  situational_report_id integer []
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  affected_population_id integer [not null, ref: > dim_affected_populations.affected_population_id]
+  calamity_id integer [ref: > dim_calamities.calamity_id]
+  injury_type_id integer [ref: > dim_injury_types.injury_type_id]
+  total_no_of_injuries bigint // 435, 1288, 345
+  created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+  updated_at timestamp // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
 }
