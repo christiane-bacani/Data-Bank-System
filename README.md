@@ -5,9 +5,10 @@ An analytical data repository for the Provincial Government of Bataan that centr
 ## Table of contents
 - [Todo](#todo)
 - [Status](#status)
+- [Undercurrent of the Data Bank](#undercurrent_of_the_data_bank)
 
 ## Todo
-- Fix the facts table of baragangay development plan to include also the number of barangays with different statuses per district
+- Fix the facts table of baragangay development plan to include also the number of barangays with different statuses per district.
 
 ## Status
 - % increase in barangays with completed Barangay Master Development Plans (OPPDC) - `DONE`
@@ -17,3 +18,20 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - % improvement in government employee service quality (PHRMO) - `DONE`
 <br>
 - % % reduction in crime rates through collaboration with law enforcement (MBDA) - `DONE`
+
+## Undercurrent of the Data Bank
+
+### Data Observability
+- Using logging, metrics, and tracking such as lineage.
+
+### Logging
+- Use to record events such as the date when the data is submitted, date when the data is updated, name of the entity who submitted the data, name of the entity who updated the data, specific job/module/class/function that has an error, specific job/module/class/function that is successful, date of when the job/module/class/function is successful, date when the job/module/class/function cause error, source data that causes error, source data that was successful, etc.
+
+### Data Lineage
+- Tracker to track what/when/where/how the data was extracted, transformed, and loaded.
+
+### Data Orchestration/Queuing
+- Tools to automate the pipeline by batch scheduling, near real-time, and/or real-time.
+
+### Data Catalog
+- Contains all the necessary utilities of the pipeline such as the data lineage, metadata, search and discovery features to get the data they needed, papers/agreements for the indicators used for every fact table and data to be use, papers/agreements if they don't send the data on time or proper process if they don't send the data on the given agreement, info about who can view/use different datasets, feedback about the datasets, integration connections (links to the actual data source of the dataset).
