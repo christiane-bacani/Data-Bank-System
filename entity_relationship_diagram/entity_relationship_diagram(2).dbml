@@ -97,7 +97,6 @@ Table fact_barangay_development_plans {
   completion_percentage decimal(5, 2) // 43.48, 52, 42.86
   created_at timestamp [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
   updated_at timestamp // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
-
   indexes {
     (municipality_id, observation_date_id) [name: 'idx_plan_lookup']
     (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
@@ -191,7 +190,6 @@ Table fact_participation_rates {
   participation_rate decimal(5, 2) // 28.72, 24.48, 26.02
   created_at timestamp [default: `now()`] // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
   updated_at timestamp // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
-
   indexes {
     (report_date_id) [name: 'idx_report_lookup']
     (program_start_date_id, program_end_date_id) [name: 'idx_coverage_lookup']
@@ -272,11 +270,13 @@ Table fact_monthly_accident_reports {
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  barangay_location_id integer [ref: > dim_barangay_locations.barangay_location_id]
+  latlong_location_id integer [ref: > dim_latlong_locations.latlong_location_id]
   accident_type_id integer [not null, ref: > dim_accident_types.accident_type_id]
   accident_count bigint // 1477, 2122, 902
   created_at timestamp [default: 'now()'] // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
   updated_at timestamp // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
-  
+
   indexes {
     (reported_date_id, accident_type_id) [name: 'idx_report_lookup']
     (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
