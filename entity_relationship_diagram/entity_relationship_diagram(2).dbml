@@ -285,3 +285,12 @@ Table fact_monthly_accident_reports {
     (accident_type_id) [name: 'idx_accident_type_lookup']
   }
 }
+
+
+
+// ============================================
+// Indicator: Reduction percentage of injury among affected population during calamity
+// Lead Department: MBDA and PDRRMO
+// Frequency: During Situational Report (Can be Daily, Weekly, Monthly, Quarterly, and Annually)
+// Data Source: Situational Report Submitted by MBDA and/or PDRRMO
+// ============================================
