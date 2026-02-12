@@ -404,3 +404,17 @@ Table fact_engagement_reports [note: 'Improvement percentage in government servi
 // Frequency: Yearly analysis but weekly data collection
 // Data Source:
 // ============================================
+
+Table dim_system_platforms {
+  system_platform_id integer [pk, increment]
+  system_platform varchar(50) // Website, Mobile, Desktop
+  created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
+}
+
+Table dim_digital_governance_systems {
+  digital_governance_system_id integer [pk, increment]
+  system_category varchar(255) // Document Management Systems, Human Resource Information Systems, Financial Management Information Systems
+  system_category_code varchar(100) // DMS, HRIS, FMIS
+  system_name varchar(255) // Document Management System of OPPCC, HRIS of PHRMO, FMIS of BPPPIC
+  created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
+}
