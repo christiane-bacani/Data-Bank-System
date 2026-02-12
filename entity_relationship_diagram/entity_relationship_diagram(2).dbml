@@ -7,7 +7,6 @@ Table dim_dates {
   full_date date [unique] // 2026-02-06, 2027-03-09, 2028-04-10 
   year year // 2026, 2027, 2028
   quarter char(2) // Q1, Q2, Q3
-
   month integer // 2, 3, 4
   month_name varchar(20) // February, March, April
   week_number integer // 16, 17, 18
@@ -15,6 +14,12 @@ Table dim_dates {
   is_weekend boolean // FALSE, FALSE, FALSE
   is_holiday boolean // FALSE, FALSE, FALSE
   created_at timestamp [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
+}
+
+Table dim_times {
+  time_id integer [pk, increment]
+  time time // 08:38:38, 12:38:38, 16:38:38
+  time_period char(2) // AM, PM
 }
 
 
@@ -126,6 +131,7 @@ Table dim_ticket_names {
 Table fact_performance_reports [note: 'Increase percentage in citizen concerns addressed via the 8888 hotline (Legal & PHRMO)']{
   report_id integer [pk, increment]
   report_date_id integer [not null, ref: > dim_dates.date_id]
+  reported_time_id integer [not null, ref: > dim_times.time_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   ticket_name_id integer [not null, ref: > dim_ticket_names.ticket_name_id]
@@ -159,7 +165,7 @@ Table dim_locations {
 }
 
 Table dim_implementing_offices {
-  office_id integer [pk, increment]
+  implementing_office_id integer [pk, increment]
   office_code varchar(50) // PIO, OPPDC, BPPIC
   office_name varchar(150) // Provincial Information Office, Office of the Provincial Planning and Development Coordinator, Bataan Public-Private Partnership and Investment Center
   created_at timestamp [default: `now()`] // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
@@ -183,7 +189,7 @@ Table fact_participation_rates [note: 'Improvement percentage in government empl
   program_start_date_id integer [not null, ref: > dim_dates.date_id]
   program_end_date_id integer [not null, ref: > dim_dates.date_id]
   location_id integer [not null, ref: > dim_locations.location_id]
-  office_id integer [not null, ref: > dim_implementing_offices.office_id]
+  implementing_office_id integer [not null, ref: > dim_implementing_offices.implementing_office_id]
   program_head_id integer [not null, ref: > dim_program_heads.program_head_id]
   beneficiary_id integer [not null, ref: > dim_beneficiaries.beneficiary_id]
   number_of_participated_employees bigint // 54, 35, 38
@@ -295,6 +301,13 @@ Table fact_accident_reports [note: 'Reduction of percentage on accidents (place 
 // Data Source: Situational Report Submitted by MBDA and/or PDRRMO
 // ============================================
 
+Table dim_calamities {
+  calamity_id integer [pk, increment]
+  calamity_name varchar(255) // Typhoon Yolanda, Earthquake Magnitude 8.2, Robinson Fire
+  calamity_type varchar(255) // Meteorological, Geological, Technological
+  created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+}
+
 enum population_type {
   Province
   District
@@ -309,19 +322,6 @@ Table dim_affected_populations {
   created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
 }
 
-Table dim_calamities {
-  calamity_id integer [pk, increment]
-  calamity_name varchar(255) // Typhoon Yolanda, Earthquake Magnitude 8.2, Robinson Fire
-  calamity_type varchar(255) // Meteorological, Geological, Technological
-  created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
-}
-
-Table dim_injury_types {
-  injury_type_id integer [pk, increment]
-  injury_type varchar(255) // Drowning, Burns, Thermal Injuries
-  created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
-}
-
 Table fact_situational_reports [note: 'Reduction percentage of injury and casualties among affected population during calamity (MBDA and PDRRMO)'] {
   situational_report_id integer []
   reported_date_id integer [not null, ref: > dim_dates.date_id]
@@ -329,7 +329,6 @@ Table fact_situational_reports [note: 'Reduction percentage of injury and casual
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   affected_population_id integer [not null, ref: > dim_affected_populations.affected_population_id]
   calamity_id integer [ref: > dim_calamities.calamity_id]
-  injury_type_id integer [ref: > dim_injury_types.injury_type_id]
   total_no_of_reported_fatality bigint // 233, 123, 321
   total_no_of_reported_injuries bigint // 435, 1288, 345
   total_no_of_reported_missing_persons bigint // 28, 1, 3
