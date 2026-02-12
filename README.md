@@ -25,6 +25,10 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - % reductions on accidents (place of occurrence) (MBDA, PNP, and PDRRMO) - `DONE`
 - % reduction of injury among affected population during calamity (MBDA, PDRRMO) - `PENDING`
 
+<br>
+
+- % improvement in government service delivery via social media (PIO) - `PENDING`
+
 ## Undercurrent of the Data Bank
 
 ### Data Observability
@@ -40,4 +44,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - Tools to automate the pipeline by batch scheduling, near real-time, and/or real-time.
 
 ### Data Catalog
-- Contains all the necessary utilities of the pipeline such as the data lineage, metadata, search and discovery features to get the data they needed, papers/agreements for the indicators used for every fact table and data to be use, papers/agreements if they don't send the data on time or proper process if they don't send the data on the given agreement, info about who can view/use different datasets, feedback about the datasets, integration connections (links to the actual data source of the dataset).
+- Contains all the necessary utilities of the pipeline such as the data lineage, metadata, search and discovery features to get the data they needed, agreements for the data/indicators/success indicators to be used per department, agreements on what date/time/period they needed to submit the data, agreements on proper escalation process if they don't send the data on time, information about who can access the different datasets on the data bank, feedback data of the users of the data bank, integration connections (links to the actual data source of the dataset).
