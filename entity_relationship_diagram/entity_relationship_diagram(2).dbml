@@ -372,7 +372,7 @@ Table dim_social_media_platforms {
   created_at timestamp [default: 'now()'] // 2026-02-12 09:53:33, 2026-02-12 11:53:33, 2026-02-12 14:53:33
 }
 
-Table fact_engagement_reports {
+Table fact_engagement_reports [note: 'Improvement percentage in government service delivery via social media (PIO)'] {
   engagement_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   reported_time_id integer [not null, ref: > dim_times.time_id]
@@ -387,4 +387,10 @@ Table fact_engagement_reports {
   total_no_of_followers bigint // 13000, 14000, 15000
   created_at timestamp [default: 'now()'] // 2026-02-12 10:18:18, 2026-02-12 11:18:18, 2026-02-12 12:18:18
   updated_at timestamp // 2026-02-12 10:18:18, 2026-02-12 11:18:18, 2026-02-12 12:18:18
+
+  indexes {
+    (reported_date_id, social_media_program_id) [name: 'idx_report_lookup']
+    (social_media_platform_id) [name: 'idx_social_media_platform']
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverae_lookup']
+  }
 }
