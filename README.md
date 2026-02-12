@@ -8,7 +8,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - [Undercurrent of the Data Bank](#Undercurrent-of-the-Data-Bank)
 
 ## Todo
-- After creating the data model, check if there's a facts table that needed time dimension
+- Add new facts table
 
 ## Status
 - % increase in barangays with completed Barangay Master Development Plans (OPPDC) - `DONE`
