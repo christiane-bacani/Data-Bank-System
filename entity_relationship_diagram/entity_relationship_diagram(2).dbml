@@ -393,3 +393,14 @@ Table fact_engagement_reports [note: 'Improvement percentage in government servi
     (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverae_lookup']
   }
 }
+
+
+
+
+
+// ============================================
+// Indicator: Increase percentage in implementation of digital governance systems
+// Lead Department: PITO
+// Frequency: Yearly analysis but weekly data collection
+// Data Source:
+// ============================================
