@@ -419,6 +419,7 @@ Table dim_api_credentials {
   credential_type_name varchar(255) // OAuth, API Key, Json-Web Token
   endpoint_url text // https://api.gov/hris/status, https://api.gov/fmis/status, https://api.gov/proc/status
   credential_issuer varchar(150) // Name of the credential issuer to track the health status of the specified governance system
+  credentials_recent_used_timestamp timestamp // 2026-02-12, 2026-02-13, 2026-02-14 
   credential_expiration_date date // 2026-02-12, 2026-02-13, 2026-02-14
   created_at timestamp [default: 'now()'] // 2026-02-12 13:20:20, 2026-02-12 14:20:20, 2026-02-12 13:20:20
 }
