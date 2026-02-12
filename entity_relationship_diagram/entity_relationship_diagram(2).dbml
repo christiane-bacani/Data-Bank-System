@@ -389,8 +389,8 @@ Table fact_engagement_reports [note: 'Improvement percentage in government servi
 
   indexes {
     (reported_date_id, social_media_program_id) [name: 'idx_report_lookup']
-    (social_media_platform_id) [name: 'idx_social_media_platform']
-    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverae_lookup']
+    (social_media_platform_id) [name: 'idx_social_media_platform_lookup']
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
   }
 }
 
@@ -405,31 +405,80 @@ Table fact_engagement_reports [note: 'Improvement percentage in government servi
 // Data Source:
 // ============================================
 
-Table dim_system_platforms {
-  system_platform_id integer [pk, increment]
-  system_platform varchar(50) // Website, Mobile, Desktop
-  created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
-}
-
 Table dim_digital_governance_systems {
   digital_governance_system_id integer [pk, increment]
   system_category varchar(255) // Document Management Systems, Human Resource Information Systems, Financial Management Information Systems
   system_category_code varchar(100) // DMS, HRIS, FMIS
+  system_platform varchar(50) // Website, Mobile, Desktop
   system_name varchar(255) // Document Management System of OPPCC, HRIS of PHRMO, FMIS of BPPPIC
   created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
 }
 
-Table dim_system_status {
+/*
+Table dim_api_credential_types {
+  credential_type_id integer [pk, increment]
+  credential_type_name varchar(255) // OAuth, API Key, JSON-Web Token
+  description text // OAuth (Open Authorization) is an open standard protocol that enables secure delegated access between applications without sharing sensitive credentials like passwords., An API key is a unique identifier used to authenticate requests to an API., A JSON Web Token (JWT) is a compact, self-contained, and secure way to transmit information between two parties as a JSON object.
+  created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
+}
+
+Table dim_api_processes {
+  api_process_id integer [pk, increment]
+  api_process_description text // API key in header, OAuth 2.0 Bearer Token, JWT Bearer Token
+  endpoint_url text // 	https://api.gov/hris/status, https://api.gov/fmis/status, https://api.gov/proc/status
+  created_at timestamp [default: 'now()'] // 2026-02-12 13:20:20, 2026-02-12 14:20:20, 2026-02-12 13:20:20
+}
+*/
+
+/*
+Table dim_crendential_metadatas {
+  credential_metadata_id integer [pk, increment]
+  credential_type_name varchar(255) // OAuth, API Key, JSON-Web Token
+  credential_issuer varchar(150) // Name of the credential issuer to track the health status of the specified governance system
+  credential_expiration_date date // 2026-02-12, 2026-02-13, 2026-02-14
+  created_at timestamp [default: 'now()'] // 2026-02-12 13:20:20, 2026-02-12 14:20:20, 2026-02-12 13:20:20
+}
+*/
+
+Table dim_api_credentials {
+  api_credentials_id integer [pk, increment]
+  credential_type_name varchar(255) // OAuth, API Key, Json-Web Token
+  endpoint_url text // https://api.gov/hris/status, https://api.gov/fmis/status, https://api.gov/proc/status
+  credential_issuer varchar(150) // Name of the credential issuer to track the health status of the specified governance system
+  credential_expiration_date date // 2026-02-12, 2026-02-13, 2026-02-14
+  created_at timestamp [default: 'now()'] // 2026-02-12 13:20:20, 2026-02-12 14:20:20, 2026-02-12 13:20:20
+}
+
+Table dim_system_statuses {
   system_status_id integer [pk, increment]
   system_status varchar(50) // Online, Offline, Degraded, Maintenance, Error
   created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
 }
 
-Table dim_api_credentials {
-  api_credential_id integer [pk, increment]
-  api_key_masked text
-  auth_token_masked text
-  username text
-  password_masked text
+Table dim_last_active_users {
+  last_active_user_id integer [pk, increment]
+  user_last_activity_timestamp timestamp // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
+  user_id varchar(100) // USER001, USER002, USER003
+  username varchar(255) // u***r1, u***r2, u***r3
   created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
+}
+
+Table fact_system_checkings {
+  system_check_id integer [pk, increment]
+  checking_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  digital_governance_system_id integer [not null, ref: > dim_digital_governance_systems.digital_governance_system_id]
+  api_credentials_used_id integer [not null, ref: > dim_api_credentials.api_credentials_id]
+  system_status_id integer [not null, ref: > dim_system_statuses.system_status_id]
+  last_active_user_id integer [not null, ref: > dim_last_active_users.last_active_user_id]
+  response_time decimal(11, 2) // 84223.23, 123.23, 32.11
+  created_at timestamp [default: 'now()'] // 2026-02-12 15:18:18, 2026-02-13 15:18:18, 2026-02-14 16:18:18
+  updated_at timestamp // 2026-02-12 15:18:18, 2026-02-13 15:18:18, 2026-02-14 16:18:18
+
+  indexes {
+    (checking_date_id, system_status_id) [name: 'idx_report_lookup']
+    (digital_governance_system_id) [name: 'idx_digital_governance_system_lookup']
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_coverage_lookup']
+  }
 }
