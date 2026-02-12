@@ -355,7 +355,7 @@ Table fact_situational_reports [note: 'Reduction percentage of injury and casual
 // Indicator: Improvement percentage in government service delivery via social media
 // Lead Department: PIO
 // Frequency: Annually
-// Data Source:
+// Data Source: Reports submitted by the Digital Media Division of PIO for Social Media Analytics
 // ============================================
 
 Table dim_social_media_programs {
@@ -375,7 +375,6 @@ Table dim_social_media_platforms {
 Table fact_engagement_reports [note: 'Improvement percentage in government service delivery via social media (PIO)'] {
   engagement_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
-  reported_time_id integer [not null, ref: > dim_times.time_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   social_media_program_id integer [not null, ref: > dim_social_media_programs.social_media_program_id]
