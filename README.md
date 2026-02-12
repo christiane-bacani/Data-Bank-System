@@ -25,7 +25,8 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - Contains all the necessary utilities of the pipeline such as the data lineage, metadata, search and discovery features to get the data they needed, agreements for the data/indicators/success indicators to be used per department, agreements on how to measure the indicators/success indicators, agreements on how to submit the data, agreements on who is/are the people who will submit the data, agreements on systems to use (if feasible) that sends that data or supports the extraction of the data, agreements on what date/time/period they needed to submit the data, agreements on proper escalation process if they don't send the data on time, information about who can access the different datasets on the data bank, feedback data of the users of the data bank, integration connections (links to the actual data source of the dataset).
 
 ## Todo
-- Add new facts table
+- Fix the documentation to make the status be in tabular format
+- Create the star schema of the pending status
 
 ## Status
 - % increase in barangays with completed Barangay Master Development Plans (OPPDC) - `DONE`
@@ -52,4 +53,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 
 <br>
 
-% improvement in citizen access to services
+% improvement in citizen access to services (PGO) - `PENDING`
