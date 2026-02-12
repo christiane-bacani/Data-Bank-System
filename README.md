@@ -27,7 +27,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 
 <br>
 
-- % improvement in government service delivery via social media (PIO) - `PENDING`
+- % improvement in government service delivery via social media (PIO) - `DONE`
 
 ## Undercurrent of the Data Bank
 
