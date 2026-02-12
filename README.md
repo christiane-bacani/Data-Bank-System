@@ -41,7 +41,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 
 - % reduction in crime rates through collaboration with law enforcement (MBDA) - `DONE`
 - % reductions on accidents (place of occurrence) (MBDA, PNP, and PDRRMO) - `DONE`
-- % reduction of injury among affected population during calamity (MBDA, PDRRMO) - `PENDING`
+- % reduction of injury among affected population during calamity (MBDA, PDRRMO) - `DONE`
 
 <br>
 
