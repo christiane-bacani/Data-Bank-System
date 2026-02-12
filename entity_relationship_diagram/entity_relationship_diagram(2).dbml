@@ -418,3 +418,18 @@ Table dim_digital_governance_systems {
   system_name varchar(255) // Document Management System of OPPCC, HRIS of PHRMO, FMIS of BPPPIC
   created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
 }
+
+Table dim_system_status {
+  system_status_id integer [pk, increment]
+  system_status varchar(50) // Online, Offline, Degraded, Maintenance, Error
+  created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
+}
+
+Table dim_api_credentials {
+  api_credential_id integer [pk, increment]
+  api_key_masked text
+  auth_token_masked text
+  username text
+  password_masked text
+  created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
+}
