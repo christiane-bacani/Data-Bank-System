@@ -380,4 +380,11 @@ Table fact_engagement_reports {
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   social_media_program_id integer [not null, ref: > dim_social_media_programs.social_media_program_id]
   social_media_platform_id integer [not null, ref: > dim_social_media_platforms.social_media_platform_id]
+  total_no_of_reach bigint // 15000, 16000, 17000 
+  total_no_of_likes bigint // 5099, 9905, 9059
+  total_no_of_shares bigint /// 123, 321, 213
+  total_no_of_comments bigint // 684, 784, 884
+  total_no_of_followers bigint // 13000, 14000, 15000
+  created_at timestamp [default: 'now()'] // 2026-02-12 10:18:18, 2026-02-12 11:18:18, 2026-02-12 12:18:18
+  updated_at timestamp // 2026-02-12 10:18:18, 2026-02-12 11:18:18, 2026-02-12 12:18:18
 }
