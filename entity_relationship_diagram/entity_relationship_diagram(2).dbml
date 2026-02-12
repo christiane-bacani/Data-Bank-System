@@ -354,20 +354,30 @@ Table fact_situational_reports [note: 'Reduction percentage of injury and casual
 // ============================================
 // Indicator: Improvement percentage in government service delivery via social media
 // Lead Department: PIO
-// Frequency:
+// Frequency: Annually
 // Data Source:
 // ============================================
-
 
 Table dim_social_media_programs {
   social_media_program_id integer [pk, increment]
   program_category varchar(255) // Public Service Announcements, Community Engagement Campaigns, Event Promotion
   program_name text // Kwentuhan Tayo, Bataeño, Bisita Bayan Outreach Program, Official News & Events Calendar
+  description text // A weekly public information and engagement program launched on July 4, 2022 and spearheaded by the Provincial Information Office under the Provincial Government of Bataan., A community outreach initiative that brings provincial leaders, local officials, and community stakeholders together to directly engage residents and address social issues at the local level., The provincial government promotes a wide range of official events via its news portal (1Bataan) and social media channels.
   created_at timestamp [default: 'now()']
 }
 
 Table dim_social_media_platforms {
   social_media_platform_id integer [pk, increment]
   social_media_name varchar(255) // Facebook, TikTok, Instagram
-  created_at timestamp [default: 'now()']
+  created_at timestamp [default: 'now()'] // 2026-02-12 09:53:33, 2026-02-12 11:53:33, 2026-02-12 14:53:33
+}
+
+Table fact_engagement_reports {
+  engagement_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  reported_time_id integer [not null, ref: > dim_times.time_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  social_media_program_id integer [not null, ref: > dim_social_media_programs.social_media_program_id]
+  social_media_platform_id integer [not null, ref: > dim_social_media_platforms.social_media_platform_id]
 }
