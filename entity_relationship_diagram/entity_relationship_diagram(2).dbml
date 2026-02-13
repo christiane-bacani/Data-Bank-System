@@ -476,3 +476,10 @@ Table dim_barangays {
   barangay_name varchar(255) // Calaylayan, San Jose, Poblacion
   created_at timestamp [default: 'now()'] // 2026-02-13 08:31:31, 2026-02-14 08:31:31, 2026-02-15 08:31:31
 }
+
+Table fact_registration_reports {
+  registration_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+}
