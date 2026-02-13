@@ -504,12 +504,25 @@ Table fact_registration_reports [note: 'Improvement percentage in citizen access
 // Data Source: Enrollment Status Report of every LGUs and cross-check to the PGS, Validated data of the submitted enrollment status report of every LGU from the PGO
 // ============================================
 
-Table dim_lgus {
-  lgu_id integer [pk, increment]
-  lgu varchar(100) // City of Balanga, Abucay, Dinalupihan
-  created_at timestamp [default: 'now()'] // 2026-02-13 11:42:42, 2026-02-14 11:42:42, 2026-02-15 11:42:42
+Table dim_districts {
+  district_id integer [pk, increment]
+  district_name varchar(50) // District I, District II, District III
+  created_at timestamp [default: 'now()'] // 2026-02-13 14:03:26, 2026-02-14 14:13:26, 2026-02-15 14:13:26
 }
 
 Table fact_enrollment_reports {
   enrollment_report_id integer [pk, increment]
+  report_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  district_id integer [not null, ref: > dim_districts.district_id]
+  total_no_of_enrolled_lgus bigint
+  total_no_of_lgus bigint
+  enrolled_rate decimal(5, 2)
+  created_at timestamp [default: 'now()'] // 2026-02-13 13:35:35, 2026-02-13 14:35:35, 2026-02-13 15:35:35
+  updated_at timestamp // 2026-02-13 13:35:35, 2026-02-13 14:35:35, 2026-02-13 15:35:35
+
+  indexes {
+    (report_date_id, coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_lookup']
+  }
 }
