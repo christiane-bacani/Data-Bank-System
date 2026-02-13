@@ -402,7 +402,7 @@ Table fact_engagement_reports [note: 'Improvement percentage in government servi
 // Indicator: Increase percentage in implementation of digital governance systems
 // Lead Department: PITO
 // Frequency: Yearly analysis to compare the average increase percentage per year but weekly data collection and comparison
-// Data Source:
+// Data Source: System Proposal Submitted by PITO to PGO containing the API Credentials to use for system status checkings on a random day per week
 // ============================================
 
 Table dim_digital_governance_systems {
