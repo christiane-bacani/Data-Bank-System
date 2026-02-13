@@ -54,3 +54,11 @@ An analytical data repository for the Provincial Government of Bataan that centr
 <br>
 
 - % improvement in citizen access to services (PGO) - `DONE`
+- % of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives (PGO) - `PENDING`
+
+## Status Table
+
+| Lead Department | Indicator | Status|
+|-----------------|-----------|-------|
+|   OPPDC         | % increase in barangays with completed Barangay Master Development Plans | Done |
+|   OPPDC         | % reduction in inflation rates through price monitoring and direct selling of basic commodities | Done |
