@@ -31,13 +31,12 @@ Table dim_times {
 // Lead Department: OPPDC
 // Frequency: Annually
 // Data Source: Provincial Online Price Monitoring System
-
 // ============================================
 
 Table dim_local_government_units {
-  lgu_id integer [pk, increment]
+  local_government_unit_id integer [pk, increment]
   district_name varchar(50) // District I, District II, District III
-  lgu_name varchar(150) // Abucay, Balanga, Orani
+  municipality_name varchar(150) // Abucay, Balanga, Orani
   created_at timestamp [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
 }
 
@@ -59,7 +58,7 @@ Table fact_prices [note: 'Reduction percentage in inflation rates through price 
   observation_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  lgu_id integer [not null, ref: > dim_local_government_units.lgu_id]
+  local_government_unit_id integer [not null, ref: > dim_local_government_units.local_government_unit_id]
   product_id integer [not null, ref: > dim_agricultural_products.product_id]
   comparison_period_id integer [not null, ref: > dim_price_comparison_periods.comparison_period_id]
   average_price decimal(10, 2) // 216.00, 172.50, 216
@@ -68,7 +67,7 @@ Table fact_prices [note: 'Reduction percentage in inflation rates through price 
   updated_at timestamp // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
 
   indexes {
-    (observation_date_id, lgu_id, product_id) [name: 'idx_price_lookup']
+    (observation_date_id, local_government_unit_id, product_id) [name: 'idx_price_lookup']
     (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_period']
   }
 }
@@ -502,5 +501,15 @@ Table fact_registration_reports [note: 'Improvement percentage in citizen access
 // Indicator: Percentage of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives
 // Lead Department: PGO
 // Frequency: Annually
-// Data Source:
+// Data Source: Enrollment Status Report of every LGUs and cross-check to the PGS, Validated data of the submitted enrollment status report of every LGU from the PGO
 // ============================================
+
+Table dim_lgus {
+  lgu_id integer [pk, increment]
+  lgu varchar(100) // City of Balanga, Abucay, Dinalupihan
+  created_at timestamp [default: 'now()'] // 2026-02-13 11:42:42, 2026-02-14 11:42:42, 2026-02-15 11:42:42
+}
+
+Table fact_enrollment_reports {
+  enrollment_report_id integer [pk, increment]
+}
