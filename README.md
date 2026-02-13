@@ -26,6 +26,8 @@ An analytical data repository for the Provincial Government of Bataan that centr
 
 ## Todo
 - Create the star schema of the pending status
+- Check every facts table which facts table has shared dimension and create shared dimension based on that facts table
+
 
 ## Status Table
 
