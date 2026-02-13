@@ -437,7 +437,7 @@ Table dim_last_active_users {
   created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
 }
 
-Table fact_system_status_checks {
+Table fact_system_status_checks [note: 'Increase percentage in implementation of digital governance systems (PITO)'] {
   system_status_check_id integer [pk, increment]
   check_date_id integer [not null, ref: > dim_dates.date_id]
   check_time_id integer [not null, ref: > dim_times.time_id]
@@ -477,7 +477,7 @@ Table dim_barangays {
   created_at timestamp [default: 'now()'] // 2026-02-13 08:31:31, 2026-02-14 08:31:31, 2026-02-15 08:31:31
 }
 
-Table fact_registration_reports {
+Table fact_registration_reports [note: 'Improvement percentage in citizen access to services (PGO)'] {
   registration_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
