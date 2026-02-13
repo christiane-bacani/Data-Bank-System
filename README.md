@@ -53,4 +53,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 
 <br>
 
-% improvement in citizen access to services (PGO) - `PENDING`
+- % improvement in citizen access to services (PGO) - `DONE`
