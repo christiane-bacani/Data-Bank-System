@@ -5,7 +5,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 ## Table of contents
 - [Undercurrent of the Data Bank](#Undercurrent-of-the-Data-Bank)
 - [Todo](#Todo)
-- [Status](#Status)
+- [Status Table](#Status-Table)
 
 ## Undercurrent of the Data Bank
 
@@ -27,34 +27,6 @@ An analytical data repository for the Provincial Government of Bataan that centr
 ## Todo
 - Fix the documentation to make the status be in tabular format
 - Create the star schema of the pending status
-
-## Status
-- % increase in barangays with completed Barangay Master Development Plans (OPPDC) - `DONE`
-- % reduction in inflation rates through price monitoring and direct selling of basic commodities (OPPDC) - `Done`
-
-<br>
-
-- % increase in citizen concerns addressed via the 8888 hotline (Legal & PHRMO) - `DONE`
-- % improvement in government employee service quality (PHRMO) - `DONE`
-
-<br>
-
-- % reduction in crime rates through collaboration with law enforcement (MBDA) - `DONE`
-- % reductions on accidents (place of occurrence) (MBDA, PNP, and PDRRMO) - `DONE`
-- % reduction of injury among affected population during calamity (MBDA, PDRRMO) - `DONE`
-
-<br>
-
-- % improvement in government service delivery via social media (PIO) - `DONE`
-
-<br>
-
-- % increase in implementation of digital governance systems (PITO) - `DONE`
-
-<br>
-
-- % improvement in citizen access to services (PGO) - `DONE`
-- % of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives (PGO) - `PENDING`
 
 ## Status Table
 
