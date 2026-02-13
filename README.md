@@ -62,21 +62,27 @@ An analytical data repository for the Provincial Government of Bataan that centr
 |-----------------|-----------|-------|
 |   OPPDC         | % increase in barangays with completed Barangay Master Development Plans | Done |
 |   OPPDC         | % reduction in inflation rates through price monitoring and direct selling of basic commodities | Done |
-|                 |           |       |
+
+<br>
+
 |                 |           |       |
 | Legal & PHRMO   | % increase in citizen concerns addressed via the 8888 hotline | Done |
 | PHRMO           | % improvement in government employee service quality | Done |
-|                 |           |       |
-|                 |           |       |
+<br>
+
 | MBDA            | % reduction in crime rates through collaboration with law enforcement | Done|
 | MBDA, PNP, and PDRRMO | % reductions on accidents (place of occurrence) | Done |
 | MBDA and PDRMOO | % reduction of injury among affected population during calamity | Done |
-|                 |           |       |
+
+<br>
+
 | PIO             | % improvement in government service delivery via social media | Done |
-|                 |           |       |
-|                 |           |       |
+
+<br>
+
 | PITO            | % increase in implementation of digital governance systems | Done |
-|                 |           |       |
-|                 |           |       |
+
+<br>
+
 | PGO             | % improvement in citizen access to services | Done |
 | PGO             | % of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives | Done |
