@@ -495,8 +495,6 @@ Table fact_registration_reports [note: 'Improvement percentage in citizen access
 
 
 
-
-
 // ===========================================
 // Indicator: Percentage of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives
 // Lead Department: PGO
@@ -525,4 +523,24 @@ Table fact_enrollment_statuses [note: 'Percentage of LGUs enrolled in the Perfor
     (report_date_id, coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_lookup']
     (district_id) [name: 'idx_district_lookup']
   }
+}
+
+
+
+// ===========================================
+// Indicator: Percentage of increase in innovation hubs established
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source: Annual Reports Submitted to PGO for the Innovation Hubs Establshed per Municipalities
+// ============================================
+
+/*
+enum innovation_hub_status {
+
+}
+*/
+
+Table dim_innovation_hub_statuses {
+  innovation_hub_status_id integer [pk, increment]
+  innovation_hub_status innovation_hub_status // Proposed, Approved, Funded
 }
