@@ -457,3 +457,22 @@ Table fact_system_status_checks {
     (coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_coverage_lookup']
   }
 }
+
+
+
+
+
+// ============================================
+// Indicator: Improvement percentage in citizen access to services
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source: Submitted Reports of PGO/POPCOM of the number of people who registered to the Bataeño Pass per Barangay
+// ============================================
+
+Table dim_barangays {
+  barangay_id integer [pk, increment]
+  district_name varchar(100) // District I, District II, District III
+  municipality_name varchar(255) // Abucay, Cigty of Balanga, Dinalupihan
+  barangay_name varchar(255) // Calaylayan, San Jose, Poblacion
+  created_at timestamp [default: 'now()'] // 2026-02-13 08:31:31, 2026-02-14 08:31:31, 2026-02-15 08:31:31
+}
