@@ -482,4 +482,13 @@ Table fact_registration_reports {
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  barangay_id integer [not null, ref: > dim_barangays.barangay_id]
+  created_at timestamp [default: 'now()'] // 2026-02-13 08:31:31, 2026-02-14 08:31:31, 2026-02-15 08:31:31
+  total_no_of_registered_users bigint  // 54,546,561, 54,546,572, 54,546,944
+  total_population bigint // 109093123, 109093144, 109093888
+  updated_at timestamp // 2026-02-13 08:31:31, 2026-02-14 08:31:31, 2026-02-15 08:31:31
+
+  indexes {
+    (reported_date_id, barangay_id) [name: 'idx_report_lookup']
+  }
 }
