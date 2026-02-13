@@ -42,4 +42,5 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PIO             | % improvement in government service delivery via social media | Done |
 | PITO            | % increase in implementation of digital governance systems | Done |
 | PGO             | % improvement in citizen access to services | Done |
-| PGO             | % of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives | Pending |
+| PGO             | % of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives | Done |
+| PGO             | % increase in innovation hubs established | Pending | 
