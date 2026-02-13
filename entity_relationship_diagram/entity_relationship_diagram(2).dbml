@@ -490,6 +490,6 @@ Table fact_registration_reports {
 
   indexes {
     (reported_date_id, barangay_id) [name: 'idx_report_lookup']
-    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']   
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
   }
 }
