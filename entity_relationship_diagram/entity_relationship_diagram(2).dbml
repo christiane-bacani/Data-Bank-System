@@ -493,3 +493,14 @@ Table fact_registration_reports [note: 'Improvement percentage in citizen access
     (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
   }
 }
+
+
+
+
+
+// ===========================================
+// Indicator: Percentage of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source:
+// ============================================
