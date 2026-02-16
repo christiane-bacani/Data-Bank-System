@@ -103,8 +103,7 @@ Table fact_barangay_development_plans [note: 'Increase percentage in barangays w
   updated_at timestamp // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
 
   indexes {
-    (municipality_id, observation_date_id) [name: 'idx_plan_lookup']
-    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
+    (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']
   }
 }
 
