@@ -142,8 +142,8 @@ Table fact_performance_reports [note: 'Increase percentage in citizen concerns a
   updated_at timestamp // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
 
   indexes {
-    (report_date_id, ticket_name_id) [name: 'idx_report_lookup']
-    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, ticket_name_id) [name: 'idx_general_report_lookup']
   }
 }
 
