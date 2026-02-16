@@ -556,3 +556,24 @@ Table fact_hub_status_reports [note: 'Increase percentage in innovation hubs est
     (coverage_start_date_id, coverage_end_date_id, reporting_municipality_id) [name: 'idx_report_lookup']    
   }
 }
+
+
+
+// ===========================================
+// Indicator: % growth in defense industry investments
+// Indicator: Percentage of growth in defense industry investments
+// Lead Department: PGO
+// Frequency: Quarterly
+// Data Source: Submitted spending reports of PGO that is coordinated with SPEDZA (pecial Defense Economic Zone Act)
+// ============================================
+
+enum spending_type {
+  Investment
+  Disbursement
+  Expenditure  
+}
+
+Table dim_spending_types {
+  spending_type_id integer [pk, increment]
+  spending_type spending_type // Budget, Disbursement, Expenditure
+}
