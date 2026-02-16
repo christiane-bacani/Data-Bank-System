@@ -26,6 +26,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 
 ## Todo
 - After successfully implementing all the data models as a galaxy schema, check what facts table has shared dimensions and implement it by creating a shared dimensions for
+- Implement an audit table to reference all facts and dimensions who submit and verified that data/table
 
 ## Status Table
 
