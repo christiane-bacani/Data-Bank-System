@@ -235,9 +235,8 @@ Table fact_crime_reports [note: 'Reduction percentage in crime rates through col
 
 
   indexes {
-    (reported_date_id, police_station_id) [name: 'idx_report_lookup']
-    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
-    (police_station_id) [name: 'idx_station_lookup']
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_general_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, police_station_id) [name: 'idx_report_lookup']
   }
 }
 
@@ -286,9 +285,8 @@ Table fact_accident_reports [note: 'Reduction of percentage on accidents (place 
   updated_at timestamp // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
 
   indexes {
-    (reported_date_id, accident_type_id) [name: 'idx_report_lookup']
-    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
-    (accident_type_id) [name: 'idx_accident_type_lookup']
+    (coverage_start_date_id, coverage_end_date_id, barangay_location_id) [name: 'idx_report_lookup_for_pnp']
+    (coverage_start_date_id, coverage_end_date_id, latlong_location_id) [name: 'idx_report_lookup_for_mbda']
   }
 }
 
@@ -301,11 +299,11 @@ Table fact_accident_reports [note: 'Reduction of percentage on accidents (place 
 // Data Source: Situational Report Submitted by MBDA and/or PDRRMO
 // ============================================
 
-Table dim_calamities {
-  calamity_id integer [pk, increment]
-  calamity_name varchar(255) // Typhoon Yolanda, Earthquake Magnitude 8.2, Robinson Fire
-  calamity_type varchar(255) // Meteorological, Geological, Technological
-  created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+Table dim_reporting_agencies {
+  reporting_agency_id integer [pk, increment]
+  agency_code varchar(150) // MBDA, PDRMMO
+  agency_name varchar(255) // Metro Bataan Development Authority, Pronvicial Disaster Risk Reduction and Management Office
+  created_at timestamp [default: 'now()'] // 2026-02-16 09:23:23, 2026-02-17 09:23:23, 2026-02-18 09:23:23
 }
 
 enum population_type {
@@ -322,12 +320,20 @@ Table dim_affected_populations {
   created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
 }
 
+Table dim_calamities {
+  calamity_id integer [pk, increment]
+  calamity_name varchar(255) // Typhoon Yolanda, Earthquake Magnitude 8.2, Robinson Fire
+  calamity_type varchar(255) // Meteorological, Geological, Technological
+  created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+}
+
 Table fact_situational_reports [note: 'Reduction percentage of injury and casualties among affected population during calamity (MBDA and PDRRMO)'] {
   situational_report_id integer []
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   reported_time_id integer [not null, ref: > dim_times.time_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  reporting_agency_id integer [not null, ref: > dim_reporting_agencies.reporting_agency_id]
   affected_population_id integer [not null, ref: > dim_affected_populations.affected_population_id]
   calamity_id integer [ref: > dim_calamities.calamity_id]
   total_no_of_reported_fatality bigint // 233, 123, 321
@@ -338,9 +344,8 @@ Table fact_situational_reports [note: 'Reduction percentage of injury and casual
   updated_at timestamp // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
 
   indexes {
-    (reported_date_id, affected_population_id) [name: 'idx_report_lookup']
-    (affected_population_id) [name: 'idx_affected_population_lookup']
-    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
+    (coverage_start_date_id, coverage_end_date_id, affected_population_id, calamity_id) [name: 'idx_report_lookup_for_mbda']
+    (coverage_start_date_id, coverage_end_date_id, calamity_id) [name: 'idx_report_lookup_for_pdrrmo']
   }
 }
 
@@ -385,9 +390,8 @@ Table fact_engagement_reports [note: 'Improvement percentage in government servi
   updated_at timestamp // 2026-02-12 10:18:18, 2026-02-12 11:18:18, 2026-02-12 12:18:18
 
   indexes {
-    (reported_date_id, social_media_program_id) [name: 'idx_report_lookup']
-    (social_media_platform_id) [name: 'idx_social_media_platform_lookup']
-    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
+    (coverage_start_date_id, coverage_end_date_id, social_media_program_id) [name: 'idx_general_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, social_media_program_id, social_media_platform_id) [name: 'idx_report_lookup']
   }
 }
 
@@ -449,9 +453,7 @@ Table fact_system_status_checks [note: 'Increase percentage in implementation of
   updated_at timestamp // 2026-02-12 15:18:18, 2026-02-13 15:18:18, 2026-02-14 16:18:18
 
   indexes {
-    (check_date_id, system_status_id) [name: 'idx_report_lookup']
-    (digital_governance_system_id) [name: 'idx_digital_governance_system_lookup']
-    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_coverage_lookup']
+    (coverage_start_date_id, coverage_end_date_id, system_status_id, last_active_user_id) [name: 'idx_report_lookup']
   }
 }
 
@@ -486,8 +488,7 @@ Table fact_registration_reports [note: 'Improvement percentage in citizen access
   updated_at timestamp // 2026-02-13 08:31:31, 2026-02-14 08:31:31, 2026-02-15 08:31:31
 
   indexes {
-    (reported_date_id, barangay_id) [name: 'idx_report_lookup']
-    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_lookup']
+    (coverage_start_date_id, coverage_end_date_id, barangay_id) [name: 'idx_report_lookup']
   }
 }
 
@@ -518,8 +519,7 @@ Table fact_enrollment_statuses [note: 'Percentage of LGUs enrolled in the Perfor
   updated_at timestamp // 2026-02-13 13:35:35, 2026-02-13 14:35:35, 2026-02-13 15:35:35
 
   indexes {
-    (report_date_id, coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_lookup']
-    (district_id) [name: 'idx_district_lookup']
+    (coverage_start_date_id, coverage_end_date_id, district_id) [name: 'idx_report_lookup']
   }
 }
 
