@@ -567,13 +567,53 @@ Table fact_hub_status_reports [note: 'Increase percentage in innovation hubs est
 // Data Source: Submitted spending reports of PGO that is coordinated with SPEDZA (pecial Defense Economic Zone Act)
 // ============================================
 
+enum ppa_type {
+  Projects
+  Programs
+  Activities  
+}
+
+Table dim_programs_projects_activities {
+  ppa_id integer [pk, increment]
+  ppa_type ppa_type // Projects, Programs, Activities
+  ppa_name varchar(255) // Defense Manufacturing & Assembly Programs, Military Vehicle & Naval Platform Assembly, Aerospace & Drone Development Programs
+  description text // Licensed production of small arms for military & law enforcement, Assembly of armored personnel carriers (APCs), ISR drone manufacturing
+  approved_by varchar(255) // Governor Joet Garcia, SPEDZA, PGO
+  created_at timestamp [default: 'now()'] // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
+}
+
 enum spending_type {
   Investment
   Disbursement
-  Expenditure  
+  Expenditure
 }
 
 Table dim_spending_types {
   spending_type_id integer [pk, increment]
-  spending_type spending_type // Budget, Disbursement, Expenditure
+  spending_type spending_type // Investment, Expenditure, Disbursement
+  created_at timestamp [default: 'now()'] // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
+}
+
+Table dim_currencies {
+  currency_id integer [pk, increment]
+  curreny_code varchar(10) // PHP, USD, JPY
+  currency_name varchar(100) // Philippine Peso, Us Dollars, Japanese Yen
+  created_at timestamp [default: 'now()'] // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
+}
+
+Table fact_spending_reports [note: 'Growth Percentage in defense industry investments (PGO)'] {
+  spending_report_id integer [pk, increment]
+  report_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  ppa_id integer [not null, ref: > dim_programs_projects_activities.ppa_id]
+  spending_type_id integer [not null, ref: > dim_spending_types.spending_type_id]
+  currency_id integer [not null, ref: > dim_currencies.currency_id]
+  amount decimal(15, 2) // 123345678.23, 987654321.99, 123123321.13
+  created_at timestamp [default: 'now()'] // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
+  updated_at timestamp // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, ppa_id) [name: 'idx_report_lookup']
+  }
 }
