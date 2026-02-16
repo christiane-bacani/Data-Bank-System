@@ -35,9 +35,9 @@ Table dim_times {
 
 Table dim_local_government_units {
   local_government_unit_id integer [pk, increment]
-  district_name varchar(50) // District I, District II, District III
-  municipality_name varchar(150) // Abucay, Balanga, Orani
-  created_at timestamp [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
+  district_name varchar(100) // District I, District II, District III
+  local_government_unit varchar(150) // Abucay, City of Balanga, Dinalupihan 
+  created_at timestamp [default: 'now()'] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
 }
 
 Table dim_agricultural_products {
@@ -471,7 +471,7 @@ Table fact_system_status_checks [note: 'Increase percentage in implementation of
 Table dim_barangays {
   barangay_id integer [pk, increment]
   district_name varchar(100) // District I, District II, District III
-  municipality_name varchar(255) // Abucay, Cigty of Balanga, Dinalupihan
+  municipality_name varchar(255) //
   barangay_name varchar(255) // Calaylayan, San Jose, Poblacion
   created_at timestamp [default: 'now()'] // 2026-02-13 08:31:31, 2026-02-14 08:31:31, 2026-02-15 08:31:31
 }
@@ -532,12 +532,19 @@ Table fact_enrollment_statuses [note: 'Percentage of LGUs enrolled in the Perfor
 // Data Source: Annual Reports Submitted to PGO for the Innovation Hubs Establshed per Municipalities
 // ============================================
 
+Table dim_reporting_municipalities {
+  reporting_municipality_id integer [pk, increment]
+  district_name varchar(100) // District I, District II, District III
+  reporting_municipality_name varchar(150) // Abucay, City of Balanga, Dinalupihan
+  created_at timestamp [default: 'now()'] // 2026-02-16 08:27:27, 2026-02-17 08:27:27, 2026-02-18 08:27:27
+}
+
 Table fact_hub_status_reports [note: 'Increase percentage in innovation hubs established (PGO)'] {
   status_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  municipality_id integer [not null, ref: > dim_municipalities.municipality_id]
+  reporting_municipality_id integer [not null, ref: > dim_reporting_municipalities.reporting_municipality_id]
   proposed_hub_count bigint // 1, 2, 6
   in_progress_hub_count bigint // 2, 3, 7
   operational_hub_count bigint // 3, 4, 8
@@ -546,6 +553,6 @@ Table fact_hub_status_reports [note: 'Increase percentage in innovation hubs est
   updated_at timestamp // 2026-02-16 08:27:27, 2026-02-17 08:27:27, 2026-02-18 08:27:27
 
   indexes {
-    (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']    
+    (coverage_start_date_id, coverage_end_date_id, reporting_municipality_id) [name: 'idx_report_lookup']    
   }
 }
