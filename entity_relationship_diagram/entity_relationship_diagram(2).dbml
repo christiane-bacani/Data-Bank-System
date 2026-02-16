@@ -67,8 +67,8 @@ Table fact_prices [note: 'Reduction percentage in inflation rates through price 
   updated_at timestamp // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
 
   indexes {
-    (observation_date_id, local_government_unit_id, product_id) [name: 'idx_price_lookup']
-    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_coverage_period']
+    (coverage_start_date_id, coverage_end_date_id, product_id, comparison_period_id) [name: 'idx_general_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, local_government_unit_id, product_id, comparison_period_id) [name: 'idx_price_lookup']
   }
 }
 
