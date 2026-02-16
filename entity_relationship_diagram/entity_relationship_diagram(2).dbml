@@ -534,13 +534,20 @@ Table fact_enrollment_statuses [note: 'Percentage of LGUs enrolled in the Perfor
 // Data Source: Annual Reports Submitted to PGO for the Innovation Hubs Establshed per Municipalities
 // ============================================
 
-/*
-enum innovation_hub_status {
+Table fact_hub_status_reports [note: 'Increase percentage in innovation hubs established (PGO)'] {
+  status_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  municipality_id integer [not null, ref: > dim_municipalities.municipality_id]
+  proposed_hub_count bigint // 1, 2, 6
+  in_progress_hub_count bigint // 2, 3, 7
+  operational_hub_count bigint // 3, 4, 8
+  closed_hub_count bigint // 4, 5, 9
+  created_at timestamp [default: 'now()'] // 2026-02-16 08:27:27, 2026-02-17 08:27:27, 2026-02-18 08:27:27
+  updated_at timestamp // 2026-02-16 08:27:27, 2026-02-17 08:27:27, 2026-02-18 08:27:27
 
-}
-*/
-
-Table dim_innovation_hub_statuses {
-  innovation_hub_status_id integer [pk, increment]
-  innovation_hub_status innovation_hub_status // Proposed, Approved, Funded
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']    
+  }
 }
