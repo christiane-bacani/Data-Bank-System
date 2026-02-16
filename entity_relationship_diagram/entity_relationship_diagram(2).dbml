@@ -197,8 +197,7 @@ Table fact_participation_rates [note: 'Improvement percentage in government empl
   updated_at timestamp // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
 
   indexes {
-    (report_date_id) [name: 'idx_report_lookup']
-    (program_start_date_id, program_end_date_id) [name: 'idx_coverage_lookup']
+    (program_start_date_id, program_end_date_id) [name: 'idx_report_lookup']
   }
 }
 
