@@ -28,7 +28,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - Implement the data model for the indicator `% increase in innovation hubs established` by checking the agent chat history on how to properly measure the data for that
 - Fix the index to make sure every index will be use for reporting for every facts table
 - Check every facts table which facts table has shared dimension and create shared dimension based on that facts table
-
+- Use notes for every attributes to the table to indicate the example data
 ## Status Table
 
 | Lead Department | Indicator | Status|
