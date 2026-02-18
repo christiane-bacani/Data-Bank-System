@@ -89,7 +89,7 @@ Table dim_municipalities {
 }
 
 Table fact_barangay_development_plans [note: 'Increase percentage in barangays with completed Barangay Master Development Plans (OPPDC)']{
-  plan_id integer2 [pk, increment]
+  plan_id integer [pk, increment]
   observation_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
@@ -560,7 +560,6 @@ Table fact_hub_status_reports [note: 'Increase percentage in innovation hubs est
 
 
 // ===========================================
-// Indicator: % growth in defense industry investments
 // Indicator: Percentage of growth in defense industry investments
 // Lead Department: PGO
 // Frequency: Quarterly
@@ -626,13 +625,12 @@ Table dim_items {
   created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
 }
 
-Table fact_spending_report_items {
+Table fact_spending_report_items [note: 'Growth Percentage in defense industry investments (PGO)'] {
   spending_report_item_id integer [pk, increment]
   spending_report_id integer [ref: > fact_spending_reports.spending_report_id]
   item_id integer [not null, ref: > dim_items.item_id]
   quantity bigint
   unit_price decimal(17, 2)
-  total_amount decimal(17, 2)
   created_at timestmap [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
   updated_at timestamp // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
 }
