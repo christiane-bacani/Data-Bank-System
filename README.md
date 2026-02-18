@@ -48,3 +48,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PGO             | % increase in innovation hubs established | Done |
 | PGO             | % growth in defense industry investments | Done |
 | PGO             | % increase in renewable energy projects and green mobility adoption | Done |
+| PGO             | % increase in community participation in fitness programs | Pending |
