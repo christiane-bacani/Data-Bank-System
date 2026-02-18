@@ -609,11 +609,30 @@ Table fact_spending_reports [note: 'Growth Percentage in defense industry invest
   ppa_id integer [not null, ref: > dim_programs_projects_activities.ppa_id]
   spending_type_id integer [not null, ref: > dim_spending_types.spending_type_id]
   currency_id integer [not null, ref: > dim_currencies.currency_id]
-  amount decimal(15, 2) // 123345678.23, 987654321.99, 123123321.13
+  total_amount decimal(17, 2) // 123345678.23, 987654321.99, 123123321.13
   created_at timestamp [default: 'now()'] // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
   updated_at timestamp // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
 
   indexes {
     (coverage_start_date_id, coverage_end_date_id, ppa_id) [name: 'idx_report_lookup']
   }
+}
+
+Table dim_items {
+  item_id integer [pk, increment]
+  item_name varchar(255) // Bullets, Guns, Tanks
+  item_description text // 5.56mm NATO rounds, AK-47, The Sabrah light tank
+  unit_of_measure varchar(50) // Pieces, Pieces, Units
+  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+}
+
+Table fact_spending_report_items {
+  spending_report_item_id integer [pk, increment]
+  spending_report_id integer [ref: > fact_spending_reports.spending_report_id]
+  item_id integer [not null, ref: > dim_items.item_id]
+  quantity bigint
+  unit_price decimal(17, 2)
+  total_amount decimal(17, 2)
+  created_at timestmap [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+  updated_at timestamp // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
 }
