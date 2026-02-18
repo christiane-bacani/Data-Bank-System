@@ -528,7 +528,7 @@ Table fact_enrollment_statuses [note: 'Percentage of LGUs enrolled in the Perfor
 // ===========================================
 // Indicator: Percentage of increase in innovation hubs established
 // Lead Department: PGO
-// Frequency: Annually
+// Frequency: Quarterly
 // Data Source: Annual Reports Submitted to PGO for the Innovation Hubs Establshed per Municipalities
 // ============================================
 
@@ -633,4 +633,26 @@ Table fact_spending_report_items [note: 'Growth Percentage in defense industry i
   unit_price decimal(17, 2)
   created_at timestmap [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
   updated_at timestamp // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+}
+
+
+
+// ===========================================
+// Indicator: Increase percentage in renewable energy projects and green mobility adoption
+// Lead Department: PGO
+// Frequency: Quarterly
+// Data Source:
+// ============================================
+
+Table dim_projects {
+  project_id integer [pk, increment]
+  project_name varchar(255) // Solar Power Plant Installation, Electric Public Transport Fleet, Wind Turbine Community Project
+  description text // Installation of a solar power plant to supply clean electricity to government buildings, with a plan for recycling or repurposing solar panels at the end of their lifecycle., Adopts electric buses for public transportation, including a program for battery recycling and vehicle disposal at end-of-life, reducing emissions and promoting sustainable urban mobility., Supports the construction of community wind turbines, with a policy for dismantling and recycling turbine blades and components after their operational life.
+  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+}
+
+Table dim_project_heads {
+  project_head_id integer [pk, increment]
+  project_head_name varchar(255) // John Doe, Jane Doe, Joe Blow
+  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
 }
