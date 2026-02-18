@@ -548,7 +548,9 @@ Table fact_hub_status_reports [note: 'Increase percentage in innovation hubs est
   proposed_hub_count bigint // 1, 2, 6
   in_progress_hub_count bigint // 2, 3, 7
   operational_hub_count bigint // 3, 4, 8
-  closed_hub_count bigint // 4, 5, 9
+  under_maintenance_hub_count bigint // 4, 5, 9
+  suspended_hub_count bigint // 5, 6, 10
+  closed_hub_count bigint // 0, 1, 2
   created_at timestamp [default: 'now()'] // 2026-02-16 08:27:27, 2026-02-17 08:27:27, 2026-02-18 08:27:27
   updated_at timestamp // 2026-02-16 08:27:27, 2026-02-17 08:27:27, 2026-02-18 08:27:27
 
@@ -629,10 +631,14 @@ Table fact_spending_report_items [note: 'Growth Percentage in defense industry i
   spending_report_item_id integer [pk, increment]
   spending_report_id integer [ref: > fact_spending_reports.spending_report_id]
   item_id integer [not null, ref: > dim_items.item_id]
-  quantity bigint
-  unit_price decimal(17, 2)
+  quantity bigint // 3, 2, 1
+  unit_price decimal(17, 2) // 123.29, 321.29, 212.23
   created_at timestmap [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
   updated_at timestamp // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+
+  indexes {
+    (spending_report_id, item_id) [name: 'idx_report_lookup']
+  }
 }
 
 
@@ -641,7 +647,7 @@ Table fact_spending_report_items [note: 'Growth Percentage in defense industry i
 // Indicator: Increase percentage in renewable energy projects and green mobility adoption
 // Lead Department: PGO
 // Frequency: Quarterly
-// Data Source:
+// Data Source: Project Reports Submitted to PGO related to renewable energy projects and/or green mobility adoption
 // ============================================
 
 Table dim_projects {
@@ -655,4 +661,35 @@ Table dim_project_heads {
   project_head_id integer [pk, increment]
   project_head_name varchar(255) // John Doe, Jane Doe, Joe Blow
   created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+}
+
+enum project_status {
+  Proposed
+  InProgress
+  Operational
+  Closed
+  UnderMaintenance
+}
+
+Table dim_project_statuses {
+  project_status_id integer [pk, increment]
+  project_status project_status // Proposed, In Progress, Operational
+  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+}
+
+Table fact_project_reports [note: 'Increase percentage in renewable energy projects and green mobility adoption'] {
+  project_report_id integer [pk, increment]
+  report_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  project_id integer [not null, ref: > dim_projects.project_id]
+  project_head_id integer [not null, ref: > dim_project_heads.project_head_id]
+  project_status_id integer [not null, ref: > dim_project_statuses.project_status_id]
+  total_proposed_budget decimal(17, 2) // 123345678.23, 987654321.99, 123123321.13
+  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
+  updated_at timestamp // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, project_status_id) [name: 'idx_report_lookup']
+  }
 }
