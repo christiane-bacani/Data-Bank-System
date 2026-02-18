@@ -733,7 +733,7 @@ Table dim_project_statuses {
   created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
 }
 
-Table fact_project_status_reports {
+Table fact_project_status_reports [note: 'Increase percentage in innovation hubs established and Increase percentage in renewable energy projects and green mobility adoption (PGO)'] {
   project_status_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
