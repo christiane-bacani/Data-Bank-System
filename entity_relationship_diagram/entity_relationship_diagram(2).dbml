@@ -665,6 +665,7 @@ Table dim_project_heads {
 
 enum project_status {
   Proposed
+  Approved
   InProgress
   Operational
   Closed
