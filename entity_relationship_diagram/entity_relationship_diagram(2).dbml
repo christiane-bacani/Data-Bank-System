@@ -128,7 +128,7 @@ Table dim_ticket_names {
 
 Table fact_performance_reports [note: 'Increase percentage in citizen concerns addressed via the 8888 hotline (Legal & PHRMO)']{
   report_id integer [pk, increment]
-  report_date_id integer [not null, ref: > dim_dates.date_id]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
   reported_time_id integer [not null, ref: > dim_times.time_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
@@ -183,7 +183,7 @@ Table dim_beneficiaries {
 
 Table fact_participation_rates [note: 'Improvement percentage in government employee service quality (PHRMO)']{
   participation_rate_id integer [pk, increment]
-  report_date_id integer [not null, ref: > dim_dates.date_id]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
   program_start_date_id integer [not null, ref: > dim_dates.date_id]
   program_end_date_id integer [not null, ref: > dim_dates.date_id]
   location_id integer [not null, ref: > dim_locations.location_id]
@@ -509,7 +509,7 @@ Table dim_districts {
 
 Table fact_enrollment_statuses [note: 'Percentage of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives (PGO)'] {
   enrollment_status_id integer [pk, increment]
-  report_date_id integer [not null, ref: > dim_dates.date_id]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   district_id integer [not null, ref: > dim_districts.district_id]
@@ -529,7 +529,7 @@ Table fact_enrollment_statuses [note: 'Percentage of LGUs enrolled in the Perfor
 // Indicator: Percentage of increase in innovation hubs established
 // Lead Department: PGO
 // Frequency: Quarterly
-// Data Source: Annual Reports Submitted to PGO for the Innovation Hubs Establshed per Municipalities
+// Data Source: Quarterly Reports Submitted to PGO for the Innovation Hubs Established per Municipalities
 // ============================================
 
 Table dim_reporting_municipalities {
@@ -550,7 +550,7 @@ Table fact_hub_status_reports [note: 'Increase percentage in innovation hubs est
   operational_hub_count bigint // 3, 4, 8
   under_maintenance_hub_count bigint // 4, 5, 9
   suspended_hub_count bigint // 5, 6, 10
-  closed_hub_count bigint // 0, 1, 2
+  closed_hub_count bigint // 0, 1, 2d
   created_at timestamp [default: 'now()'] // 2026-02-16 08:27:27, 2026-02-17 08:27:27, 2026-02-18 08:27:27
   updated_at timestamp // 2026-02-16 08:27:27, 2026-02-17 08:27:27, 2026-02-18 08:27:27
 
@@ -604,7 +604,7 @@ Table dim_currencies {
 
 Table fact_spending_reports [note: 'Growth Percentage in defense industry investments (PGO)'] {
   spending_report_id integer [pk, increment]
-  report_date_id integer [not null, ref: > dim_dates.date_id]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   ppa_id integer [not null, ref: > dim_programs_projects_activities.ppa_id]
@@ -650,6 +650,7 @@ Table fact_spending_report_items [note: 'Growth Percentage in defense industry i
 // Data Source: Project Reports Submitted to PGO related to renewable energy projects and/or green mobility adoption
 // ============================================
 
+/*
 Table dim_projects {
   project_id integer [pk, increment]
   project_name varchar(255) // Solar Power Plant Installation, Electric Public Transport Fleet, Wind Turbine Community Project
@@ -665,7 +666,6 @@ Table dim_project_heads {
 
 enum project_status {
   Proposed
-  Approved
   InProgress
   Operational
   Closed
@@ -680,7 +680,7 @@ Table dim_project_statuses {
 
 Table fact_project_reports [note: 'Increase percentage in renewable energy projects and green mobility adoption'] {
   project_report_id integer [pk, increment]
-  report_date_id integer [not null, ref: > dim_dates.date_id]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   project_id integer [not null, ref: > dim_projects.project_id]
@@ -693,4 +693,49 @@ Table fact_project_reports [note: 'Increase percentage in renewable energy proje
   indexes {
     (coverage_start_date_id, coverage_end_date_id, project_status_id) [name: 'idx_report_lookup']
   }
+}
+*/
+
+// ===========================================
+// Indicator: Increase percentage in innovation hubs established and Increase percentage in renewable energy projects and green mobility adoption
+// Lead Department: PGO
+// Frequency: Quarterly
+// Data Source: Project Status Reports submitted by organization/departments/offices/agencies to PGO
+// ============================================
+
+Table dim_projects {
+  project_id integer [pk, increment]
+  project_name varchar(255) // Barangay San Jose Learning Hub, Solar Power Plant Installation, Electric Public Transport Fleet
+  project_type varchar(255) // Innovation Hub, Renewable Energy, Green Mobility
+  description text //  The Barangay Learning Hub is a community-based center that provides free access to computers, internet, and educational resources., Installation of a solar power plant to supply clean electricity to government buildings, with a plan for recycling or repurposing solar panels at the end of their lifecycle., Adopts electric buses for public transportation, including a program for battery recycling and vehicle disposal at end-of-life, reducing emissions and promoting sustainable urban mobility.
+  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
+}
+
+Table dim_project_heads {
+  project_head_id integer [pk, increment]
+  project_head_name varchar(255) // John Doe, Jane Doe, Joe Blow
+  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+}
+
+enum project_status {
+  Proposed
+  Approved
+  InProgress
+  Operational
+  UnderMaintenance
+  Suspended
+  Closed
+}
+
+Table dim_project_statuses {
+  project_status_id integer [pk, increment]
+  project_status project_status // Proposed, In Progress, Operational
+  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+}
+
+Table fact_project_status_reports {
+  project_status_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
 }
