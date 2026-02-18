@@ -526,36 +526,65 @@ Table fact_enrollment_statuses [note: 'Percentage of LGUs enrolled in the Perfor
 
 
 // ===========================================
-// Indicator: Percentage of increase in innovation hubs established
+// Indicator: Increase percentage in innovation hubs established and Increase percentage in renewable energy projects and green mobility adoption
 // Lead Department: PGO
 // Frequency: Quarterly
-// Data Source: Quarterly Reports Submitted to PGO for the Innovation Hubs Established per Municipalities
+// Data Source: Project Status Reports submitted by organization/departments/offices/agencies to PGO
 // ============================================
 
-Table dim_reporting_municipalities {
-  reporting_municipality_id integer [pk, increment]
-  district_name varchar(100) // District I, District II, District III
-  reporting_municipality_name varchar(150) // Abucay, City of Balanga, Dinalupihan
-  created_at timestamp [default: 'now()'] // 2026-02-16 08:27:27, 2026-02-17 08:27:27, 2026-02-18 08:27:27
+Table dim_submitters {
+  submitter_id integer [pk, increment]
+  submitting_entity varchar(255) // Provincial Governor's Office, Office of the Provincial Planning and Development Coordinator, Provincial Environment and Natural Resources Office
+  entity_type varchar(100) // Office, Department, Department
+  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
 }
 
-Table fact_hub_status_reports [note: 'Increase percentage in innovation hubs established (PGO)'] {
-  status_report_id integer [pk, increment]
+Table dim_projects {
+  project_id integer [pk, increment]
+  project_name varchar(255) // Barangay San Jose Learning Hub, Solar Power Plant Installation, Electric Public Transport Fleet
+  project_type varchar(255) // Innovation Hub, Renewable Energy, Green Mobility
+  description text //  The Barangay Learning Hub is a community-based center that provides free access to computers, internet, and educational resources., Installation of a solar power plant to supply clean electricity to government buildings, with a plan for recycling or repurposing solar panels at the end of their lifecycle., Adopts electric buses for public transportation, including a program for battery recycling and vehicle disposal at end-of-life, reducing emissions and promoting sustainable urban mobility.
+  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
+}
+
+Table dim_project_heads {
+  project_head_id integer [pk, increment]
+  project_head_name varchar(255) // John Doe, Jane Doe, Joe Blow
+  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+}
+
+enum project_status {
+  Proposed
+  Approved
+  InProgress
+  Operational
+  UnderMaintenance
+  Suspended
+  Closed
+}
+
+Table dim_project_statuses {
+  project_status_id integer [pk, increment]
+  project_status project_status // Proposed, In Progress, Operational
+  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+}
+
+Table fact_project_status_reports [note: 'Increase percentage in innovation hubs established and Increase percentage in renewable energy projects and green mobility adoption (PGO)'] {
+  project_status_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  reporting_municipality_id integer [not null, ref: > dim_reporting_municipalities.reporting_municipality_id]
-  proposed_hub_count bigint // 1, 2, 6
-  in_progress_hub_count bigint // 2, 3, 7
-  operational_hub_count bigint // 3, 4, 8
-  under_maintenance_hub_count bigint // 4, 5, 9
-  suspended_hub_count bigint // 5, 6, 10
-  closed_hub_count bigint // 0, 1, 2d
-  created_at timestamp [default: 'now()'] // 2026-02-16 08:27:27, 2026-02-17 08:27:27, 2026-02-18 08:27:27
-  updated_at timestamp // 2026-02-16 08:27:27, 2026-02-17 08:27:27, 2026-02-18 08:27:27
+  submitter_id integer [not null, ref: > dim_submitters.submitter_id]
+  project_id integer [not null, ref: > dim_projects.project_id]
+  project_head_id integer [not null, ref: > dim_project_heads.project_head_id]
+  project_status_id integer [not null, ref: > dim_project_statuses.project_status_id]
+  total_proposed_budget decimal(17, 2) // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+  total_approved_budget decimal(17, 2) // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+  updated_at timestamp // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
 
   indexes {
-    (coverage_start_date_id, coverage_end_date_id, reporting_municipality_id) [name: 'idx_report_lookup']    
+    (coverage_start_date_id, coverage_end_date_id, project_status_id) [name: 'idx_report_lookup']
   }
 }
 
@@ -638,123 +667,5 @@ Table fact_spending_report_items [note: 'Growth Percentage in defense industry i
 
   indexes {
     (spending_report_id, item_id) [name: 'idx_report_lookup']
-  }
-}
-
-
-
-// ===========================================
-// Indicator: Increase percentage in renewable energy projects and green mobility adoption
-// Lead Department: PGO
-// Frequency: Quarterly
-// Data Source: Project Reports Submitted to PGO related to renewable energy projects and/or green mobility adoption
-// ============================================
-
-/*
-Table dim_projects {
-  project_id integer [pk, increment]
-  project_name varchar(255) // Solar Power Plant Installation, Electric Public Transport Fleet, Wind Turbine Community Project
-  description text // Installation of a solar power plant to supply clean electricity to government buildings, with a plan for recycling or repurposing solar panels at the end of their lifecycle., Adopts electric buses for public transportation, including a program for battery recycling and vehicle disposal at end-of-life, reducing emissions and promoting sustainable urban mobility., Supports the construction of community wind turbines, with a policy for dismantling and recycling turbine blades and components after their operational life.
-  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-}
-
-Table dim_project_heads {
-  project_head_id integer [pk, increment]
-  project_head_name varchar(255) // John Doe, Jane Doe, Joe Blow
-  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-}
-
-enum project_status {
-  Proposed
-  InProgress
-  Operational
-  Closed
-  UnderMaintenance
-}
-
-Table dim_project_statuses {
-  project_status_id integer [pk, increment]
-  project_status project_status // Proposed, In Progress, Operational
-  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-}
-
-Table fact_project_reports [note: 'Increase percentage in renewable energy projects and green mobility adoption'] {
-  project_report_id integer [pk, increment]
-  reported_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  project_id integer [not null, ref: > dim_projects.project_id]
-  project_head_id integer [not null, ref: > dim_project_heads.project_head_id]
-  project_status_id integer [not null, ref: > dim_project_statuses.project_status_id]
-  total_proposed_budget decimal(17, 2) // 123345678.23, 987654321.99, 123123321.13
-  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
-  updated_at timestamp // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
-
-  indexes {
-    (coverage_start_date_id, coverage_end_date_id, project_status_id) [name: 'idx_report_lookup']
-  }
-}
-*/
-
-// ===========================================
-// Indicator: Increase percentage in innovation hubs established and Increase percentage in renewable energy projects and green mobility adoption
-// Lead Department: PGO
-// Frequency: Quarterly
-// Data Source: Project Status Reports submitted by organization/departments/offices/agencies to PGO
-// ============================================
-
-Table dim_submitters {
-  submitter_id integer [pk, increment]
-  submitting_entity varchar(255) // Provincial Governor's Office, Office of the Provincial Planning and Development Coordinator, Provincial Environment and Natural Resources Office
-  entity_type varchar(100) // Office, Department, Department
-  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
-}
-
-Table dim_projects {
-  project_id integer [pk, increment]
-  project_name varchar(255) // Barangay San Jose Learning Hub, Solar Power Plant Installation, Electric Public Transport Fleet
-  project_type varchar(255) // Innovation Hub, Renewable Energy, Green Mobility
-  description text //  The Barangay Learning Hub is a community-based center that provides free access to computers, internet, and educational resources., Installation of a solar power plant to supply clean electricity to government buildings, with a plan for recycling or repurposing solar panels at the end of their lifecycle., Adopts electric buses for public transportation, including a program for battery recycling and vehicle disposal at end-of-life, reducing emissions and promoting sustainable urban mobility.
-  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
-}
-
-Table dim_project_heads {
-  project_head_id integer [pk, increment]
-  project_head_name varchar(255) // John Doe, Jane Doe, Joe Blow
-  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-}
-
-enum project_status {
-  Proposed
-  Approved
-  InProgress
-  Operational
-  UnderMaintenance
-  Suspended
-  Closed
-}
-
-Table dim_project_statuses {
-  project_status_id integer [pk, increment]
-  project_status project_status // Proposed, In Progress, Operational
-  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-}
-
-Table fact_project_status_reports [note: 'Increase percentage in innovation hubs established and Increase percentage in renewable energy projects and green mobility adoption (PGO)'] {
-  project_status_report_id integer [pk, increment]
-  reported_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  submitter_id integer [not null, ref: > dim_submitters.submitter_id]
-  project_id integer [not null, ref: > dim_projects.project_id]
-  project_head_id integer [not null, ref: > dim_project_heads.project_head_id]
-  project_status_id integer [not null, ref: > dim_project_statuses.project_status_id]
-  total_proposed_budget decimal(17, 2) // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-  total_approved_budget decimal(17, 2) // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-  updated_at timestamp // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-
-  indexes {
-    (coverage_start_date_id, coverage_end_date_id, project_status_id) [name: 'idx_report_lookup']
   }
 }
