@@ -569,7 +569,7 @@ Table dim_project_statuses {
   created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
 }
 
-Table fact_project_status_reports [note: 'Increase percentage in innovation hubs established and Increase percentage in renewable energy projects and green mobility adoption (PGO)'] {
+Table fact_project_status_reports [note: 'Increase percentage in innovation hubs established and increase percentage in renewable energy projects and green mobility adoption (PGO)'] {
   project_status_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -723,4 +723,25 @@ Table fact_accomplishment_reports [note: 'Increase percentage in community parti
   indexes {
     (coverage_start_date_id, coverage_end_date_id, fun_run_id) [name: 'idx_report_lookup']
   }
+}
+
+
+
+// ===========================================
+// Indicator: Improvement percentage in school health programs
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source:
+// ===========================================
+
+Table dim_school_health_programs {
+  school_health_program_id integer [pk, increment]
+  school_health_program varchar(255) // Nutrition & School Lunch Program, Physical Activity & Wellness Challenges, Mental Health Programs
+  description text // Weekly provision of balanced meals to students based on nutritionist‑approved menus to improve dietary intake and reduce malnutrition.; Activities that promote movement, fitness and healthy lifestyles, such as dance challenges, sports events, and exercise clubs.; School‑based mental health awareness, counseling support, training of peer facilitators, and programs designed to build emotional resilience.
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
+Table dim_schools {
+  school_id integer [pk, increment]
+  school_name varchar(255) // Cataning Integrated School, Saguing Elementary School, Tenejero Elementary School
 }
