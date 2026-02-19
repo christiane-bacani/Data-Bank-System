@@ -688,7 +688,6 @@ Table dim_organizers {
 Table dim_fun_runs {
   fun_run_id integer [pk, increment]
   fun_run_name varchar(255) // Hataw Takbo Grand Run, Hataw Takbo - Balanga City Leg, Hataw Takbo - Morong Leg
-  organized_by varchar(255) // Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports
   created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
 }
 
@@ -704,7 +703,7 @@ Table dim_race_categories {
   created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
 }
 
-Table fact_accomplishment_reports [note: '// Indicator: Increase percentage in community participation in fitness programs (PGO)']{
+Table fact_accomplishment_reports [note: 'Increase percentage in community participation in fitness programs (PGO)']{
   accomplishment_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
