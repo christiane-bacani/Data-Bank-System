@@ -676,8 +676,14 @@ Table fact_spending_report_items [note: 'Growth Percentage in defense industry i
 // Indicator: Increase percentage in community participation in fitness programs
 // Lead Department: PGO
 // Frequency: Annually
-// Data Source: Submitted summary reports of organizers of Hataw Takbo to the PGO
+// Data Source: Submitted accomplishment reports of organizers of Hataw Takbo to the PGO
 // ===========================================
+
+Table dim_organizers {
+  organizer_id integer [pk, increment]
+  organizer_name varchar(255) // // Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports
+  created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
+}
 
 Table dim_fun_runs {
   fun_run_id integer [pk, increment]
@@ -692,14 +698,28 @@ Table dim_fun_run_locations {
   created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
 }
 
-Table dim_organizers {
-  organizer_id integer [pk, increment]
-  organizer_name varchar(255) // // Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports
+Table dim_race_categories {
+  race_category_id integer [pk, increment]
+  race_category varchar(25) // 3 KM, 5 KM, 10 KM
   created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
 }
 
-Table dim_fun_run_categories {
-  fun_run_category_id integer [pk, increment]
-  fun_run_category varchar(50) // 3 KM, 5 KM, 10 KM
+Table fact_accomplishment_reports [note: '// Indicator: Increase percentage in community participation in fitness programs (PGO)']{
+  accomplishment_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  organizer_id integer [not null, ref: > dim_organizers.organizer_id]
+  fun_run_id integer [not null, ref: > dim_fun_runs.fun_run_id]
+  location_id integer [not null, ref: > dim_fun_run_locations.fun_run_location_id]
+  race_category_id integer [not null, ref: > dim_race_categories.race_category_id]
+  total_no_of_male_participants bigint // 193, 192, 191
+  total_no_of_female_participants bigint // 34, 33, 32
+  total_no_of_participants bigint // 227, 225, 223
   created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
+  updated_at timestamps // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, fun_run_id) [name: 'idx_report_lookup']
+  }
 }
