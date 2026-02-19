@@ -676,7 +676,7 @@ Table fact_spending_report_items [note: 'Growth Percentage in defense industry i
 // Indicator: Increase percentage in community participation in fitness programs
 // Lead Department: PGO
 // Frequency: Annually
-// Data Source:
+// Data Source: Submitted summary reports of organizers of Hataw Takbo to the PGO
 // ===========================================
 
 Table dim_fun_runs {
@@ -695,5 +695,11 @@ Table dim_fun_run_locations {
 Table dim_organizers {
   organizer_id integer [pk, increment]
   organizer_name varchar(255) // // Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports
+  created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
+}
+
+Table dim_fun_run_categories {
+  fun_run_category_id integer [pk, increment]
+  fun_run_category varchar(50) // 3 KM, 5 KM, 10 KM
   created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
 }
