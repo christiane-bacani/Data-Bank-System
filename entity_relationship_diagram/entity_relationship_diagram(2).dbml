@@ -693,6 +693,8 @@ Table dim_fun_runs {
 
 Table dim_fun_run_locations {
   fun_run_location_id integer [pk, increment]
+  municipality_name varchar(100) // City of Balanga, City of Balanga, Morong
+  barangay_name varchar(100) // Brgy. San Jose, Brgy. San Jose, Poblacion
   location text // Capitol Grounds, Balanga City, Bataan, Philippines; SM City Balanga, Balanga City, Bataan, Philippines; Morong Covered Court, Morong, Bataan, Philippines
   created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
 }
