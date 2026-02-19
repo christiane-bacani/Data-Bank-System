@@ -669,3 +669,29 @@ Table fact_spending_report_items [note: 'Growth Percentage in defense industry i
     (spending_report_id, item_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+// ===========================================
+// Indicator: Increase percentage in community participation in fitness programs
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source:
+// ===========================================
+
+Table dim_fun_runs {
+  fun_run_id integer [pk, increment]
+  fun_run_name varchar(255) // Hataw Takbo Grand Run, Hataw Takbo - Balanga City Leg, Hataw Takbo - Morong Leg
+  organized_by varchar(255) // Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports
+  created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
+}
+
+Table dim_fun_run_locations {
+  fun_run_location_id integer [pk, increment]
+  location text // Capitol Grounds, Balanga City, Bataan, Philippines; SM City Balanga, Balanga City, Bataan, Philippines; Morong Covered Court, Morong, Bataan, Philippines
+  created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
+}
+
+Table dim_organizers {
+  organizer_id integer [pk, increment]
+}
