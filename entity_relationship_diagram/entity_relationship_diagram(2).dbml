@@ -694,4 +694,6 @@ Table dim_fun_run_locations {
 
 Table dim_organizers {
   organizer_id integer [pk, increment]
+  organizer_name varchar(255) // // Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports
+  created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
 }
