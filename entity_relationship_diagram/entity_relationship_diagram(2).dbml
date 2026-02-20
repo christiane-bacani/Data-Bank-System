@@ -776,7 +776,7 @@ Table fact_program_summary_reports [note: 'Improvement percentage in school heal
 // Indicator: Reduction percentage in youth smoking and vaping rates
 // Lead Department: PGO
 // Frequency: Annually
-// Data Source:
+// Data Source: Survey Reports Submitted to the PGO by PHO/OPPO
 // ===========================================
 
 Table dim_school_respondents {
