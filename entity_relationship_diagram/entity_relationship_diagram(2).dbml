@@ -792,14 +792,20 @@ Table dim_age_groups {
   created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 }
 
-Table fact_survey_reports {
+Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vaping rates (PGO)'] {
   survey_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   survey_start_date_id integer [not null, ref: > dim_dates.date_id]
   survey_end_date_id integer [not null, ref: > dim_dates.date_id]
   school_respondent_id integer [not null, ref: > dim_school_respondents.school_respondent_id]
   dim_age_group_id integer [not null, ref: > dim_age_groups.age_group_id]
-  smoking_youths_count bigint
-  vaping_youths_count bigint
-  total_respondents bigint
+  smoking_youths_count bigint // 12, 11, 10
+  vaping_youths_count bigint // 9, 8, 7
+  total_respondents bigint // 4333, 899, 322
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+  updated_at timestamp // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+
+  indexes {
+    (survey_start_date_id, survey_end_date_id) [name: 'idx_report_lookup']
+  }
 }
