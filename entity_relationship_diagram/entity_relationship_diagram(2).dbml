@@ -786,16 +786,17 @@ Table dim_school_respondents {
   created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 }
 
-Table dim_community_respondents {
-  community_respondent_id integer [pk, increment]
-  district_name varchar(50) // District I, District II, District III
-  municipality_name varchar(100) // Abucay, City of Balanga, Dinalupihan
-  barangay_name varchar(150) // Calaylayan, San Jose, Poblacion
-  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
-}
-
 Table dim_age_groups {
   age_group_id integer [pk, increment]
   age_group varchar(255) // 13 years old and below, 14-18 years old, 19-30 years old
   created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
+Table fact_survey_reports {
+  survey_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  survey_start_date_id integer [not null, ref: > dim_dates.date_id]
+  survey_end_date_id integer [not null, ref: > dim_dates.date_id]
+  school_respondent_id integer [not null, ref: > dim_school_respondents.school_respondent_id]
+  dim_age_group_id integer [not null, ref: > dim_age_groups.age_group_id]
 }
