@@ -779,11 +779,12 @@ Table fact_program_summary_reports [note: 'Improvement percentage in school heal
 // Data Source: Survey Reports Submitted to the PGO by PHO/OPPO
 // ===========================================
 
-Table dim_school_respondents {
-  school_respondent_id integer [pk, increment]
-  school_name varchar(255) // Bonifacio Camacho National High School, Cataning Integrated School, Saguing Elementary School
-  school_address text // Calaylayan, Abucay, Bataan, Philippines; Quirino Street, Balanga, Bataan, Philippines;  National Road, Saguig, Dinalupihan, Bataan, Region III, Philippines, 2110
-  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+Table dim_respondent_locations {
+  respondent_location_id integer [pk, increment]
+  district_name varchar(50) // District I, District II, District III
+  municipality_name varchar(150) // Abucay, City of Balanga, Dinalupihan
+  barangay_name varchar(150) // Calaylayan, San Jose, Poblacion
+  created_at timestamp [default: 'now()'] // 2026-02-20 16:17:17, 2026-02-21 16:17:17, 2026-02-22 16:17:17 
 }
 
 Table dim_age_groups {
@@ -797,7 +798,7 @@ Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vapi
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   survey_start_date_id integer [not null, ref: > dim_dates.date_id]
   survey_end_date_id integer [not null, ref: > dim_dates.date_id]
-  school_respondent_id integer [not null, ref: > dim_school_respondents.school_respondent_id]
+  respondent_location_id integer [not null, ref: > dim_respondent_locations.respondent_location_id]
   dim_age_group_id integer [not null, ref: > dim_age_groups.age_group_id]
   smoking_youths_count bigint // 12, 11, 10
   vaping_youths_count bigint // 9, 8, 7
