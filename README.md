@@ -50,4 +50,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PGO             | % increase in renewable energy projects and green mobility adoption | Done |
 | PGO             | % increase in community participation in fitness programs | Done |
 | PGO             | % improvement in school health programs | Done |
-| PGO             | % reduction in youth smoking and vaping rates | Pending |
+| PGO             | % reduction in youth smoking and vaping rates | Done |
