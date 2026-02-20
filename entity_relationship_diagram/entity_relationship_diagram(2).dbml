@@ -799,4 +799,7 @@ Table fact_survey_reports {
   survey_end_date_id integer [not null, ref: > dim_dates.date_id]
   school_respondent_id integer [not null, ref: > dim_school_respondents.school_respondent_id]
   dim_age_group_id integer [not null, ref: > dim_age_groups.age_group_id]
+  smoking_youths_count bigint
+  vaping_youths_count bigint
+  total_respondents bigint
 }
