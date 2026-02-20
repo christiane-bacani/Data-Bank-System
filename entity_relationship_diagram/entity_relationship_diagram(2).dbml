@@ -741,14 +741,14 @@ Table dim_school_health_programs {
   created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 }
 
-Table dim_schools {
-  school_id integer [pk, increment]
-  school_name varchar(255) // Cataning Integrated School, Saguing Elementary School, Tenejero Elementary School
-  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
-}
-
 Table dim_program_coordinators {
   program_coordinator_id integer [pk, increment]
   program_coordinator varchar(255) // John Doe, Jane Doe, Joe Brown
   created_at timestamp [default: 'now()'] // 2026-02-20 08:05:05, 2026-02-21 08:05:05, 2026-02-22 08:05:05
+}
+
+Table dim_schools {
+  school_id integer [pk, increment]
+  school_name varchar(255) // Cataning Integrated School, Saguing Elementary School, Tenejero Elementary School
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 }
