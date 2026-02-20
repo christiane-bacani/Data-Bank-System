@@ -761,11 +761,41 @@ Table fact_program_summary_reports [note: 'Improvement percentage in school heal
   school_health_program_id integer [not null, ref: > dim_school_health_programs.school_health_program_id] 
   program_coordinator_id integer [not null, ref: > dim_program_coordinators.program_coordinator_id]
   school_id integer [not null, ref: > dim_schools.school_id]
-  total_no_of_beneficiaries bigint
-  created_at timestamp [default: 'now()']
-  updated_at timestamp
+  total_no_of_beneficiaries bigint // 3888, 3889 3990
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+  updated_at timestamp // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 
   indexes {
     (coverage_start_date_id, coverage_end_date_id, school_health_program_id) [name: 'idx_report_lookup']
   }
+}
+
+
+
+// ===========================================
+// Indicator: Reduction percentage in youth smoking and vaping rates
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source:
+// ===========================================
+
+Table dim_school_respondents {
+  school_respondent_id integer [pk, increment]
+  school_name varchar(255) // Bonifacio Camacho National High School, Cataning Integrated School, Saguing Elementary School
+  school_address text // Calaylayan, Abucay, Bataan, Philippines; Quirino Street, Balanga, Bataan, Philippines;  National Road, Saguig, Dinalupihan, Bataan, Region III, Philippines, 2110
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
+Table dim_community_respondents {
+  community_respondent_id integer [pk, increment]
+  district_name varchar(50) // District I, District II, District III
+  municipality_name varchar(100) // Abucay, City of Balanga, Dinalupihan
+  barangay_name varchar(150) // Calaylayan, San Jose, Poblacion
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
+Table dim_age_groups {
+  age_group_id integer [pk, increment]
+  age_group varchar(255) // 13 years old and below, 14-18 years old, 19-30 years old
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 }
