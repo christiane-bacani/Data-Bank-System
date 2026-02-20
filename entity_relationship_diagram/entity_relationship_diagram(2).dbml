@@ -793,6 +793,12 @@ Table dim_age_groups {
   created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 }
 
+Table dim_genders {
+  gender_id integer [pk, increment]
+  gender varchar(10) // Male, Female, Other
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
 Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vaping rates (PGO)'] {
   survey_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
@@ -800,6 +806,7 @@ Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vapi
   survey_end_date_id integer [not null, ref: > dim_dates.date_id]
   respondent_location_id integer [not null, ref: > dim_respondent_locations.respondent_location_id]
   dim_age_group_id integer [not null, ref: > dim_age_groups.age_group_id]
+  gender_id integer [not null, ref: > dim_genders.gender_id]
   smoking_youths_count bigint // 12, 11, 10
   vaping_youths_count bigint // 9, 8, 7
   total_respondents bigint // 4333, 899, 322
@@ -807,6 +814,6 @@ Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vapi
   updated_at timestamp // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 
   indexes {
-    (survey_start_date_id, survey_end_date_id) [name: 'idx_report_lookup']
+    (survey_start_date_id, survey_end_date_id, dim_age_group_id) [name: 'idx_report_lookup']
   }
 }
