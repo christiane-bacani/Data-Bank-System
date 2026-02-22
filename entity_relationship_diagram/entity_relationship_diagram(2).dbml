@@ -828,14 +828,22 @@ Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vapi
 // ===========================================
 
 Table dim_sports_organizers {
-  sports_organizer_id integer [pk, increment]
+  organizer_id integer [pk, increment]
   organizer varchar(255) // The Schools Division Office of Bataan (DepEd-Bataan), The Schools Division Office of Bataan, Sunrise Events, Inc.
   created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
 }
 
 Table dim_sports_activities {
-  sports_activity_id integer [pk, increment]
+  activity_id integer [pk, increment]
   activity_name varchar(255) // 2024 Bataan Palarong Pampaaralan, 2025 Division Sports Training on Officiating, 5150 FAB Triathlon
+  description text //
+  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
+}
+
+Table dim_sports_activity_locations {
+  activity_location_id integer [pk, increment]
+  location text // Dinalupihan Sports Complex; Orani Sports Complex, Orani, Bataan; Freeport Area of Bataan (FAB), Mariveles
+  description text //
   created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
 }
 
@@ -844,8 +852,9 @@ Table fact_sports_participation_reports [note: 'Increase percentage in participa
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  sports_organizer_id integer [not null, ref: > dim_sports_organizers.sports_organizer_id]
-  sport_activity_id integer [not null, ref: > dim_sports_activities.sports_activity_id]
+  organizer_id integer [not null, ref: > dim_sports_organizers.organizer_id]
+  activity_id integer [not null, ref: > dim_sports_activities.activity_id]
+  activity_location_id integer [not null, ref: > dim_sports_activity_locations.activity_location_id]
   total_no_of_participants bigint // 3345, 5433, 4335
   created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
   updated_at timestamp // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
