@@ -817,3 +817,12 @@ Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vapi
     (survey_start_date_id, survey_end_date_id, dim_age_group_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+// ===========================================
+// Indicator:
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source:
+// ===========================================
