@@ -829,6 +829,7 @@ Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vapi
 
 Table dim_sports_activities {
   sport_activity_id integer [pk, increment]
-  sport_activity_name varchar(255) // 2025 Division Sports Training on Officiating,
-  created_at timestamp [default: 'now()'] // 2026-02-22 19:27:27, 2026-02-23 19:27:27, 2026-02-24 19:27:27
+  activity_name varchar(255) // 2024 Bataan Palarong Pampaaralan, 2025 Division Sports Training on Officiating, Philippine Sports Training Center in Bagac
+  activity_type varchar(100) // Competition, Training Workshop, Infrastructure
+  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
 }
