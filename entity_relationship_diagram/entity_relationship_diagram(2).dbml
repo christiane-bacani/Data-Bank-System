@@ -827,8 +827,8 @@ Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vapi
 // Data Source:
 // ===========================================
 
-Table dim_sport_programs {
-  sport_program_id integer [pk, increment]
-  sport_program_name varchar(255)
-  created_at timestamp [default: 'now()']
+Table dim_sports_activities {
+  sport_activity_id integer [pk, increment]
+  sport_activity_name varchar(255) // 2025 Division Sports Training on Officiating,
+  created_at timestamp [default: 'now()'] // 2026-02-22 19:27:27, 2026-02-23 19:27:27, 2026-02-24 19:27:27
 }
