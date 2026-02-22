@@ -26,6 +26,9 @@ An analytical data repository for the Provincial Government of Bataan that centr
 
 ## Todo
 - Finalize the data model to measure this indicator `% increase in participation in sports programs`
+- Add example values for every attributes
+- Add the total no of male and female participants to that indicator
+- Combine it to the indicator `% increase in community participation in fitness programs`
 - Ask question to LLM about the difference of different kinds of measurements for indicator
 - After successfully implementing all the data models as a galaxy schema, check what facts table has shared dimensions and implement it by creating a shared dimensions for that tables
 - Implement an audit table to reference all facts and dimensions who submit and verified that data/table
