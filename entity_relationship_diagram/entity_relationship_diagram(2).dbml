@@ -839,7 +839,7 @@ Table dim_sports_activities {
   created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
 }
 
-Table fact_sports_participation_reports {
+Table fact_sports_participation_reports [note: 'Increase percentage in participation in sports program (PGO)'] {
   sport_participation_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
