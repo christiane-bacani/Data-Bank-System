@@ -821,8 +821,14 @@ Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vapi
 
 
 // ===========================================
-// Indicator:
+// Indicator: % increase in participation in sports programs
 // Lead Department: PGO
 // Frequency: Annually
 // Data Source:
 // ===========================================
+
+Table dim_sport_programs {
+  sport_program_id integer [pk, increment]
+  sport_program_name varchar(255)
+  created_at timestamp [default: 'now()']
+}
