@@ -817,7 +817,7 @@ Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vapi
 // Indicator: Increase percentage in scholarship recipients and licensure exam pass rates
 // Lead Department: PGO-INB
 // Frequency: Annually
-// Data Source:
+// Data Source: Summary Reports of Iskolar ng Bataan submitted to PGO
 // ===========================================
 
 Table dim_scholarship_districts {
