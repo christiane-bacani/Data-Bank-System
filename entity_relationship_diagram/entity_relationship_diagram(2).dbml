@@ -850,3 +850,12 @@ Table fact_scholarship_summary_reports [note: 'Increase percentage in scholarshi
     (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+// ===========================================
+// Indicator: Increase percentage in teacher capacity building and use of Learning Management Systems (LMS)
+// Lead Department: PGO
+// Frequency:
+// Data Source:
+// ===========================================
