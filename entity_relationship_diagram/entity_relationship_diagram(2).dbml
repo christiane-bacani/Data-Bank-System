@@ -820,6 +820,12 @@ Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vapi
 // Data Source:
 // ===========================================
 
+Table dim_scholarship_districts {
+  district_id integer [pk, increment]
+  district_name varchar(100) // District I, District II, District III
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
 Table dim_scholarship_municipalities {
   municipality_id integer [pk, increment]
   municipality_name varchar(255) // Abucay, City of Balanga, Bagac
