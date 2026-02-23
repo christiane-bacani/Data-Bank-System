@@ -673,55 +673,48 @@ Table fact_spending_report_items [note: 'Growth Percentage in defense industry i
 
 
 // ===========================================
-// Indicator: Increase percentage in community participation in fitness programs
+// Indicator: Increase percentage in community participation in fitness programs and increase percentage in participation in sports program (PGO)
 // Lead Department: PGO
 // Frequency: Annually
-// Data Source: Submitted accomplishment reports of organizers of Hataw Takbo to the PGO
+// Data Source: Sports Activity Organizers submits participation reports per event to the PGO
 // ===========================================
 
-Table dim_organizers {
+Table dim_sports_organizers {
   organizer_id integer [pk, increment]
-  organizer_name varchar(255) // // Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports; Bataan Running Club / Speedstar Sports
-  created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
+  organizer_name varchar(255) // The Schools Division Office of Bataan (DepEd-Bataan), The Schools Division Office of Bataan, Sunrise Events, Inc.
+  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
 }
 
-Table dim_fun_runs {
-  fun_run_id integer [pk, increment]
-  fun_run_name varchar(255) // Hataw Takbo Grand Run, Hataw Takbo - Balanga City Leg, Hataw Takbo - Morong Leg
-  created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
+Table dim_sports_activities {
+  activity_id integer [pk, increment]
+  activity_name varchar(255) // 2024 Bataan Palarong Pampaaralan, 2025 Division Sports Training on Officiating, 5150 FAB Triathlon
+  description text // The 2024 Bataan Palarong Pampaaralan is a provincial scholastic sports meet organized by the Schools Division Office of Bataan.; The 2025 Division Sports Training on Officiating was a three-day workshop held at the Orani Sports Complex in Bataan from September 18–20, 2025.; The 5150 FAB Triathlon is a triathlon event held in the Freeport Area of Bataan (FAB), Mariveles, Philippines. Scheduled for November 16, 2025, it marks the first Olympic-distance triathlon in Bataan and is organized in partnership with the IRONMAN Group’s Sunrise Events Inc.
+  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
 }
 
-Table dim_fun_run_locations {
-  fun_run_location_id integer [pk, increment]
-  municipality_name varchar(100) // City of Balanga, City of Balanga, Morong
-  barangay_name varchar(100) // Brgy. San Jose, Brgy. San Jose, Poblacion
-  location text // Capitol Grounds, Balanga City, Bataan, Philippines; SM City Balanga, Balanga City, Bataan, Philippines; Morong Covered Court, Morong, Bataan, Philippines
-  created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
+Table dim_sports_activity_locations {
+  activity_location_id integer [pk, increment]
+  location text // Dinalupihan Sports Complex, Bataan; Orani Sports Complex, Orani, Bataan; Freeport Area of Bataan (FAB), Mariveles, Bataan
+  description text // he Dinalupihan Sports Complex served as one of the primary sports hubs for the 2024 Bataan Palarong Pampaaralan, the provincial school sports meet for student-athletes in Bataan.; The Orani Sports Complex in the Municipality of Orani was the official venue for the 2025 Division Sports Training on Officiating, a three-day workshop held from September 18–20, 2025 aimed at improving the skills and professionalism of sports officials, teachers, and sports coordinators in Bataan.; The Freeport Area of Bataan (FAB) in Mariveles served as the venue for the 5150 FAB Triathlon.
+  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
 }
 
-Table dim_race_categories {
-  race_category_id integer [pk, increment]
-  race_category varchar(25) // 3 KM, 5 KM, 10 KM
-  created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
-}
-
-Table fact_accomplishment_reports [note: 'Increase percentage in community participation in fitness programs (PGO)']{
-  accomplishment_report_id integer [pk, increment]
+Table fact_sports_participation_reports [note: 'Increase percentage in community participation in fitness programs and increase percentage in participation in sports program (PGO)'] {
+  sport_participation_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  organizer_id integer [not null, ref: > dim_organizers.organizer_id]
-  fun_run_id integer [not null, ref: > dim_fun_runs.fun_run_id]
-  location_id integer [not null, ref: > dim_fun_run_locations.fun_run_location_id]
-  race_category_id integer [not null, ref: > dim_race_categories.race_category_id]
-  total_no_of_male_participants bigint // 193, 192, 191
-  total_no_of_female_participants bigint // 34, 33, 32
-  total_no_of_participants bigint // 227, 225, 223
-  created_at timestamp [default: 'now()'] // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
-  updated_at timestamps // 2026-02-19 08:43:43, 2026-02-20 08:43:4, 2026-02-21 08:43:43
+  organizer_id integer [not null, ref: > dim_sports_organizers.organizer_id]
+  activity_id integer [not null, ref: > dim_sports_activities.activity_id]
+  activity_location_id integer [not null, ref: > dim_sports_activity_locations.activity_location_id]
+  total_no_of_male_participants bigint // 1233, 3211, 3354
+  total_no_of_female_participants bigint // 2112, 2,222, 981
+  total_no_of_participants bigint // 3345, 5433, 4335
+  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
+  updated_at timestamp // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
 
   indexes {
-    (coverage_start_date_id, coverage_end_date_id, fun_run_id) [name: 'idx_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_lookup']
   }
 }
 
@@ -815,53 +808,5 @@ Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vapi
 
   indexes {
     (survey_start_date_id, survey_end_date_id, dim_age_group_id) [name: 'idx_report_lookup']
-  }
-}
-
-
-
-// ===========================================
-// Indicator: Increase percentage in community participation in fitness programs and increase percentage in participation in sports program (PGO)
-// Lead Department: PGO
-// Frequency: Annually
-// Data Source: Sports Activity Organizers submits participation reports per event to the PGO
-// ===========================================
-
-Table dim_sports_organizers {
-  organizer_id integer [pk, increment]
-  organizer_name varchar(255) // The Schools Division Office of Bataan (DepEd-Bataan), The Schools Division Office of Bataan, Sunrise Events, Inc.
-  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
-}
-
-Table dim_sports_activities {
-  activity_id integer [pk, increment]
-  activity_name varchar(255) // 2024 Bataan Palarong Pampaaralan, 2025 Division Sports Training on Officiating, 5150 FAB Triathlon
-  description text // The 2024 Bataan Palarong Pampaaralan is a provincial scholastic sports meet organized by the Schools Division Office of Bataan.; The 2025 Division Sports Training on Officiating was a three-day workshop held at the Orani Sports Complex in Bataan from September 18–20, 2025.; The 5150 FAB Triathlon is a triathlon event held in the Freeport Area of Bataan (FAB), Mariveles, Philippines. Scheduled for November 16, 2025, it marks the first Olympic-distance triathlon in Bataan and is organized in partnership with the IRONMAN Group’s Sunrise Events Inc.
-  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
-}
-
-Table dim_sports_activity_locations {
-  activity_location_id integer [pk, increment]
-  location text // Dinalupihan Sports Complex, Bataan; Orani Sports Complex, Orani, Bataan; Freeport Area of Bataan (FAB), Mariveles, Bataan
-  description text // he Dinalupihan Sports Complex served as one of the primary sports hubs for the 2024 Bataan Palarong Pampaaralan, the provincial school sports meet for student-athletes in Bataan.; The Orani Sports Complex in the Municipality of Orani was the official venue for the 2025 Division Sports Training on Officiating, a three-day workshop held from September 18–20, 2025 aimed at improving the skills and professionalism of sports officials, teachers, and sports coordinators in Bataan.; The Freeport Area of Bataan (FAB) in Mariveles served as the venue for the 5150 FAB Triathlon.
-  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
-}
-
-Table fact_sports_participation_reports [note: 'Increase percentage in community participation in fitness programs and increase percentage in participation in sports program (PGO)'] {
-  sport_participation_report_id integer [pk, increment]
-  reported_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  organizer_id integer [not null, ref: > dim_sports_organizers.organizer_id]
-  activity_id integer [not null, ref: > dim_sports_activities.activity_id]
-  activity_location_id integer [not null, ref: > dim_sports_activity_locations.activity_location_id]
-  total_no_of_male_participants bigint // 1233, 3211, 3354
-  total_no_of_female_participants bigint // 2112, 2,222, 981
-  total_no_of_participants bigint // 3345, 5433, 4335
-  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
-  updated_at timestamp // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
-
-  indexes {
-    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_lookup']
   }
 }
