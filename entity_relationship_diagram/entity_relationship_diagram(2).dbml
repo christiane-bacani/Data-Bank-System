@@ -855,6 +855,8 @@ Table fact_sports_participation_reports [note: 'Increase percentage in participa
   organizer_id integer [not null, ref: > dim_sports_organizers.organizer_id]
   activity_id integer [not null, ref: > dim_sports_activities.activity_id]
   activity_location_id integer [not null, ref: > dim_sports_activity_locations.activity_location_id]
+  total_no_of_male_participants bigint // 1233, 3211, 3354
+  total_no_of_female_participants bigint // 2112, 2,222, 981
   total_no_of_participants bigint // 3345, 5433, 4335
   created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
   updated_at timestamp // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
