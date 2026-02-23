@@ -821,15 +821,15 @@ Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vapi
 
 
 // ===========================================
-// Indicator: Increase percentage in participation in sports program
+// Indicator: Increase percentage in community participation in fitness programs and increase percentage in participation in sports program (PGO)
 // Lead Department: PGO
 // Frequency: Annually
-// Data Source:
+// Data Source: Sports Activity Organizers submits participation reports per event to the PGO
 // ===========================================
 
 Table dim_sports_organizers {
   organizer_id integer [pk, increment]
-  organizer varchar(255) // The Schools Division Office of Bataan (DepEd-Bataan), The Schools Division Office of Bataan, Sunrise Events, Inc.
+  organizer_name varchar(255) // The Schools Division Office of Bataan (DepEd-Bataan), The Schools Division Office of Bataan, Sunrise Events, Inc.
   created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
 }
 
@@ -847,7 +847,7 @@ Table dim_sports_activity_locations {
   created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
 }
 
-Table fact_sports_participation_reports [note: 'Increase percentage in participation in sports program (PGO)'] {
+Table fact_sports_participation_reports [note: 'Increase percentage in community participation in fitness programs and increase percentage in participation in sports program (PGO)'] {
   sport_participation_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
