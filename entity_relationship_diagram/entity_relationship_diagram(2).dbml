@@ -10,7 +10,7 @@ Table dim_dates {
   month integer // 2, 3, 4
   month_name varchar(20) // February, March, April
   week_number integer // 16, 17, 18
-  day_name varchar(20) // Monday, Tuesday, Wednesday
+  day_name varchar(20) // Monday, Tuesday, 
   is_weekend boolean // FALSE, FALSE, FALSE
   is_holiday boolean // FALSE, FALSE, FALSE
   created_at timestamp [default: `now()`] // 2026-02-06 15:58:00, 2026-02-06 17:58:00, 2026-02-06 19:58:00
@@ -856,6 +856,13 @@ Table fact_scholarship_summary_reports [note: 'Increase percentage in scholarshi
 // ===========================================
 // Indicator: Increase percentage in teacher capacity building and use of Learning Management Systems (LMS)
 // Lead Department: PGO
-// Frequency:
-// Data Source:
+// Frequency: Monthly
+// Data Source: Learning Management System with API Credentials provided by PITO
 // ===========================================
+
+Table dim_schools_using_lms {
+  school_id integer [pk, increment]
+  school_name varchar(255) // Bataan Peninsula State University - Main Campus, Bataan Heroes College, Cataning Integrated School
+  school_address text // Capitol Drive, Balanga City, Bataan, 2100, Philippines; Roman Super Highway, Balanga, Bataan; Quirino Street, Balanga, Bataan, Philippines
+  created_at timestamp [default: 'now()'] // 2026-02-24 08:40:40, 2026-02-25 08:40:40, 2026-02-26 08:40:40
+}
