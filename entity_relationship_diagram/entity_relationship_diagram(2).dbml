@@ -895,8 +895,8 @@ Table fact_system_usage_reports [note: 'Increase percentage in teacher capacity 
 
 
 // ===========================================
-// Indicator:
+// Indicator: Integration percentage of values education in school curriculum
 // Lead Department: PGO
-// Frequency:
+// Frequency: Annually
 // Data Source:
 // ===========================================
