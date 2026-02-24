@@ -903,6 +903,13 @@ Table fact_system_usage_reports [note: 'Increase percentage in teacher capacity 
 // Data Source:
 // ===========================================
 
+Table dim_implementing_school_municipalities {
+  municipality_id integer [pk, increment]
+  district_name varchar(50) // District II, District II, District II
+  municipality_name varchar(150) // City of Balanga, City of Balanga, City of Balangaa
+  created_at timestamp [default: 'now()'] // 2026-02-24 08:40:40, 2026-02-25 08:40:40, 2026-02-26 08:40:40  
+}
+
 Table dim_implementing_schools {
   school_id integer [pk, increment]
   school_name varchar(255) // Bataan Peninsula State University - Main Campus, Bataan Heroes College, Cataning Integrated School
