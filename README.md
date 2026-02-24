@@ -54,4 +54,5 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PGO             | % reduction in youth smoking and vaping rates | Done |
 | PGO             | % increase in participation in sports programs | Done | 
 | PGO             | % increase in scholarship recipients and licensure exam pass rates | Done |
-| PGO             | % increase in teacher capacity building and use of Learning Management Systems (LMS) | Pending |
+| PGO             | % increase in teacher capacity building and use of Learning Management Systems (LMS) | Done |
+| PGO             | % integration of values education in school curricula | Pending |
