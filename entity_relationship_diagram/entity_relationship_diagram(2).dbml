@@ -917,13 +917,13 @@ Table dim_implementing_schools {
   created_at timestamp [default: 'now()'] // 2026-02-24 08:40:40, 2026-02-25 08:40:40, 2026-02-26 08:40:40
 }
 
-enum school_type {
+enum school_level {
   BasicEducation
   HigherEducation
 }
 
 Table dim_school_types {
   school_type_id integer [pk, increment]
-  school_type school_type // Higher Education, Higher Education, Basic Education
+  school_level school_level // Higher Education, Higher Education, Basic Education
   created_at timestamp [default: 'now()'] // 2026-02-24 08:40:40, 2026-02-25 08:40:40, 2026-02-26 08:40:40
 }
