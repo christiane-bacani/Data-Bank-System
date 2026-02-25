@@ -60,4 +60,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PGO             | % increase in scholarship recipients and licensure exam pass rates | Done |
 | PGO             | % increase in teacher capacity building and use of Learning Management Systems (LMS) | Done |
 | PGO             | % integration of values education in school curricula | Done |
-| PGO             | % reduction in out-of-school youth through skills and employment programs | Pending |
+| PGO             | % reduction in out-of-school youth through skills and employment programs | Done |
