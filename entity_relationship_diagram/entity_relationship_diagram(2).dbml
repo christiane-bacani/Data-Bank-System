@@ -1003,3 +1003,10 @@ Table fact_osy_program_reports [note: 'Reduction percentage in out-of-school you
 // Frequency:
 // Data Source:
 // ===========================================
+
+Table dim_educhild_related_programs {
+  program_id integer [pk, increment]
+  program_name varchar(255) // EduChild Parenting Program, Child Development Worker (CDW) Support & EduChild Rollout Training, ERPAT (Empowerment and Reaffirmation of Paternal Abilities)
+  description text // It is a structured parenting education course for parents and caregivers that focuses on equipping them with essential knowledge and skills to raise and support their children effectively.; As part of early childhood care and education, PSWDO supports Child Development Workers at the local level. These workers are frontline facilitators of early childhood programs, including EduChild modules, within communities and daycare centers across the province.; ERPAT is a specialized community-based training program organized by PSWDO that focuses on building positive fatherhood and responsible parental roles.
+  created_at timestamp [default: 'now()'] // 2026-02-25 10:34:34, 2026-02-26 10:34:34, 2026-02-27 10:34:34
+}
