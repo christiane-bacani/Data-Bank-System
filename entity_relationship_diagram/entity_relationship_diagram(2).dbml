@@ -1000,8 +1000,8 @@ Table fact_osy_program_reports [note: 'Reduction percentage in out-of-school you
 // ===========================================
 // Indicator: Increase percentage in family engagement in children's education through EduChild Campaign
 // Lead Department: PGO
-// Frequency:
-// Data Source:
+// Frequency: Quarterly
+// Data Source: PSWO Submits the program reports to the PGO
 // ===========================================
 
 Table dim_educhild_program_batches {
