@@ -49,7 +49,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PGO             | % improvement in citizen access to services | Done |
 | PGO             | % of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives | Done |
 | PGO             | % increase in innovation hubs established | Done |
-| PGO             | % growth in defense industry investments | Done |
+| PGO             | % growth in defense industry investments | Revising |
 | PGO             | % increase in renewable energy projects and green mobility adoption | Done |
 | PGO             | % increase in community participation in fitness programs | Done |
 | PGO             | % improvement in school health programs | Done |
