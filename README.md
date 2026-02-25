@@ -61,4 +61,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PGO             | % increase in teacher capacity building and use of Learning Management Systems (LMS) | Done |
 | PGO             | % integration of values education in school curricula | Done |
 | PGO             | % reduction in out-of-school youth through skills and employment programs | Done |
-| PGO             | % increase in family engagement in children's education through Educhild Campaign | Pending |
+| PGO             | % increase in family engagement in children's education through Educhild Campaign | Pending
