@@ -27,6 +27,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 ## Todo
 - Ask LLM what happens if the start_date is previous year and end_date is this year, what year should it be covered?
 - Fix the attributes of schools dimension table to add additional details if possible
+- Fix the naming of the FK for the facts table containing the coverarage dates
 - Fix the data model for measuring the indicator `Percentage of growth investment for defense industry`
 - Fix the data model for measuring the indicator `Increase percentage of barangays with completed master development plan`
 - Ask question to LLM about the difference of different kinds of measurements for indicator and method of measuring it (Improvement, Reduction, Increase, etc.)
