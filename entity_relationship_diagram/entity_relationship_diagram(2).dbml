@@ -946,8 +946,8 @@ Table fact_school_accomplishment_reports [note: 'Integration percentage of value
 // ===========================================
 // Indicator: Reduction percentage in out-of-school youth through skills and employment programs
 // Lead Department: PGO
-// Frequency:
-// Data Source:
+// Frequency: Annually
+// Data Source: PSWDO Out-of-School-Youths population report and OPESM program reported submitted to PGO
 // ===========================================
 
 Table dim_osy_populations {
@@ -994,3 +994,12 @@ Table fact_osy_program_reports [note: 'Reduction percentage in out-of-school you
     (program_start_date_id, program_end_date_id, program_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+// ===========================================
+// Indicator: Increase percentage in family engagement in children's education through EduChild Campaign
+// Lead Department: PGO
+// Frequency:
+// Data Source:
+// ===========================================
