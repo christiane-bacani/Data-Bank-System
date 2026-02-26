@@ -762,7 +762,8 @@ Table fact_program_summary_reports [note: 'Improvement percentage in school heal
   program_category_id integer [not null, ref: > dim_program_categories.program_category_id]
   program_coordinator_id integer [not null, ref: > dim_program_coordinators.program_coordinator_id]
   school_id integer [not null, ref: > dim_schools.school_id]
-  total_no_of_beneficiaries bigint // 3888, 3889 3990
+  total_no_of_individuals_reached bigint // 3888, 3889 3990
+  total_no_of_students_enrolled bigint // 3888, 9883, 9930
   created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
   updated_at timestamp // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 
