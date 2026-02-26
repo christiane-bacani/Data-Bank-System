@@ -749,15 +749,15 @@ Table dim_program_coordinators {
 Table dim_schools {
   school_id integer [pk, increment]
   school_name varchar(255) // Cataning Integrated School, Saguing Elementary School, Tenejero Elementary School
-  school_address text //
+  school_address text // Cataning Integrated School is located at Quirino Street, Balanga City, Bataan, Philippines.; Olongapo - Bataan Road, Purok 2, Saguing, Dinalupihan, Bataan 2110, Philippines.; Manahan Street, Balanga, Bataan
   created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 }
 
 Table fact_program_summary_reports [note: 'Improvement percentage in school health programs and wellness programs (nutrition, physical activity, mental health) (PGO)'] {
   program_summary_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  program_start_date_id integer [not null, ref: > dim_dates.date_id]
+  program_end_date_id integer [not null, ref: > dim_dates.date_id]
   school_program_id integer [not null, ref: > dim_school_programs.school_program_id]
   program_category_id integer [not null, ref: > dim_program_categories.program_category_id]
   program_coordinator_id integer [not null, ref: > dim_program_coordinators.program_coordinator_id]
@@ -768,7 +768,7 @@ Table fact_program_summary_reports [note: 'Improvement percentage in school heal
   updated_at timestamp // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 
   indexes {
-    (coverage_start_date_id, coverage_end_date_id, school_program_id) [name: 'idx_report_lookup']
+    (program_start_date_id, program_end_date_id, school_program_id) [name: 'idx_report_lookup']
   }
 }
 
@@ -1013,9 +1013,9 @@ Table fact_osy_program_reports [note: 'Reduction percentage in out-of-school you
 // Data Source: PSWO Submits the program reports to the PGO
 // ===========================================
 
-Table dim_educhild_program_batches {
-  program_batch_id integer [pk, increment]
-  program_name varchar(255) // EduChild Parenting Program, Child Development Worker (CDW) Support & EduChild Rollout Training, ERPAT (Empowerment and Reaffirmation of Paternal Abilities)
+Table dim_educhild_programs {
+  educhild_program_id integer [pk, increment]
+  program_name varchar(255) // EduChild Parenting Program, Child Development Worker (CDW) Support & EduChild Rollout Training, ERPAT (Empowerment and Reaffirmation of Paternal Abilities) 
   program_category varchhar(100) // Parenting, Training, Fatherhood
   description text // It is a structured parenting education course for parents and caregivers that focuses on equipping them with essential knowledge and skills to raise and support their children effectively.; As part of early childhood care and education, PSWDO supports Child Development Workers at the local level. These workers are frontline facilitators of early childhood programs, including EduChild modules, within communities and daycare centers across the province.; ERPAT is a specialized community-based training program organized by PSWDO that focuses on building positive fatherhood and responsible parental roles.
   created_at timestamp [default: 'now()'] // 2026-02-25 10:34:34, 2026-02-26 10:34:34, 2026-02-27 10:34:34
@@ -1023,8 +1023,8 @@ Table dim_educhild_program_batches {
 
 Table dim_educhild_program_sessions {
   program_session_id integer [pk, increment]
-  program_batch_id integer [not null, ref: > dim_educhild_program_batches.program_batch_id]
-  location text // Barangay Maligaya, Mariveles, Bataan; Balanga City Hall, Balanga City, Bataan; One Bataan Command Center, Orani, Bataan
+  program_batch_id integer [not null, ref: > dim_educhild_programs.educhild_program_id]
+  session_location text // Barangay Maligaya, Mariveles, Bataan; Balanga City Hall, Balanga City, Bataan; One Bataan Command Center, Orani, Bataan
   created_at timestamp [default: 'now()'] // 2026-02-25 10:34:34, 2026-02-26 10:34:34, 2026-02-27 10:34:34
 }
 
@@ -1033,13 +1033,13 @@ Table fact_educhild_program_reports [note: 'Increase percentage in family engage
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   program_start_date_id integer [not null, ref: > dim_dates.date_id]
   program_end_date_id integer [not null, ref: > dim_dates.date_id]
-  program_batch_id integer [not null, ref: > dim_educhild_program_batches.program_batch_id]
+  educhild_program_id integer [not null, ref: > dim_educhild_programs.educhild_program_id]
   total_no_of_participants bigint
   total_graduates bigint
   created_at timestamp [default: 'now()'] // 2026-02-25 10:34:34, 2026-02-26 10:34:34, 2026-02-27 10:34:34
   updated_at timestamp // 2026-02-25 10:34:34, 2026-02-26 10:34:34, 2026-02-27 10:34:34
 
   indexes {
-    (program_start_date_id, program_end_date_id, program_batch_id) [name: 'idx_report_lookup']
+    (program_start_date_id, program_end_date_id, educhild_program_id) [name: 'idx_report_lookup']
   }
 }
