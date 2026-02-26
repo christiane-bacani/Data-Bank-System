@@ -62,3 +62,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PGO             | % reduction in out-of-school youth through skills and employment programs | Done |
 | PGO             | % increase in family engagement in children's education through Educhild Campaign | Done |
 | PGO             | % improvement in school health and wellness programs (nutrition, physical activity, mental health) | Done |
+| PGO             | % increase in adult literacy and participation in lifelong learning programs | Pending |
