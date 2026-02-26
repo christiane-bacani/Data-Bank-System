@@ -721,16 +721,22 @@ Table fact_sports_participation_reports [note: 'Increase percentage in community
 
 
 // ===========================================
-// Indicator: Improvement percentage in school health programs
+// Indicator: Improvement percentage in school health programs and wellness programs (nutrition, physical activity, mental health)
 // Lead Department: PGO
 // Frequency: Annually
 // Data Source: Submitted Summary Reports submitted and prepared by program coordinators
 // ===========================================
 
-Table dim_school_health_programs {
-  school_health_program_id integer [pk, increment]
-  school_health_program varchar(255) // Nutrition & School Lunch Program, Physical Activity & Wellness Challenges, Mental Health Programs
+Table dim_school_programs {
+  school_program_id integer [pk, increment]
+  school_program varchar(255) // School-Based Feeding Program (SBFP), Annual Intramurals, School Mental Health Awareness Seminar
   description text // Weekly provision of balanced meals to students based on nutritionist‑approved menus to improve dietary intake and reduce malnutrition.; Activities that promote movement, fitness and healthy lifestyles, such as dance challenges, sports events, and exercise clubs.; School‑based mental health awareness, counseling support, training of peer facilitators, and programs designed to build emotional resilience.
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
+Table dim_program_categories {
+  program_category_id integer [pk, increment]
+  program_category varchar(100) // Nutrition Programs, Physical Activity & Wellness Programs, Mental Health & Psychosocial Programs
   created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 }
 
@@ -743,15 +749,17 @@ Table dim_program_coordinators {
 Table dim_schools {
   school_id integer [pk, increment]
   school_name varchar(255) // Cataning Integrated School, Saguing Elementary School, Tenejero Elementary School
+  school_address text //
   created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 }
 
-Table fact_program_summary_reports [note: 'Improvement percentage in school health programs (PGO)'] {
+Table fact_program_summary_reports [note: 'Improvement percentage in school health programs and wellness programs (nutrition, physical activity, mental health) (PGO)'] {
   program_summary_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  school_health_program_id integer [not null, ref: > dim_school_health_programs.school_health_program_id] 
+  school_program_id integer [not null, ref: > dim_school_programs.school_program_id]
+  program_category_id integer [not null, ref: > dim_program_categories.program_category_id]
   program_coordinator_id integer [not null, ref: > dim_program_coordinators.program_coordinator_id]
   school_id integer [not null, ref: > dim_schools.school_id]
   total_no_of_beneficiaries bigint // 3888, 3889 3990
@@ -759,7 +767,7 @@ Table fact_program_summary_reports [note: 'Improvement percentage in school heal
   updated_at timestamp // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
 
   indexes {
-    (coverage_start_date_id, coverage_end_date_id, school_health_program_id) [name: 'idx_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, school_program_id) [name: 'idx_report_lookup']
   }
 }
 
