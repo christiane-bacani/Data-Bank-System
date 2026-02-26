@@ -1043,3 +1043,35 @@ Table fact_educhild_program_reports [note: 'Increase percentage in family engage
     (program_start_date_id, program_end_date_id, educhild_program_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+// ===========================================
+// Indicator: Increase percentage in adult literacy and participation in lifelong learning programs
+// Lead Department: PGO
+// Frequency:
+// Data Source:
+// ===========================================
+
+Table dim_lifelong_learning_programs {
+  program_id integer [pk, increment]
+  program_name varchar(255) // Alternative Learning System (ALS), TESDA Skills Training Programs, Opportunity 2.0 (Second-Chance Education Framework)
+  program_batch_name varchar(255) // ALS Batch 2025 – Junior High Level, Shielded Metal Arc Welding NC II – Batch 1 (2025), Work Readiness Training Batch 2025
+  program_type varchar(100) // Non-formal Basic Education, Technical-Vocational / Skills Development, Youth Development / Work Readiness / Second-Chance Education
+  description text // ALS provides flexible, modular education for OSYs and adults who did not finish elementary or high school.; TESDA provides short-term skills training to improve employability of OSYs. Many ALS graduates transition to TESDA programs.; Supports OSYs through life skills, digital skills, employability training, and partnership strengthening with ALS and TESDA.
+  created_at timestamp [default: 'now()']  // 2026-02-26 15:55:55, 2026-02-27 15:55:55, 2026-02-28 15:55:55
+}
+
+Table dim_program_summary_reports {
+  summary_report_id integer [pk, increment]
+  program_start_date_id integer [not null, ref: > dim_dates.date_id]
+  program_end_date_id integer [not null, ref: > dim_dates.date_id]
+  program_id integer [not null, ref: > dim_lifelong_learning_programs.program_id]
+  total_no_of_participants bigint // 378, 783, 837
+  created_at timestamp [default: 'now()'] // 2026-02-26 15:55:55, 2026-02-27 15:55:55, 2026-02-28 15:55:55
+  updated_at timestamp // 2026-02-26 15:55:55, 2026-02-27 15:55:55, 2026-02-28 15:55:55
+
+  indexes {
+    (program_start_date_id, program_end_date_id, program_id) [name: 'idx_report_lookup']
+  }
+}
