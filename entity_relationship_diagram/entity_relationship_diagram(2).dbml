@@ -1053,20 +1053,28 @@ Table fact_educhild_program_reports [note: 'Increase percentage in family engage
 // Data Source: PSA Survey Data about the adult literacy and OPESM and other support department that manages and organizers different lifelong learning programs focusing on out of school youths
 // ===========================================
 
-Table dim_lifelong_learning_programs {
-  program_id integer [pk, increment]
-  program_name varchar(255) // Alternative Learning System (ALS), TESDA Skills Training Programs, Opportunity 2.0 (Second-Chance Education Framework)
-  program_batch_name varchar(255) // ALS Batch 2025 – Junior High Level, Shielded Metal Arc Welding NC II – Batch 1 (2025), Work Readiness Training Batch 2025
-  program_type varchar(100) // Non-formal Basic Education, Technical-Vocational / Skills Development, Youth Development / Work Readiness / Second-Chance Education
-  program_category varchar(100) // Lifelong Learning Program, Skills Development, Social Inclusion
-  description text // ALS provides flexible, modular education for OSYs and adults who did not finish elementary or high school.; TESDA provides short-term skills training to improve employability of OSYs. Many ALS graduates transition to TESDA programs.; Supports OSYs through life skills, digital skills, employability training, and partnership strengthening with ALS and TESDA.
+Table dim_implementing_agencies {
+  implementing_agency_id integer [pk, increment]
+  agency_name varchar(255) // Department of Education, Technical Education and Skills Development Authority, Local Youth Development Offices
+  description text // The Department of Education (DepEd) is the national government agency responsible for ensuring access to basic education for all Filipinos.; he Technical Education and Skills Development Authority (TESDA) is the government agency responsible for technical-vocational education and skills training in the Philippines.; he Technical Education and Skills Development Authority (TESDA) is the government agency responsible for technical-vocational education and skills training in the Philippines.
   created_at timestamp [default: 'now()']  // 2026-02-26 15:55:55, 2026-02-27 15:55:55, 2026-02-28 15:55:55
 }
 
-Table dim_program_summary_reports {
+Table dim_lifelong_learning_programs {
+  program_id integer [pk, increment]
+  program_name varchar(255) // Alternative Learning System (ALS), TESDA Skills Training Programs, Kabataan 21 / Youth Development Programs
+  program_batch_name varchar(255) // ALS Batch 2025 – Junior High Level, Shielded Metal Arc Welding NC II – Batch 1 (2025), Sewing and Craft Training – Batch 1 (2025)
+  program_type varchar(100) // Non-formal Basic Education, Technical-Vocational, Skills Training
+  program_category varchar(100) // Lifelong Learning Program, Skills Development, Livelihood Development
+  description text // ALS provides flexible, modular education for OSYs and adults who did not finish elementary or high school.; TESDA provides short-term skills training to improve employability of OSYs. Many ALS graduates transition to TESDA programs.; This batch provides hands-on skills training in sewing, tailoring, and basic craft-making for out-of-school youth (OSYs) and vulnerable youth participants.
+  created_at timestamp [default: 'now()']  // 2026-02-26 15:55:55, 2026-02-27 15:55:55, 2026-02-28 15:55:55
+}
+
+Table fact_program_participant_reports [note: 'Increase percentage in adult literacy and participation in lifelong learning programs (PGO)'] {
   summary_report_id integer [pk, increment]
   program_start_date_id integer [not null, ref: > dim_dates.date_id]
   program_end_date_id integer [not null, ref: > dim_dates.date_id]
+  implementing_agency_id integer [not null, ref: > dim_implementing_agencies.implementing_agency_id]
   program_id integer [not null, ref: > dim_lifelong_learning_programs.program_id]
   total_no_of_participants bigint // 378, 783, 837
   created_at timestamp [default: 'now()'] // 2026-02-26 15:55:55, 2026-02-27 15:55:55, 2026-02-28 15:55:55
@@ -1084,7 +1092,7 @@ Table dim_adult_populations {
   barangay_name varchar(150) // Calaylayan, Cataning, Poblacion
 }
 
-Table fact_literacy_reports {
+Table fact_literacy_reports [note: 'Increase percentage in adult literacy and participation in lifelong learning programs (PGO)'] {
   literacy_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
