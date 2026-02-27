@@ -1107,3 +1107,14 @@ Table fact_literacy_reports [note: 'Increase percentage in adult literacy and pa
     (coverage_start_date_id, coverage_end_date_id, population_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+
+
+// ===========================================
+// Indicator: Improvement percentage in managemnet and efficiency of public enterprises
+// Lead Department: PGSO-PMO
+// Frequency:
+// Data Source:
+// ===========================================
