@@ -57,10 +57,11 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PGO             | % improvement in school health programs | Done |
 | PGO             | % reduction in youth smoking and vaping rates | Done |
 | PGO             | % increase in participation in sports programs | Done | 
-| PGO             | % increase in scholarship recipients and licensure exam pass rates | Done |
+| PGO-INB             | % increase in scholarship recipients and licensure exam pass rates | Done |
 | PGO             | % increase in teacher capacity building and use of Learning Management Systems (LMS) | Done |
 | PGO             | % integration of values education in school curricula | Done |
 | PGO             | % reduction in out-of-school youth through skills and employment programs | Done |
 | PGO             | % increase in family engagement in children's education through Educhild Campaign | Done |
-| PGO             | % improvement in school health and wellness programs (nutrition, physical activity, mental health) | Done |
+| PGO-BHSS             | % improvement in school health and wellness programs (nutrition, physical activity, mental health) | Done |
 | PGO             | % increase in adult literacy and participation in lifelong learning programs | Done |
+| PGSO-PMO        | % improvement in management and efficiency of public enterprises | Pending |
