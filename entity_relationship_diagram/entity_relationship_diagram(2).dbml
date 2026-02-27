@@ -1049,8 +1049,8 @@ Table fact_educhild_program_reports [note: 'Increase percentage in family engage
 // ===========================================
 // Indicator: Increase percentage in adult literacy and participation in lifelong learning programs
 // Lead Department: PGO
-// Frequency:
-// Data Source:
+// Frequency: Annually
+// Data Source: PSA Survey Data about the adult literacy and OPESM and other support department that manages and organizers different lifelong learning programs focusing on out of school youths
 // ===========================================
 
 Table dim_lifelong_learning_programs {
@@ -1058,6 +1058,7 @@ Table dim_lifelong_learning_programs {
   program_name varchar(255) // Alternative Learning System (ALS), TESDA Skills Training Programs, Opportunity 2.0 (Second-Chance Education Framework)
   program_batch_name varchar(255) // ALS Batch 2025 – Junior High Level, Shielded Metal Arc Welding NC II – Batch 1 (2025), Work Readiness Training Batch 2025
   program_type varchar(100) // Non-formal Basic Education, Technical-Vocational / Skills Development, Youth Development / Work Readiness / Second-Chance Education
+  program_category varchar(100) // Lifelong Learning Program, Skills Development, Social Inclusion
   description text // ALS provides flexible, modular education for OSYs and adults who did not finish elementary or high school.; TESDA provides short-term skills training to improve employability of OSYs. Many ALS graduates transition to TESDA programs.; Supports OSYs through life skills, digital skills, employability training, and partnership strengthening with ALS and TESDA.
   created_at timestamp [default: 'now()']  // 2026-02-26 15:55:55, 2026-02-27 15:55:55, 2026-02-28 15:55:55
 }
@@ -1073,5 +1074,28 @@ Table dim_program_summary_reports {
 
   indexes {
     (program_start_date_id, program_end_date_id, program_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table dim_adult_populations {
+  population_id integer [pk, increment]
+  district_name varchar(50) // District I, District II, District III
+  municipality_name varchar(100) // Abucay, City of Balanga, Dinalupihana
+  barangay_name varchar(150) // Calaylayan, Cataning, Poblacion
+}
+
+Table fact_literacy_reports {
+  literacy_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  population_id integer [not null, ref: > dim_adult_populations.population_id]
+  total_no_of_out_of_school_youths bigint
+  total_no_of_functional_literate bigint
+  created_at timestamp [default: 'now()'] // 2026-02-27 08:50:50, 2026-02-28 08:50:50, 2026-02-29 08:50:50
+  updated_at timestamp // 2026-02-27 08:50:50, 2026-02-28 08:50:50, 2026-02-29 08:50:50
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, population_id) [name: 'idx_report_lookup']
   }
 }
