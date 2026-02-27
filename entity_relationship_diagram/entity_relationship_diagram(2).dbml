@@ -1114,7 +1114,7 @@ Table fact_osy_literacy_reports [note: 'Increase percentage in adult literacy an
 // Indicator: Improvement percentage in management and efficiency of public enterprises
 // Lead Department: PGSO-PMO
 // Frequency: Annually
-// Data Source:
+// Data Source: Statement of the Appropriation, Allotment, Obligation, and Budget to a specific Public Enterprises and satisfaction ratings measured annually
 // ===========================================
 
 Table dim_public_enterprises {
@@ -1165,4 +1165,23 @@ Table fact_satisfaction_ratings [note: 'Improvement percentage in management and
   indexes {
     (coverage_start_date_id, coverage_end_date_id, public_enterprise_id) [name: 'idx_report_lookup']
   }  
+}
+
+
+
+
+
+// ===========================================
+// Indicator: Increase percentage in disaster-resilient infrastructure
+// Lead Department: PEO
+// Frequency: Quarterly
+// Data Source:
+// ===========================================
+
+Table dim_infrastructures {
+  infrastructure_id integer [pk, increment]
+  infrastructure_name varchar(255) // Flood-Resilient Slope Protection & Concrete Revetment along Magsaysay Dam; 558-Meter Flood Control Structure along Mabiga River, Hermosa; Flood Control Structure along Talisay River, Barangay Talisay
+  location text // Barangay Ala-uli, Pilar, Bataan; Barangay Mabiga, Hermosa, Bataan; Talisay River, Barangay Talisay, Balanga City Bataan
+  description text // Includes a 157-meter concrete revetment and pipe culverts to reduce soil erosion, stabilize embankments, and improve irrigation resilience during seasonal floods.; A structural flood control infrastructure designed to reduce flooding to nearby farmlands and protect access roads during heavy rains and typhoons.; Helps prevent river overflow during strong rainfall and reduce damages to nearby homes.
+  created_at timestamp [default: 'now()'] // 2026-02-27 16:06:06, 2026-02-28 16:06:06, 2026-02-29 16:06:06
 }
