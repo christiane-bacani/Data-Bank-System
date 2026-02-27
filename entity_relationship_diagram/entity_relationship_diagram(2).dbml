@@ -1185,3 +1185,18 @@ Table dim_infrastructures {
   description text // Includes a 157-meter concrete revetment and pipe culverts to reduce soil erosion, stabilize embankments, and improve irrigation resilience during seasonal floods.; A structural flood control infrastructure designed to reduce flooding to nearby farmlands and protect access roads during heavy rains and typhoons.; Helps prevent river overflow during strong rainfall and reduce damages to nearby homes.
   created_at timestamp [default: 'now()'] // 2026-02-27 16:06:06, 2026-02-28 16:06:06, 2026-02-29 16:06:06
 }
+
+Table dim_infrastructure_statuses {
+  status_id integer [pk, increment]
+  status varchar(150) //
+  created_at timestamp [default: 'now()'] // 2026-02-27 16:06:06, 2026-02-28 16:06:06, 2026-02-29 16:06:06
+}
+
+Table fact_infrastructure_reports [note: 'Increase percentage in disaster-resilient infrastructure (PEO)'] {
+  infrastructure_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  infrastructure_id integer [not null, ref: > dim_dates.date_id]
+  total_proposed_budget decimal(17, 2)
+}
