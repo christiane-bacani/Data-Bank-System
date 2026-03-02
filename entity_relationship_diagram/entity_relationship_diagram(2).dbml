@@ -1175,35 +1175,31 @@ Table fact_satisfaction_ratings [note: 'Improvement percentage in management and
 // Indicator: Increase percentage in disaster-resilient infrastructure
 // Lead Department: PEO
 // Frequency: Quarterly
-// Data Source:
+// Data Source: Summary Reports from PEO
 // ===========================================
 
-Table dim_infrastructures {
-  infrastructure_id integer [pk, increment]
-  infrastructure_name varchar(255) // Flood-Resilient Slope Protection & Concrete Revetment along Magsaysay Dam; 558-Meter Flood Control Structure along Mabiga River, Hermosa; Flood Control Structure along Talisay River, Barangay Talisay
-  location text // Barangay Ala-uli, Pilar, Bataan; Barangay Mabiga, Hermosa, Bataan; Talisay River, Barangay Talisay, Balanga City Bataan
-  description text // Includes a 157-meter concrete revetment and pipe culverts to reduce soil erosion, stabilize embankments, and improve irrigation resilience during seasonal floods.; A structural flood control infrastructure designed to reduce flooding to nearby farmlands and protect access roads during heavy rains and typhoons.; Helps prevent river overflow during strong rainfall and reduce damages to nearby homes.
-  created_at timestamp [default: 'now()'] // 2026-02-27 16:06:06, 2026-02-28 16:06:06, 2026-02-29 16:06:06
+Table dim_infrastructure_categories {
+  infrastructure_category_id integer [pk, increment]
+  category_name varchar(255) // Disaster Mitigation, Public Buildings, Disaster Mitigation
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
-Table dim_infrastructure_statuses {
-  status_id integer [pk, increment]
-  status varchar(150) // Proposed, Approved, UnderConstruction
-  created_at timestamp [default: 'now()'] // 2026-02-27 16:06:06, 2026-02-28 16:06:06, 2026-02-29 16:06:06
-}
-
-Table fact_infrastructure_reports [note: 'Increase percentage in disaster-resilient infrastructure (PEO)'] {
-  infrastructure_report_id integer [pk, increment]
+Table fact_infrastructure_summary_reports [note: 'Increase percentage in disaster-resilient infrastructure (PEO)'] {
+  summary_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  infrastructure_id integer [not null, ref: > dim_infrastructures.infrastructure_id]
-  status_id integer [not null, ref: > dim_infrastructure_statuses.status_id]
-  total_proposed_budget decimal(17, 2) // 991233324.12, 991332432.12, 234191232.44
-  total_approved_budget decimal(17, 2) // 223433211.87, 998123123.99, 998126572.23
-  created_at timestamp [default: 'now()'] // 2026-03-02 09:21:21, 2026-03-03 09:21:21, 2026-03-04 09:21:21
+  infrastructure_category_id integer [not null, ref: > dim_infrastructure_categories.infrastructure_category_id]
+  total_proposed_infrastructure bigint // 1, 2, 3
+  total_approved_infrastructure bigint // 4, 5, 6
+  total_ongoing_infrastructure bigint // 7, 8, 9
+  total_completed_infrastructure bigint // 10, 11, 12
+  total_under_maintenance_infrastructure bigint // 0, 1, 2
+  total_closed_infrastructure bigint // 0, 0, 2
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+  updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 
   indexes {
-    (coverage_start_date_id, coverage_end_date_id, infrastructure_id, status_id) [name: 'idx_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, infrastructure_category_id)
   }
 }
