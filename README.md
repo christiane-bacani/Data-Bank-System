@@ -65,4 +65,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PGO-BHSS             | % improvement in school health and wellness programs (nutrition, physical activity, mental health) | Done |
 | PGO             | % increase in adult literacy and participation in lifelong learning programs | Done |
 | PGSO-PMO        | % improvement in management and efficiency of public enterprises | Done |
-| PEO             | % increase in disaster-resilient infrastructure | Pending |
+| PEO             | % increase in disaster-resilient infrastructure | Done |
