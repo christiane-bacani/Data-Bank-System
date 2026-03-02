@@ -1210,7 +1210,7 @@ Table fact_infrastructure_summary_reports [note: 'Increase percentage in disaste
 // Indicator: Improvement percentage in infrastructure and market access
 // Lead Department: PEO
 // Frequency: Annually
-// Data Source:
+// Data Source: Infrastructure report of PEO and GDP per municipality from PSA
 // ===========================================
 
 Table dim_infrastructures {
