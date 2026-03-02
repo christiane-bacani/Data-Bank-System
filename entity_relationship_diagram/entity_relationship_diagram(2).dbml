@@ -1227,7 +1227,7 @@ Table dim_infrastructure_statuses {
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
-Table fact_dim_infrastructure_reports {
+Table fact_dim_infrastructure_reports [note: 'Improvement percentage in infrastructure and market access (PEO)'] {
   infrastructure_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -1250,7 +1250,17 @@ Table dim_economic_municipalities {
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
-Table fact_economic_growth_reports {
+Table fact_economic_growth_reports [note: 'We use GDP as a proxy indicator for market access because GDP growth reflects the economy connectivity, investment, and trades'] {
   growth_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  municipality_id integer [not null, ref: > dim_economic_municipalities.municipality_id]
+  gross_domestic_product decimal(17, 2)
+  created_at timestamp [default: 'now'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+  updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']
+  }
 }
