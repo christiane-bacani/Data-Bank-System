@@ -1250,8 +1250,8 @@ Table dim_economic_municipalities {
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
-Table fact_economic_growth_reports [note: 'We use GDP as a proxy indicator for market access because GDP growth reflects the total value of goods/services produced in an area, if they have more value of goods/services it means more market access'] {
-  growth_report_id integer [pk, increment]
+Table fact_gross_domestic_products [note: 'We use GDP as a proxy indicator for market access because GDP growth reflects the total value of goods/services produced in an area, if they have more value of goods/services it means more market access'] {
+  gdp_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
