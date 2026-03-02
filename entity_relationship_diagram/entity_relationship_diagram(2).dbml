@@ -1227,8 +1227,8 @@ Table dim_infrastructure_statuses {
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
-Table fact_dim_infrastructure_reports [note: 'Improvement percentage in infrastructure and market access (PEO)'] {
-  infrastructure_report_id integer [pk, increment]
+Table fact_infrastructure_status_reports [note: 'Improvement percentage in infrastructure and market access (PEO)'] {
+  status_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
