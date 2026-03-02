@@ -1172,45 +1172,10 @@ Table fact_satisfaction_ratings [note: 'Improvement percentage in management and
 
 
 // ===========================================
-// Indicator: Increase percentage in disaster-resilient infrastructure
-// Lead Department: PEO
-// Frequency: Quarterly
-// Data Source: Summary Reports from PEO
-// ===========================================
-
-Table dim_infrastructure_categories {
-  infrastructure_category_id integer [pk, increment]
-  category_name varchar(255) // Disaster Mitigation, Public Buildings, Disaster Mitigation
-  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
-}
-
-Table fact_infrastructure_summary_reports [note: 'Increase percentage in disaster-resilient infrastructure (PEO)'] {
-  summary_report_id integer [pk, increment]
-  reported_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  infrastructure_category_id integer [not null, ref: > dim_infrastructure_categories.infrastructure_category_id]
-  total_proposed_infrastructure bigint // 1, 2, 3
-  total_approved_infrastructure bigint // 4, 5, 6
-  total_ongoing_infrastructure bigint // 7, 8, 9
-  total_completed_infrastructure bigint // 10, 11, 12
-  total_under_maintenance_infrastructure bigint // 0, 1, 2
-  total_closed_infrastructure bigint // 0, 0, 2
-  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
-  updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
-
-  indexes {
-    (coverage_start_date_id, coverage_end_date_id, infrastructure_category_id)
-  }
-}
-
-
-
-// ===========================================
-// Indicator: Improvement percentage in infrastructure and market access
+// Indicator: Increase percentage in disaster-resilient infrastructure and improvement percentage in infrastructure and market access (PEO)
 // Lead Department: PEO
 // Frequency: Annually
-// Data Source: Infrastructure report of PEO and GDP per municipality from PSA
+// Data Source: Infrastructure status report of PEO and GDP per municipality from PSA
 // ===========================================
 
 Table dim_infrastructures {
@@ -1227,7 +1192,7 @@ Table dim_infrastructure_statuses {
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
-Table fact_infrastructure_status_reports [note: 'Improvement percentage in infrastructure and market access (PEO)'] {
+Table fact_infrastructure_status_reports [note: 'Increase percentage in disaster-resilient infrastructure and improvement percentage in infrastructure and market access (PEO)'] {
   status_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
