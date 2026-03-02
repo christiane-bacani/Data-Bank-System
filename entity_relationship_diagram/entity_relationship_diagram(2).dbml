@@ -1203,3 +1203,12 @@ Table fact_infrastructure_summary_reports [note: 'Increase percentage in disaste
     (coverage_start_date_id, coverage_end_date_id, infrastructure_category_id)
   }
 }
+
+
+
+// ===========================================
+// Indicator: Improvement percentage in infrastructure and market access
+// Lead Department: PEO
+// Frequency:
+// Data Source:
+// ===========================================
