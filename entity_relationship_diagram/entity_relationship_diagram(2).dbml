@@ -1243,6 +1243,30 @@ Table fact_gross_domestic_products [note: 'We use GDP as a proxy indicator for m
 // ===========================================
 // Indicator: Increase percentage in access to healthcare facilities
 // Lead Department: PEO
-// Frequency:
-// Data Source:
+// Frequency: Annually
+// Data Source: Infrastructure reports from PEO and Health Facility Coverage reports from PHO and consolidated by PGO
 // ===========================================
+
+Table dim_health_care_facilities {
+  facility_id integer [pk, increment]
+  facility_name varchar(255) // Bataan General Hospital and Medical Center, Mariveles District Hospital, Orani District Hospital
+  facility_type varchar(50) // Hospital, Hospital, Hospital
+  location text // Brgy. Tejenero, Balanga City Bataan; Mariveles, Bataan; Orani, Bataan
+  operational_start_date date // 2026-03-03, 2026-03-04, 2026-03-05
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+}
+
+Table fact_facility_coverage_reports {
+  coverage_report_id integer [pk, increment]  
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  facility_id integer [not null, ref: > dim_health_care_facilities.facility_id]
+  total_no_of_covered_population bigint // 9876, 7869, 8797
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+  updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, facility_id) [name: 'idx_report_lookup']
+  }
+}
