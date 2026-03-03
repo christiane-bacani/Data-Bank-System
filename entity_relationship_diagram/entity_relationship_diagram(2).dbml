@@ -1256,7 +1256,7 @@ Table dim_health_care_facilities {
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
-Table fact_facility_coverage_reports {
+Table fact_facility_coverage_reports [note: 'Increase percentage in access to healthcare facilities (PEO)'] {
   coverage_report_id integer [pk, increment]  
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
