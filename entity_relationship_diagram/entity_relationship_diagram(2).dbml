@@ -1246,17 +1246,3 @@ Table fact_gross_domestic_products [note: 'We use GDP as a proxy indicator for m
 // Frequency:
 // Data Source:
 // ===========================================
-
-Table dim_health_care_facilities {
-  facility_id integer [pk, increment]
-  facility_name varchar(255) // Provincial Health Office, Dinalupihan Rural Health Unit, Bataan General Hospital
-  created_at timestamp [default: 'now()'] // 2026-03-03 08:34:43, 2026-03-04 08:34:43, 2026-03-05 08:34:43
-}
-
-Table dim_covered_populations {
-  population_id integer [pk, increment]
-  district_name varchar(50) // District II, District III, District
-  municipality_name varchar(100) // City of Balanga, Dinalupihan, City of Balanga
-  barangay_name varchar(150) // Tenejero, Padre Dandan, Tenejero
-  created_at timestamp [default: 'now()'] // 2026-03-03 08:34:43, 2026-03-04 08:34:43, 2026-03-05 08:34:43
-}
