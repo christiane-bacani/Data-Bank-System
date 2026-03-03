@@ -1228,6 +1228,7 @@ Table fact_gross_domestic_products [note: 'We use GDP as a proxy indicator for m
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   municipality_id integer [not null, ref: > dim_economic_municipalities.municipality_id]
+  currency_id integer [not null, ref: > dim_gdp_currencies.currency_id]
   gross_domestic_product decimal(17, 2) // 123456789.23, 987654321.23, 654321789.12
   created_at timestamp [default: 'now'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
   updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
