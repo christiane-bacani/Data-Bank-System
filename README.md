@@ -67,4 +67,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PGSO-PMO        | % improvement in management and efficiency of public enterprises | Done |
 | PEO             | % increase in disaster-resilient infrastructure | Done |
 | PEO             | % improvement in infrastructure and market access | Done |
-| PEO             | % increase in access to healthcare facilities | Pending |
+| PEO             | % increase in access to healthcare facilities | Done |
