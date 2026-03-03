@@ -624,7 +624,7 @@ Table dim_spending_types {
   created_at timestamp [default: 'now()'] // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
 }
 
-Table dim_currencies {
+Table dim_spending_currencies {
   currency_id integer [pk, increment]
   curreny_code varchar(10) // PHP, USD, JPY
   currency_name varchar(100) // Philippine Peso, Us Dollars, Japanese Yen
@@ -638,7 +638,7 @@ Table fact_spending_reports [note: 'Growth Percentage in defense industry invest
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   ppa_id integer [not null, ref: > dim_programs_projects_activities.ppa_id]
   spending_type_id integer [not null, ref: > dim_spending_types.spending_type_id]
-  currency_id integer [not null, ref: > dim_currencies.currency_id]
+  currency_id integer [not null, ref: > dim_spending_currencies.currency_id]
   total_amount decimal(17, 2) // 123345678.23, 987654321.99, 123123321.13
   created_at timestamp [default: 'now()'] // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
   updated_at timestamp // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
@@ -1192,13 +1192,20 @@ Table dim_infrastructure_statuses {
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
+Table dim_currencies {
+  currency_id integer [pk, increment]
+  currency_name varchar(100) // Philippine Pesos, Philippine Pesos, Philippine Pesos
+  currency_code varchar(5) // PHP, PHP, PHP
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+}
+
 Table fact_infrastructure_status_reports [note: 'Increase percentage in disaster-resilient infrastructure and improvement percentage in infrastructure and market access (PEO)'] {
   status_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   infrastructure_id integer [not null, ref: > dim_infrastructures.infrastructure_id]
-  status_id integer [not null, ref: > dim_infrastructure_statuses.status_id]  
+  status_id integer [not null, ref: > dim_infrastructure_statuses.status_id]
   total_investment_amount decimal(17, 2) // 123456789.23, 987654321.23, 654321789.12
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
   updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
@@ -1215,20 +1222,13 @@ Table dim_economic_municipalities {
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
-Table dim_gdp_currencies {
-  currency_id integer [pk, increment]
-  currency_name varchar(100) // Philippine Pesos, Philippine Pesos, Philippine Pesos
-  currency_code varchar(5) // PHP, PHP, PHP
-  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
-}
-
 Table fact_gross_domestic_products [note: 'We use GDP as a proxy indicator for market access because GDP growth reflects the total value of goods/services produced in an area, if they have more value of goods/services it means more market access'] {
   gdp_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   municipality_id integer [not null, ref: > dim_economic_municipalities.municipality_id]
-  currency_id integer [not null, ref: > dim_gdp_currencies.currency_id]
+  currency_id integer [not null, ref: > dim_currencies.currency_id]
   gross_domestic_product decimal(17, 2) // 123456789.23, 987654321.23, 654321789.12
   created_at timestamp [default: 'now'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
   updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
