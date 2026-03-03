@@ -1255,18 +1255,27 @@ Table dim_health_care_facilities {
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
+Table dim_covered_populations {
+  population_id integer [pk, increment]
+  district_name varchar(50) // District II, District III, District I
+  municipality_name varchar(100) // City of Balanga, Mariveles, Orani
+  barangay_name varchar(100) // Tenejero, Malaya, Doña
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+}
+
 Table fact_facility_coverage_reports [note: 'Increase percentage in access to healthcare facilities (PEO)'] {
   coverage_report_id integer [pk, increment]  
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   facility_id integer [not null, ref: > dim_health_care_facilities.facility_id]
+  population_id integer [not null, ref: > dim_covered_populations.population_id]
   total_no_of_covered_population bigint // 9876, 7869, 8797
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
   updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 
   indexes {
-    (coverage_start_date_id, coverage_end_date_id, facility_id) [name: 'idx_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, facility_id, population_id) [name: 'idx_report_lookup']
   }
 }
 
