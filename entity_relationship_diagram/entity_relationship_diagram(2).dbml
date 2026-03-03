@@ -1250,7 +1250,6 @@ Table fact_gross_domestic_products [note: 'We use GDP as a proxy indicator for m
 Table dim_health_care_facilities {
   facility_id integer [pk, increment]
   facility_name varchar(255) // Bataan General Hospital and Medical Center, Mariveles District Hospital, Orani District Hospital
-  facility_type varchar(50) // Hospital, Hospital, Hospital
   location text // Brgy. Tejenero, Balanga City Bataan; Mariveles, Bataan; Orani, Bataan
   operational_start_date date // 2026-03-03, 2026-03-04, 2026-03-05
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
@@ -1269,4 +1268,22 @@ Table fact_facility_coverage_reports [note: 'Increase percentage in access to he
   indexes {
     (coverage_start_date_id, coverage_end_date_id, facility_id) [name: 'idx_report_lookup']
   }
+}
+
+
+
+// ===========================================
+// Indicator: Increase percentage in access to clean water and sanitation facilities
+// Lead Department: PEO
+// Frequency:
+// Data Source:
+// ===========================================
+
+Table dim_water_sanitation_facilities {
+  facility_id integer [pk, increment]
+  facility_name varchar(255) // Solar-Powered Water System – Roosevelt ES, Rainwater Collector Systems (9 units), Solar-Powered UV Water Filtration System – Sitio Pulo
+  description text // Provides reliable potable water to students and staff using solar-powered pumps and an elevated tank, ensuring continuous water access even in areas with intermittent electricity.; Collects and stores rainwater for sanitation and cleaning purposes in public facilities and schools, supporting hygiene, handwashing, and toilet flushing where municipal water is limited.; Uses solar energy to power ultraviolet (UV) purification, providing safe drinking water for households and community members in remote areas.
+  location text // Roosevelt Elementary School, Dinalupihan, Bataan; Balanga City, Bataan; Brgy. Kabalutan, Orani, Bataan
+  operational_start_date date // 2024-08-20, 2025-09-08, 2023-05-05
+  created_at timestamp [default: 'now()'] // 2024-09-30 13:53:53, 2025-09-30 13:53:53, 2023-06-30 13:53:53
 }
