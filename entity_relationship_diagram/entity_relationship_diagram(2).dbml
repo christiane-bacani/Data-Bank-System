@@ -1244,7 +1244,7 @@ Table fact_gross_domestic_products [note: 'We use GDP as a proxy indicator for m
 // Indicator: Increase percentage in access to healthcare facilities and increase percentage in access to clean water and sanitation facilities
 // Lead Department: PEO
 // Frequency: Annually
-// Data Source: Infrastructure reports from PEO and Health or Clean Water/Sanitation Facility Coverage reports from PHO and consolidated by PGO
+// Data Source: Infrastructure reports from PEO and Health Care Facility Logs that can use the healthcare facilities and number of household that can use the clean water and sanitation facilities
 // ===========================================
 
 Table dim_facilities {
@@ -1273,8 +1273,8 @@ Table fact_facility_coverage_reports [note: 'Increase percentage in access to he
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   facility_id integer [not null, ref: > dim_facilities.facility_id]
   population_id integer [not null, ref: > dim_covered_populations.population_id]
-  no_of_households_with_access bigint
-  total_no_of_households bigint
+  no_of_households_with_access bigint // 321, 123, 231
+  total_no_of_households bigint // 432, 521, 231
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
   updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 
