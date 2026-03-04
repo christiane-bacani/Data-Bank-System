@@ -1401,3 +1401,9 @@ Table dim_ppp_projects {
   description text
   created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
 }
+
+Table dim_ppp_status {
+  status_id integer [pk, increment]
+  status_name varchar(50)
+  created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
+}
