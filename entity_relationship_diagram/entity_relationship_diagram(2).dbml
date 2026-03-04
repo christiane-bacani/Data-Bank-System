@@ -1335,3 +1335,9 @@ Table dim_businesses {
   registered_business_name varchar(255)
   created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
 }
+
+Table dim_business_categories {
+  business_category_id integer [pk, increment]
+  business_category varchar(100)
+  created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+}
