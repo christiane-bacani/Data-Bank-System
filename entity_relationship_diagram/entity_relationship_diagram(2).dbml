@@ -1393,3 +1393,11 @@ Table dim_companies {
   nationality varchar(150)
   created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18
 }
+
+Table dim_ppp_projects {
+  project_id integer [pk, increment]
+  sector_name varchar(150)
+  project_name varchar(255)
+  description text
+  created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
+}
