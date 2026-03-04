@@ -1376,3 +1376,20 @@ Table dim_business_reports [note: 'Increase percentage in locators in FAB Expans
     (coverage_start_date_id, coverage_end_date_id, fab_area_id, business_id, registration_status_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+// ===========================================
+// Indicator: Increase percentage in public-private partnerships (PPPs)
+// Lead Department: PPPIC
+// Frequency:
+// Data Source:
+// ===========================================
+
+Table dim_companies {
+  company_id integer [pk, increment]
+  company_name varchar(255)
+  industry_name varchar(255)
+  nationality varchar(150)
+  created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18
+}
