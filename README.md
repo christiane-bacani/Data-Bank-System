@@ -71,3 +71,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PEO             | % increase in access to clean water and sanitation facilities | Done |
 | PEO             | % increase in school infrastructure development | Done |
 | PPPIC           | % increase in locators in FAB Expansion Areas (Registered) | Done |
+| PPPIC           | % increase in public-private partnerships (PPPs) | Pending |
