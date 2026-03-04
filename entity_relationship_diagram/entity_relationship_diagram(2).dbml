@@ -1382,7 +1382,7 @@ Table dim_business_reports [note: 'Increase percentage in locators in FAB Expans
 // ===========================================
 // Indicator: Increase percentage in public-private partnerships (PPPs)
 // Lead Department: PPPIC
-// Frequency:
+// Frequency: Quarterly
 // Data Source:
 // ===========================================
 
@@ -1397,8 +1397,11 @@ Table dim_companies {
 Table dim_ppp_projects {
   project_id integer [pk, increment]
   sector_name varchar(150)
+  ppp_type varchar(100)
   project_name varchar(255)
   description text
+  project_status varchar(75)
+  is_strategic boolean
   created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
 }
 
@@ -1415,12 +1418,12 @@ Table dim_investment_currencies {
   created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
 }
 
-Table dim_contract_reports [note: 'Increase percentage in public-private partnerships (PPPs) (PPPIC)'] {
+Table fact_contract_reports [note: 'Increase percentage in public-private partnerships (PPPs) (PPPIC)'] {
   contract_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   contract_start_date_id integer [not null, ref: > dim_dates.date_id]
   contract_end_date_id integer [not null, ref: > dim_dates.date_id]
-  company_id integer [not null, ref: > dim_dates.date_id]
+  company_id integer [not null, ref: > dim_companies.company_id]
   project_id integer [not null, ref: > dim_ppp_projects.project_id]
   contract_status_id integer [not null, ref: > dim_contract_statuses.contract_status_id]
   investment_currency_id integer [not null, ref: > dim_investment_currencies.currency_id]
