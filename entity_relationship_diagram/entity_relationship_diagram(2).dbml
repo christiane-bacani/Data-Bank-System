@@ -1383,7 +1383,7 @@ Table dim_business_reports [note: 'Increase percentage in locators in FAB Expans
 // Indicator: Increase percentage in public-private partnerships (PPPs)
 // Lead Department: PPPIC
 // Frequency: Quarterly
-// Data Source:
+// Data Source: Public-Private Partnership Contracts from PPPIC
 // ===========================================
 
 Table dim_companies {
