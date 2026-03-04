@@ -1402,8 +1402,33 @@ Table dim_ppp_projects {
   created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
 }
 
-Table dim_ppp_status {
-  status_id integer [pk, increment]
-  status_name varchar(50)
+Table dim_contract_statuses {
+  contract_status_id integer [pk, increment]
+  contract_status_name varchar(50)
   created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
+}
+
+Table dim_investment_currencies {
+  currency_id integer [pk, increment]
+  currency_name varchar(150)
+  currency_code varchar(15)
+  created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
+}
+
+Table dim_contract_reports [note: 'Increase percentage in public-private partnerships (PPPs) (PPPIC)'] {
+  contract_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  contract_start_date_id integer [not null, ref: > dim_dates.date_id]
+  contract_end_date_id integer [not null, ref: > dim_dates.date_id]
+  company_id integer [not null, ref: > dim_dates.date_id]
+  project_id integer [not null, ref: > dim_ppp_projects.project_id]
+  contract_status_id integer [not null, ref: > dim_contract_statuses.contract_status_id]
+  investment_currency_id integer [not null, ref: > dim_investment_currencies.currency_id]
+  total_investment_amount decimal(17, 2)
+  created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
+  updated_at timestamp // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
+
+  indexes {
+    (contract_start_date_id, contract_end_date_id, company_id, project_id, contract_status_id) [name: 'idx_report_lookup']
+  }
 }
