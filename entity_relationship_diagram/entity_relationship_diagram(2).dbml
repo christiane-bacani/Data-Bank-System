@@ -1325,6 +1325,7 @@ Table dim_fab_areas {
   fab_area_id integer [pk, increment]
   municipality_name varchar(50) // Mariveles, Dinalupihan, City of Balanga
   fab_area_name varchar(150) // FAB-Mariveles Ecozone, FAB-Dinalupihan Industrial Park, FAB-Balanga Business Hub
+  is_expansion_area boolean // False, True, True
   location text // Brgy. Alas-asin, Mariveles, Bataan; Brgy. San Benito, Dinalupihan, Bataan; Brgy. Tuyo, Balanga City, Bataan
   created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
 }
@@ -1340,4 +1341,30 @@ Table dim_business_categories {
   business_category_id integer [pk, increment]
   business_category varchar(100)
   created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+}
+
+Table dim_business_statuses {
+  business_status_id integer [pk, increment]
+  business_status varchar(255) // Pending, Approved, Renewing
+  created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+}
+
+Table dim_business_reports [note: 'Increase percentage in locators in FAB Expansion Areas (Registered) (PPPIC)'] {
+  business_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  permission_start_date_id integer [not null, ref: > dim_dates.date_id] // Business Permit validity (Permit valid from Jan 1, 2024 - Dec 31, 2024)
+  permission_end_date_id integer [not null, ref: > dim_dates.date_id]
+  fab_area_id integer [not null, ref: > dim_fab_areas.fab_area_id]
+  business_id integer [not null, ref: > dim_businesses.business_id]
+  business_category_id integer [not null, ref: > dim_business_categories.business_category_id]
+  business_status_id integer [not null, ref: > dim_business_statuses.business_status_id]
+  projected_annual_revenue decimal(17, 2)
+  created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+  updated_at timestamp // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, fab_area_id, business_id, business_status_id) [name: 'idx_report_lookup']
+  }
 }
