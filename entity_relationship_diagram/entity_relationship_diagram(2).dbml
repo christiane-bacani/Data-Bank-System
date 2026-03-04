@@ -1172,9 +1172,9 @@ Table fact_satisfaction_ratings [note: 'Improvement percentage in management and
 
 
 // ===========================================
-// Indicator: Increase percentage in disaster-resilient infrastructure and improvement percentage in infrastructure and market access (PEO)
+// Indicator: Increase percentage in disaster-resilient infrastructure, improvement percentage in infrastructure and market access, and increase percentage in school infrastructure development (PEO)
 // Lead Department: PEO
-// Frequency: Annually
+// Frequency: Quarterly
 // Data Source: Infrastructure status report of PEO and GDP per municipality from PSA
 // ===========================================
 
@@ -1199,11 +1199,12 @@ Table dim_currencies {
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
-Table fact_infrastructure_status_reports [note: 'Increase percentage in disaster-resilient infrastructure and improvement percentage in infrastructure and market access (PEO)'] {
+Table fact_infrastructure_status_reports [note: 'Increase percentage in disaster-resilient infrastructure, improvement percentage in infrastructure and market access, and increase percentage in school infrastructure development (PEO)'] {
   status_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  currency_id integer [not null, ref: > dim_currencies.currency_id]
   infrastructure_id integer [not null, ref: > dim_infrastructures.infrastructure_id]
   status_id integer [not null, ref: > dim_infrastructure_statuses.status_id]
   total_investment_amount decimal(17, 2) // 123456789.23, 987654321.23, 654321789.12
@@ -1222,13 +1223,13 @@ Table dim_economic_municipalities {
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
-Table fact_gross_domestic_products [note: 'We use GDP as a proxy indicator for market access because GDP growth reflects the total value of goods/services produced in an area, if they have more value of goods/services it means more market access'] {
+Table fact_gross_domestic_products [note: 'This is fact table are connected to the table "fact_infrastructure_status_reports" for measuring the improvement pct in infrastructure and market access using GDP as proxy indicator for market access'] {
   gdp_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  municipality_id integer [not null, ref: > dim_economic_municipalities.municipality_id]
   currency_id integer [not null, ref: > dim_currencies.currency_id]
+  municipality_id integer [not null, ref: > dim_economic_municipalities.municipality_id]
   gross_domestic_product decimal(17, 2) // 123456789.23, 987654321.23, 654321789.12
   created_at timestamp [default: 'now'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
   updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
@@ -1244,7 +1245,7 @@ Table fact_gross_domestic_products [note: 'We use GDP as a proxy indicator for m
 // Indicator: Increase percentage in access to healthcare facilities and increase percentage in access to clean water and sanitation facilities
 // Lead Department: PEO
 // Frequency: Annually
-// Data Source: Infrastructure reports from PEO and Health Care Facility Logs that can use the healthcare facilities and number of household that can use the clean water and sanitation facilities
+// Data Source: Infrastructure reports from PEO for facilities and Health Access Coverage Report of PHO and consolidated by PGO
 // ===========================================
 
 Table dim_facilities {
@@ -1259,59 +1260,54 @@ Table dim_facilities {
 }
 
 Table dim_covered_populations {
-  population_id integer [pk, increment]
+  covered_population_id integer [pk, increment]
   district_name varchar(50) // District II, District III, District I
   municipality_name varchar(100) // City of Balanga, Mariveles, Orani
   barangay_name varchar(100) // Tenejero, Malaya, Doña
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
-Table fact_facility_coverage_reports [note: 'Increase percentage in access to healthcare facilities and increase percentage in access to clean water and sanitation facilities (PEO)'] {
-  coverage_report_id integer [pk, increment]  
+Table fact_population_coverage_reports [note: 'Increase percentage in access to healthcare facilities (PEO)'] {
+  coverage_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   facility_id integer [not null, ref: > dim_facilities.facility_id]
-  population_id integer [not null, ref: > dim_covered_populations.population_id]
-  no_of_households_with_access bigint // 321, 123, 231
-  total_no_of_households bigint // 432, 521, 231
-  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 026-03-03 09:46:46, 2026-03-04 09:46:46
+  covered_population_id integer [not null, ref: > dim_covered_populations.covered_population_id]
+  no_of_population_with_access bigint
+  total_no_of_population bigint
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
   updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 
   indexes {
-    (coverage_start_date_id, coverage_end_date_id, facility_id, population_id) [name: 'idx_report_lookup']
+    (reported_date_id, coverage_start_date_id, coverage_end_date_id, facility_id, covered_population_id) [name: 'idx_report_lookup'
+    ]
   }
 }
 
 
 
 // ===========================================
-// Indicator: Increase percentage in school infrastructure development
+// Indicator: Increase percentage in access to healthcare facilities and increase percentage in access to clean water and sanitation facilities
 // Lead Department: PEO
-// Frequency: Quarterly
-// Data Source: Infrastructure status reports of PEO
+// Frequency: Annually
+// Data Source: Infrastructure reports from PEO for facilities and Health Access Coverage Report of PHO and consolidated by PGO
 // ===========================================
 
-Table dim_investment_currencies {
-  currency_id integer [pk, increment]
-  currency_name varchar(100) // Philippine Pesos, Philippine Pesos, Philippine Pesos
-  currency_code varchar(10) // PHP, PHP, PHP
-  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
-}
-
-Table fact_facility_status_reports [note: 'Increase percentage in school infrastructure development (PEO)'] {
-  status_report_id integer [pk, increment]
+Table fact_household_coverage_reports [note: 'Increase percentage in access to clean water and sanitation facilities (PEO)'] {
+  coverage_report_id integer [pk, increment]  
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   facility_id integer [not null, ref: > dim_facilities.facility_id]
-  currency_id integer [not null, ref: > dim_investment_currencies.currency_id]
-  total_investment_amount decimal(17, 2) // 123456789.23, 987654321.23, 654321789.12
-  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+  covered_population_id integer [not null, ref: > dim_covered_populations.covered_population_id]
+  no_of_households_with_access bigint // 321, 123, 231
+  total_no_of_households bigint // 432, 521, 231
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 026-03-03 09:46:46, 2026-03-04 09:46:46
   updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 
   indexes {
-    (reported_date_id, coverage_start_date_id, coverage_end_date_id, facility_id) [name: 'idx_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, facility_id, covered_population_id) [name: 'idx_report_lookup']
   }
 }
 
@@ -1331,5 +1327,12 @@ Table dim_fab_areas {
   municipality_name varchar(50) // Mariveles, Dinalupihan, City of Balanga
   fab_area_name varchar(150) // FAB-Mariveles Ecozone, FAB-Dinalupihan Industrial Park, FAB-Balanga Business Hub
   location text // Brgy. Alas-asin, Mariveles, Bataan; Brgy. San Benito, Dinalupihan, Bataan; Brgy. Tuyo, Balanga City, Bataan
+  created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+}
+
+Table dim_businesses {
+  business_id integer [pk, increment]
+  business_name varchar(255)
+  registered_business_name varchar(255)
   created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
 }
