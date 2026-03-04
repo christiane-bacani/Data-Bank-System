@@ -1314,3 +1314,22 @@ Table fact_facility_status_reports [note: 'Increase percentage in school infrast
     (reported_date_id, coverage_start_date_id, coverage_end_date_id, facility_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+
+
+// ===========================================
+// Indicator: Increase percentage in locators in FAB Expansion Areas (Registered)
+// Lead Department: PPPIC
+// Frequency:
+// Data Source:
+// ===========================================
+
+Table dim_fab_areas {
+  fab_area_id integer [pk, increment]
+  municipality_name varchar(50) // Mariveles, Dinalupihan, City of Balanga
+  fab_area_name varchar(150) // FAB-Mariveles Ecozone, FAB-Dinalupihan Industrial Park, FAB-Balanga Business Hub
+  location text // Brgy. Alas-asin, Mariveles, Bataan; Brgy. San Benito, Dinalupihan, Bataan; Brgy. Tuyo, Balanga City, Bataan
+  created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+}
