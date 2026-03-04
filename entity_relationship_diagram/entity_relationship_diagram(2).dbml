@@ -1194,7 +1194,7 @@ Table dim_infrastructure_statuses {
 
 Table dim_currencies {
   currency_id integer [pk, increment]
-  currency_name varchar(100) // Philippine Pesos, Philippine Pesos, Philippine Pesos
+  currency_name varchar(100) // Philippine Peso, Philippine Peso, Philippine Peso
   currency_code varchar(5) // PHP, PHP, PHP
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
@@ -1351,7 +1351,7 @@ Table dim_registration_statuses {
 
 Table dim_revenue_currencies {
   currency_id integer [pk, increment]
-  currency_name varchar(75) // Us Dollars, Philippine Pesos, Philippine Pesos
+  currency_name varchar(75) // Us Dollars, Philippine Peso, Philippine Peso
   currency_code varchar(25) // USD, PHP, PHP
   created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
 }
@@ -1388,33 +1388,32 @@ Table dim_business_reports [note: 'Increase percentage in locators in FAB Expans
 
 Table dim_companies {
   company_id integer [pk, increment]
-  company_name varchar(255)
-  industry_name varchar(255)
-  nationality varchar(150)
+  company_name varchar(255) // SolarEnergy Inc.; EVCharge PH, Bunker Solutions
+  industry_name varchar(255) // Renewable Energy, EV Infrastructure, ICT / Energy
+  nationality varchar(150) // PH, PH, PH
   created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18
 }
 
 Table dim_ppp_projects {
   project_id integer [pk, increment]
-  sector_name varchar(150)
-  ppp_type varchar(100)
-  project_name varchar(255)
-  description text
-  project_status varchar(75)
-  is_strategic boolean
+  sector_name varchar(150) // Renewable Energy; EV Charging; ICT / Energy
+  ppp_type varchar(100) // BOT, BOO, JV
+  project_name varchar(255) // Solar Farm Cebu, Metro Manila EV Network, Bunker Smart Grid
+  project_status varchar(75) // Operational, Planning, Signed
+  is_strategic boolean // True, True, True
   created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
 }
 
 Table dim_contract_statuses {
   contract_status_id integer [pk, increment]
-  contract_status_name varchar(50)
+  contract_status_name varchar(50) // Signed, Signed, Terminated
   created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
 }
 
 Table dim_investment_currencies {
   currency_id integer [pk, increment]
-  currency_name varchar(150)
-  currency_code varchar(15)
+  currency_name varchar(150) // Philippine Peso, Philippine Peso, US Dollar
+  currency_code varchar(15) // PHP, PHP, USD
   created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
 }
 
@@ -1427,7 +1426,7 @@ Table fact_contract_reports [note: 'Increase percentage in public-private partne
   project_id integer [not null, ref: > dim_ppp_projects.project_id]
   contract_status_id integer [not null, ref: > dim_contract_statuses.contract_status_id]
   investment_currency_id integer [not null, ref: > dim_investment_currencies.currency_id]
-  total_investment_amount decimal(17, 2)
+  total_investment_amount decimal(17, 2) // 500000000.23, 200000000.99, 300000000.11
   created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
   updated_at timestamp // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
 
