@@ -1489,3 +1489,14 @@ Table fact_government_revenues [note: 'Increase percentage in government revenue
     (reported_date_id, coverage_start_date_id, coverage_end_date_id, responsible_department_id, revenue_class_id, revenue_category_id, revenue_source_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+
+
+// ===========================================
+// Indicator: Increase percentage in SMEs using online systems for business permits
+// Lead Department: PCEDO
+// Frequency:
+// Data Source:
+// ===========================================
