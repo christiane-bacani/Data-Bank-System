@@ -1443,5 +1443,49 @@ Table fact_contract_reports [note: 'Increase percentage in public-private partne
 // Indicator: Increase percentage in government revenue
 // Lead Department: LFC
 // Frequency: Quarterly
-// Data Source:
+// Data Source: Revenue and Expenditures reported to the BLGF
 // ===========================================
+
+Table dim_responsible_departments {
+  department_id integer [pk, increment]
+  department_name varchar(255) // Provincial Treasurer, Provincial Treasurer, Local Finance Committee
+  department_code varchar(25) // TREAS, LFC, BUDG
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+}
+
+Table dim_revenue_classes {
+  revenue_class_id integer [pk, increment]
+  revenue_class_name varchar(255) // Locally Sourced Revenue, Locally Sourced Revenue, External Revenue
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+}
+
+Table dim_revenue_categories {
+  revenue_category_id integer [pk, increment]
+  revenue_category varchar(255) // Tax Revenue, Non-Tax Revenue, National Tax Allotment
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
+}
+
+Table dim_revenue_sources {
+  revenue_source_id integer [pk, increment]
+  revenue_source_name varchar(255) // Real Property Tax, Local Business Tax, National Tax Allotment
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
+}
+
+Table fact_government_revenues [note: 'Increase percentage in government revenue (LFC)'] {
+  revenue_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]  
+  responsible_department_id integer [not null, ref: > dim_responsible_departments.department_id]
+  revenue_class_id integer [not null, ref: > dim_revenue_classes.revenue_class_id]
+  revenue_category_id integer [not null, ref: > dim_revenue_categories.revenue_category_id]
+  revenue_source_id integer [not null, ref: > dim_revenue_sources.revenue_source_id]
+  amount_assessed decimal(17, 2) // 15,680,000.00; 15,680,000.00; 1,200,000.00
+  amount_collected decimal(17, 2) // 14,200,000.00; 14,200,000.00; 1,100,000.00
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+  updated_at timestamp // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+
+  indexes {
+    (reported_date_id, coverage_start_date_id, coverage_end_date_id, responsible_department_id, revenue_class_id, revenue_category_id, revenue_source_id) [name: 'idx_report_lookup']
+  }
+}
