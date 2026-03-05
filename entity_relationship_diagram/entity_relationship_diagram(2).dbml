@@ -1434,3 +1434,14 @@ Table fact_contract_reports [note: 'Increase percentage in public-private partne
     (contract_start_date_id, contract_end_date_id, company_id, project_id, contract_status_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+
+
+// ===========================================
+// Indicator: Increase percentage in government revenue
+// Lead Department: LFC
+// Frequency:
+// Data Source:
+// ===========================================
