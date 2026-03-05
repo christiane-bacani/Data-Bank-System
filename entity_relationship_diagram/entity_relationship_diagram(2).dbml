@@ -1500,3 +1500,11 @@ Table fact_government_revenues [note: 'Increase percentage in government revenue
 // Frequency:
 // Data Source:
 // ===========================================
+
+Table dim_enterprises {
+  enterprise_id integer [pk, increment]
+  enterprise_name varchar(255)
+  enterprise_size varchar(100)
+  enterprise_sector varchar(100)
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+}
