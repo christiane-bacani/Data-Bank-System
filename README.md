@@ -25,7 +25,14 @@ An analytical data repository for the Provincial Government of Bataan that centr
 - Contains all the necessary utilities of the pipeline such as the data lineage, metadata, search and discovery features to get the data they needed, agreements for the data/indicators/success indicators to be used per department and make sure it was clear on how do you track it and considered it as a failure and documented in the methodology, agreements on how to measure the indicators/success indicators, agreements on how to submit the data, agreements on who is/are the people who will submit the data, agreements on systems to use (if feasible) that sends that data or supports the extraction of the data, agreements on what date/time/period they needed to submit the data, agreements on why and how data is uploaded (including reporting cut-off dates and status logic), agreements on how much time period is valid before the data bank perform automated escalation, agreements on proper escalation process if they don't send the data on time, information about who can access the different datasets on the data bank, feedback data of the users of the data bank, integration connections (links to the actual data source of the dataset), data privacy/security/access controls, procedures to resolving discrepancies or errors, and roles and responsiblities of each party.
 
 ## Todo
+- Ask AI if all public transports have operator and acquire through programs, if not change the "fact_registered_public_vehicles" of operator_id FK and transition_program_id to okay null.
+- Ask AI if I should need to create aggregate table so that we have two tables the one is for auditing and one is for analyzing the indicator "Adoption percentage of electric vehicles in public transport"
+- Ask AI the exact data source to get the data for the data model to measure the "Adoption percentage of electric vehicles in public transport"
 - Give example values for the data model "Increase percentage in SMEs using online systems for business permits"
+
+
+
+
 - Fix the attribute name for categorical attributes to remove the suffix "_name"
 - Fix the attributes of schools dimension table to add additional details if possible
 - Fix the naming of the FK for the facts table containing the coverarage dates
