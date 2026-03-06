@@ -1638,7 +1638,7 @@ Table fact_registered_public_vehicles [note: 'Adoption percentage of electric ve
   }
 }
 
-Table fact_vehicle_summary_report [note: 'Adoption percentage of electric vehicles in public transport (PCEDO) (Low Granularity for Analytics and creating two fact tables is the best approach for this indicator)'] {
+Table fact_vehicle_summary_reports [note: 'Adoption percentage of electric vehicles in public transport (PCEDO) (Low Granularity for Analytics and creating two fact tables is the best approach for this indicator)'] {
   summary_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
