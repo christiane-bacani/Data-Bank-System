@@ -1601,19 +1601,9 @@ Table dim_vehicles {
   vehicle_id integer [pk, increment]
   vehicle_name varchar(255)
   plate_number varchar(100)
-  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15    
-}
-
-Table dim_vehicle_types {
-  vehicle_type_id integer [pk, increment]
   vehicle_type varchar(150)
-  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15      
-}
-
-Table dim_fuel_types {
-  fuel_type_id integer [pk, increment]
   fuel_type varchar(75)
-  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15        
+  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15    
 }
 
 Table dim_transition_programs {
@@ -1638,8 +1628,6 @@ Table fact_registered_public_vehicles [note: 'Adoption percentage of electric ve
   registered_municipality_id integer [not null, ref: > dim_registered_municipalities.municipality_id]
   operator_id integer [ref: > dim_transport_operators.operator_id]
   vehicle_id integer [not null, ref: > dim_vehicles.vehicle_id]
-  vehicle_type_id integer [not null, ref: > dim_vehicle_types.vehicle_type_id]
-  fuel_type_id integer [not null, ref: > dim_fuel_types.fuel_type_id]
   price_currency_id integer [not null, ref: > dim_price_currencies.currency_id]
   acquired_total_price decimal(17, 2)
   created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15        
