@@ -1497,8 +1497,8 @@ Table fact_government_revenues [note: 'Increase percentage in government revenue
 // ===========================================
 // Indicator: Increase percentage in SMEs using online systems for business permits
 // Lead Department: PCEDO
-// Frequency:
-// Data Source:
+// Frequency: Monthly Data Collection but Quarterly Data Analysis
+// Data Source: Municipal Business Permit and Licensing Systems
 // ===========================================
 
 Table dim_enterprises {
@@ -1506,5 +1506,70 @@ Table dim_enterprises {
   enterprise_name varchar(255)
   enterprise_size varchar(100)
   enterprise_sector varchar(100)
+  enterprise_status varchar(75)
   created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+}
+
+Table dim_business_permits {
+  business_permit_id integer [pk, increment]
+  business_permit_name varchar(150)
+  permit_valid_from date
+  permit_valid_to date
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
+}
+
+Table dim_business_permit_statuses {
+  permit_status_id integer [pk, increment]
+  permit_status varchar(100)
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+}
+
+Table fact_permit_applications [note: 'Increase percentage in SMEs using online systems for business permits (PCEDO)'] {
+  application_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  application_date_id integer [not null, ref: > dim_dates.date_id]
+  enterprise_id integer [not null, ref: > dim_enterprises.enterprise_id]
+  issued_business_permit_id integer [ref: > dim_business_permits.business_permit_id]
+  permit_status_id integer [not null, ref: > dim_business_permit_statuses.permit_status_id]
+  total_payment decimal(17, 2)
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+  updated_at timestamp // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+
+  indexes {
+    (enterprise_id,  permit_status_id) [name: 'idx_report_looukp']
+  }
+}
+
+Table dim_submitted_licenses {
+  license_id integer [pk, increment]
+  application_id integer [not null, ref: > fact_permit_applications.application_id]
+  license_name varchar(255)
+  licsense_type varchar(150)
+  license_valid_from date
+  license_valid_to date
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
+}
+
+Table dim_business_municipalities {
+  municipality_id integer [pk, increment]
+  district_name varchar(100)
+  municipality_name varchar(150)
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
+}
+
+Table fact_issued_permit_reports [note: 'Summary report for measuring the increase percentage in SMEs using online systems for business permits (PCEDO)'] {
+  summary_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  municipality_id integer [not null, ref: > dim_business_municipalities.municipality_id]
+  no_of_new_issued_permits bigint
+  no_of_renewed_permits bigint
+  no_of_active_permits bigint
+  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15
+  updated_at timestamp // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']
+  }
 }
