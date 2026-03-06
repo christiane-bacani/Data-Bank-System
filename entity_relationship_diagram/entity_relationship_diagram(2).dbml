@@ -1498,29 +1498,29 @@ Table fact_government_revenues [note: 'Increase percentage in government revenue
 // Indicator: Increase percentage in SMEs using online systems for business permits
 // Lead Department: PCEDO
 // Frequency: Monthly Data Collection but Quarterly Data Analysis
-// Data Source: Municipal Business Permit and Licensing Systems
+// Data Source: Municipal Business Permit and Licensing Systems, if None collect it to the agency who manages the application of business permits and licenses
 // ===========================================
 
 Table dim_enterprises {
   enterprise_id integer [pk, increment]
-  enterprise_name varchar(255)
-  enterprise_size varchar(100)
-  enterprise_sector varchar(100)
-  enterprise_status varchar(75)
+  enterprise_name varchar(255) // Orani Café & Bakery, Mariveles Hardware, Balanga IT Solutions
+  enterprise_size varchar(100) // Small, Medium, Small
+  enterprise_sector varchar(100) // Food & Beverage, Retail, IT Services
+  enterprise_status varchar(75) // Active, Active, Active
   created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
 }
 
 Table dim_business_permits {
   business_permit_id integer [pk, increment]
-  business_permit_name varchar(150)
-  permit_valid_from date
-  permit_valid_to date
+  business_permit_name varchar(150) // Mayor’s Permit, Sanitary Permit, Fire Safety Permit
+  permit_valid_from date // 2026-01-01, 2026-01-01, 2026-01-01
+  permit_valid_to date // 2026-12-31, 2026-12-31, 2026-12-31
   created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
 }
 
 Table dim_business_permit_statuses {
   permit_status_id integer [pk, increment]
-  permit_status varchar(100)
+  permit_status varchar(100) // New, Renewed, Active
   created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
 }
 
@@ -1531,7 +1531,8 @@ Table fact_permit_applications [note: 'Increase percentage in SMEs using online 
   enterprise_id integer [not null, ref: > dim_enterprises.enterprise_id]
   issued_business_permit_id integer [ref: > dim_business_permits.business_permit_id]
   permit_status_id integer [not null, ref: > dim_business_permit_statuses.permit_status_id]
-  total_payment decimal(17, 2)
+  total_payment decimal(17, 2) // 500.00, 200.00, 1000.00
+  is_online boolean // True, True, False
   created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
   updated_at timestamp // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
 
@@ -1543,17 +1544,17 @@ Table fact_permit_applications [note: 'Increase percentage in SMEs using online 
 Table dim_submitted_licenses {
   license_id integer [pk, increment]
   application_id integer [not null, ref: > fact_permit_applications.application_id]
-  license_name varchar(255)
-  licsense_type varchar(150)
-  license_valid_from date
-  license_valid_to date
+  license_name varchar(255) // Mayor’s License, Sanitary License, Fire Safety
+  license_type varchar(150) // Business, Compliance, Compliance
+  license_valid_from date // 2026-03-01, 2026-03-01, 2026-03-03
+  license_valid_to date // 2027-03-01, 2027-03-01, 2027-03-03
   created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
 }
 
 Table dim_business_municipalities {
   municipality_id integer [pk, increment]
-  district_name varchar(100)
-  municipality_name varchar(150)
+  district_name varchar(100) // District I, District II, District III
+  municipality_name varchar(150) // Abucay, City of Balanga, Dinalupihan
   created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
 }
 
@@ -1563,9 +1564,9 @@ Table fact_issued_permit_reports [note: 'Summary report for measuring the increa
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   municipality_id integer [not null, ref: > dim_business_municipalities.municipality_id]
-  no_of_new_issued_permits bigint
-  no_of_renewed_permits bigint
-  no_of_active_permits bigint
+  no_of_new_issued_permits bigint // 1, 1, 1
+  no_of_renewed_permits bigint // 0, 0, 0
+  no_of_active_permits bigint // 1, 1, 1
   created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15
   updated_at timestamp // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15
 
