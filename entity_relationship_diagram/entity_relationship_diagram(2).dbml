@@ -1583,8 +1583,8 @@ Table fact_issued_permit_reports [note: 'Summary report for measuring the increa
 // Data Source:
 // ===========================================
 
-Table dim_registered_municipalities {
-  municipality_id integer [pk, increment]
+Table dim_vehicle_locations {
+  vehicle_location_id integer [pk, increment]
   district_name varchar(150)
   municipality_name varchar(150)
   created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15  
@@ -1599,8 +1599,8 @@ Table dim_transport_operators {
 
 Table dim_vehicles {
   vehicle_id integer [pk, increment]
-  vehicle_name varchar(255)
   plate_number varchar(100)
+  vehicle_name varchar(255)
   vehicle_type varchar(150)
   fuel_type varchar(75)
   created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15    
@@ -1620,12 +1620,12 @@ Table dim_price_currencies {
   created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15          
 }
 
-Table fact_registered_public_vehicles [note: 'Adoption percentage of electric vehicles in public transport (PCEDO)'] {
+Table fact_registered_public_vehicles [note: 'Adoption percentage of electric vehicles in public transport (PCEDO) (High Granularity for Auditing)'] {
   public_vehicle_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   valid_from_date_id integer [not null, ref: > dim_dates.date_id]
   valid_to_date_id integer [not null, ref: > dim_dates.date_id]
-  registered_municipality_id integer [not null, ref: > dim_registered_municipalities.municipality_id]
+  vehicle_location_id integer [not null, ref: > dim_vehicle_locations.vehicle_location_id]
   operator_id integer [ref: > dim_transport_operators.operator_id]
   vehicle_id integer [not null, ref: > dim_vehicles.vehicle_id]
   price_currency_id integer [not null, ref: > dim_price_currencies.currency_id]
@@ -1634,6 +1634,22 @@ Table fact_registered_public_vehicles [note: 'Adoption percentage of electric ve
   updated_at timestamp // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15        
 
   indexes {
-    (valid_from_date_id, valid_to_date_id, registered_municipality_id)
+    (valid_from_date_id, valid_to_date_id, vehicle_location_id, vehicle_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table fact_vehicle_summary_report [note: 'Adoption percentage of electric vehicles in public transport (PCEDO) (Low Granularity for Analytics and creating two fact tables is the best approach for this indicator)'] {
+  summary_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  vehicle_location_id integer [not null, ref: > dim_vehicle_locations.vehicle_location_id]
+  no_of_electric_public_vehicles bigint
+  no_of_public_vehicles bigint
+  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15        
+  updated_at timestamp // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, vehicle_location_id) [name: 'idx_report_lookup']
   }
 }
