@@ -1606,13 +1606,6 @@ Table dim_vehicles {
   created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15    
 }
 
-Table dim_transition_programs {
-  program_id integer [pk, increment]
-  program_name varchar(255)
-  description text
-  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15        
-}
-
 Table dim_price_currencies {
   currency_id integer [pk, increment]
   currency_name varchar(150)
