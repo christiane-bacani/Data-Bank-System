@@ -1573,3 +1573,12 @@ Table fact_issued_permit_reports [note: 'Summary report for measuring the increa
     (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+// ===========================================
+// Indicator: Adoption percentage of electric vehicles in public transport
+// Lead Department: PCEDO
+// Frequency:
+// Data Source:
+// ===========================================
