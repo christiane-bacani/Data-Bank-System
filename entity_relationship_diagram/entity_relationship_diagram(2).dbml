@@ -1647,7 +1647,7 @@ Table fact_vehicle_summary_reports [note: 'Adoption percentage of electric vehic
 // ===========================================
 // Indicator: Increase percentage in TNVS (Transport Network Vehicle Service) slots for public transport
 // Lead Department: PCEDO
-// Frequency: Quarterly
+// Frequency: Quarterly Data Collection but Annual Data Analysis
 // Data Source: Approved TNVS slots for public transporation per location proposed by the PCEDO
 // ===========================================
 
