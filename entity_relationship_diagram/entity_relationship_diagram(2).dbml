@@ -1651,15 +1651,42 @@ Table fact_vehicle_summary_reports [note: 'Adoption percentage of electric vehic
 // Data Source:
 // ===========================================
 
-Table dim_tnvs_platforms {
-  tnvs_platform_id integer [pk, increment]
-  platform_name varchar(255)
+Table dim_tnvs_slot_programs {
+  tnvs_slot_program_id integer [pk, increment]
+  program_name varchar(255) // TNVS Slots Expansion FY25, TNVS Slots Expansion FY25, TNVS Slots Expansion FY26Q1
+  description text // Implement 150 additional slots for TNVS in Bataan; Implement 100 additional slots for TNVS in Bataan for Q1 FY26; Implement 120 additional slots for TNVS in Bataan for Q2 FY26 
   created_at timestamp [default: 'now()'] // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
 }
 
-Table dim_tnvs_slot_programs {
-  tnvs_slot_program_id integer [pk, increment]
-  program_name varchar(255)
-  description texts
+Table dim_tnvs_platforms {
+  tnvs_platform_id integer [pk, increment]
+  platform_name varchar(255) // Grab, Grab, Angkas
+  description text // 
   created_at timestamp [default: 'now()'] // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
+}
+
+Table fact_tnvs_public_transport_slots [note: 'Increase percentage in TNVS (Transport Network Vehicle Service) slots for public transport (PCEDO) (High Granularity for Auditing)'] {
+  allocation_id integer [pk, increment]
+  approval_date_id integer [not null, ref: > dim_dates.date_id]
+  tnvs_slot_program_id integer [not null, ref: > dim_tnvs_slot_programs.tnvs_slot_program_id]
+  vehicle_location_id integer [not null, ref: > dim_vehicle_locations.vehicle_location_id]
+  tnvs_platform_id integer [not null, ref: > dim_tnvs_platforms.tnvs_platform_id]
+  slots_allocated bigint // 50, 40, 60
+  created_at timestamp [default: 'now()'] // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
+  updated_at timestamp // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
+}
+
+Table fact_tnvs_public_transport_slot_summaries [note: 'Increase percentage in TNVS (Transport Network Vehicle Service) slots for public transport (PCEDO) (Low Granularity for Analytics and creating two fact tables is the best approach for this indicator)'] {
+  summary_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  tnvs_slot_program_id integer [not null, ref: > dim_tnvs_slot_programs.tnvs_slot_program_id]
+  total_slots_allocated bigint // 150, 150, 100
+  created_at timestamp [default: 'now()'] // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
+  updated_at timestamp // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, tnvs_slot_program_id) [name: 'idx_report_lookup']
+  }
 }
