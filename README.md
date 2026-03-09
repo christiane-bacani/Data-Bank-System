@@ -76,4 +76,4 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | LFC             | % increase in government revenue                 | Done |
 | PCEDO           | % increase in SMEs using online systems for business permits | Done |
 | PCEDO           | % adoption of electric vehicles in public transport | Done |
-| PCEDO           | % increase in TNVS (Transport Network Vehicle Service) slots for public transport | Pending |
+| PCEDO           | % increase in TNVS (Transport Network Vehicle Service) slots for public transport | Done |
