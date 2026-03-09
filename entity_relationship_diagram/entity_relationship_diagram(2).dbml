@@ -1619,7 +1619,7 @@ Table fact_registered_public_vehicles [note: 'Adoption percentage of electric ve
   vehicle_id integer [not null, ref: > dim_vehicles.vehicle_id]
   fuel_type_id integer [not null, ref: > dim_fuel_types.fuel_type_id]
   created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15        
-  updated_at timestamp // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15        
+  updated_at timestamp // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15
 
   indexes {
     (vehicle_location_id, vehicle_id) [name: 'idx_report_lookup']
