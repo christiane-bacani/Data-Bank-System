@@ -1691,3 +1691,14 @@ Table fact_tnvs_public_transport_slot_summaries [note: 'Increase percentage in T
     (coverage_start_date_id, coverage_end_date_id, tnvs_slot_program_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+
+
+// ===========================================
+// Indicator: Increase percentage in tourism activities, festival participation and revenue from festivals (Trade Fairs)
+// Lead Department: PTourism
+// Frequency:
+// Data Source:
+// ===========================================
