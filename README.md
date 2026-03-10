@@ -26,6 +26,10 @@ An analytical data repository for the Provincial Government of Bataan that centr
 
 ## Todo
 - Check if we can create audit fact table for the indicator "Increase percentage in barangays with completed Barangay Master Development Plans" after successfully designed the layout of the indicator "Increase percentage in innovation hubs established"
+- Check if we can create audit fact table for the indicator "Percentage of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives" and if no, let LLM validate the data model for that if it is the most accurate data model to use for that indicator
+
+
+
 - After successfully implementing all the data models as a galaxy schema, check what facts table has shared dimensions and implement it by creating a shared dimensions for that tables
 - Implement an audit table to reference all facts and dimensions who submit and verified that data/table
 
