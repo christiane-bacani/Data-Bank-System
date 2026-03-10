@@ -1729,7 +1729,7 @@ Table fact_festival_participation_reports [note: 'Increase percentage in tourism
   }
 }
 
-Table fact_event_summary_reports {
+Table fact_event_summary_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals (Trade Fairs) (This fact table is for analyzing the increase percentage of tourism activities)'] {
   summary_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
