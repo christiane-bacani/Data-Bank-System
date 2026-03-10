@@ -526,65 +526,69 @@ Table fact_enrollment_statuses [note: 'Percentage of LGUs enrolled in the Perfor
 
 
 // ===========================================
-// Indicator: Increase percentage in innovation hubs established and Increase percentage in renewable energy projects and green mobility adoption
+// Indicator: Increase percentage in innovation hubs established
 // Lead Department: PGO
-// Frequency: Quarterly
-// Data Source: Project Status Reports submitted by organization/departments/offices/agencies to PGO
+// Frequency: Annually
+// Data Source: Barangay learning hub status reports submitted to the PGO
 // ============================================
 
-Table dim_submitters {
-  submitter_id integer [pk, increment]
-  submitting_entity varchar(255) // Provincial Governor's Office, Office of the Provincial Planning and Development Coordinator, Provincial Environment and Natural Resources Office
-  entity_type varchar(100) // Office, Department, Department
+Table dim_brgy_learning_hubs {
+  learning_hub_id integer [pk, increment]
+  learning_hub_name varchar(255) // Cupang Barangay Learning Hub, Sto. Domingo Learning Hub, San Juan Innovation Hub
   created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
 }
 
-Table dim_projects {
-  project_id integer [pk, increment]
-  project_name varchar(255) // Barangay San Jose Learning Hub, Solar Power Plant Installation, Electric Public Transport Fleet
-  project_type varchar(255) // Innovation Hub, Renewable Energy, Green Mobility
-  description text //  The Barangay Learning Hub is a community-based center that provides free access to computers, internet, and educational resources., Installation of a solar power plant to supply clean electricity to government buildings, with a plan for recycling or repurposing solar panels at the end of their lifecycle., Adopts electric buses for public transportation, including a program for battery recycling and vehicle disposal at end-of-life, reducing emissions and promoting sustainable urban mobility.
+Table dim_learning_hub_locations {
+  location_id integer [pk, increment]
+  district varchar(50) // District II, District II
+  municipality varchar(100) // City of Balanga, City of Balanga, District II
+  barangay varchar(100) // Cupang, Sto. Domingo, San Juan
   created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
 }
 
-Table dim_project_heads {
-  project_head_id integer [pk, increment]
-  project_head_name varchar(255) // John Doe, Jane Doe, Joe Blow
-  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+Table dim_learning_hub_statuses {
+  status_id integer [pk, increment]
+  status varchar(100) // Approved, Procurement, Ongoing Construction
+  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14  
 }
 
-enum project_status {
-  Proposed
-  Approved
-  InProgress
-  Operational
-  UnderMaintenance
-  Suspended
-  Closed
-}
-
-Table dim_project_statuses {
-  project_status_id integer [pk, increment]
-  project_status project_status // Proposed, In Progress, Operational
-  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-}
-
-Table fact_project_status_reports [note: 'Increase percentage in innovation hubs established and increase percentage in renewable energy projects and green mobility adoption (PGO)'] {
-  project_status_report_id integer [pk, increment]
+Table fact_establishment_status_reports [note: 'Increase percentage in innovation hubs established (PGO)\nThis is the high granularity version for analyzing the indicator for auditing purposes instead of just summaries'] {
+  status_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  submitter_id integer [not null, ref: > dim_submitters.submitter_id]
-  project_id integer [not null, ref: > dim_projects.project_id]
-  project_head_id integer [not null, ref: > dim_project_heads.project_head_id]
-  project_status_id integer [not null, ref: > dim_project_statuses.project_status_id]
-  total_proposed_budget decimal(17, 2) // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-  total_approved_budget decimal(17, 2) // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
-  updated_at timestamp // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+  learning_hub_id integer [not null, ref: > dim_brgy_learning_hubs.learning_hub_id]  
+  location_id integer [not null, ref: > dim_learning_hub_locations.location_id]
+  status_id integer [not null, ref: > dim_learning_hub_statuses.status_id]
+  proposed_budget decimal(17, 2) // 500000.00, 400000.00, 600000.00
+  approved_budget decimal(17, 2) // 500000.00, 400000.00, 600000.00
+  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14  
+  updated_at timestamp // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14  
 
   indexes {
-    (coverage_start_date_id, coverage_end_date_id, project_status_id) [name: 'idx_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, learning_hub_id, location_id, status_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table dim_learning_hub_municipalities {
+  municipality_id integer [pk, increment]
+  district varchar(100) // District II, District II, District II
+  municipality varchar(75) // City of Balanga, City of Balanga, City of Balanga
+  created_at timestamp [default: 'now()']
+}
+
+Table fact_hub_summary_reports [note: 'Increase percentage in innovation hubs established (PGO)\nThis is the low granularity version for analyzing the indicator for analysis purposes'] {
+  summary_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  municipality_id integer [not null, ref: > dim_learning_hub_municipalities.municipality_id]
+  total_no_of_established_hubs bigint // 1, 1, 1
+  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
+  updated_at timestamp // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']
   }
 }
 
