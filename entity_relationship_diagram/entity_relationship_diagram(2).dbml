@@ -1722,6 +1722,7 @@ Table fact_festival_participation_reports [note: 'Increase percentage in tourism
   event_end_date_id integer [not null, ref: > dim_dates.date_id]
   event_id integer [not null, ref: > dim_tourism_events.event_id]
   no_of_estimated_participants bigint
+  no_of_recorded_participants bigint
   created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
   updated_at timestamp // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
 
@@ -1730,12 +1731,21 @@ Table fact_festival_participation_reports [note: 'Increase percentage in tourism
   }
 }
 
+Table dim_revenue_types {
+  revenue_type_id integer [pk, increment]
+  revenue_type varchar(100)
+  created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
+}
+
 Table fact_event_revenue_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals (Trade Fairs) (This fact table is for analyzing the increase percentage of revenue from festivals specifically from Trade Fairs)'] {
+  // Data Collection: Organizers of trade fairs inside a festival submit financial statements/receipts to the LGU then LGU will submit it to the Ptourism for consolidation
+  // Frequency: Per event
   revenue_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   event_start_date_id integer [not null, ref: > dim_dates.date_id]
   event_end_date_id integer [not null, ref: > dim_dates.date_id]
   event_id integer [not null, ref: > dim_tourism_events.event_id]
+  revenue_type_id integer [not null, ref: > dim_revenue_types.revenue_type_id]
   total_revenue decimal(17, 2)
   created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
   updated_at timestamp // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
