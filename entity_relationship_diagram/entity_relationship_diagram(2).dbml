@@ -1712,7 +1712,7 @@ Table dim_tourism_events {
   created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
 }
 
-Table fact_festival_participation_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals (Trade Fairs)'] {
+Table fact_festival_participation_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals (Trade Fairs) (This fact table is for analyzing the increase percentage of festival participations)'] {
   // Data Collection: LGU/Festival Organizer estimates the participants and sends it to the Municipal/City Tourism Office then to the Ptourism
   // Frequency: Per event
   participation_report_id integer [pk, increment]
