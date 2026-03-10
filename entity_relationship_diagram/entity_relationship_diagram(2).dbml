@@ -1717,8 +1717,6 @@ Table fact_festival_participation_reports [note: 'Increase percentage in tourism
   // Frequency: Per event
   participation_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
-  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   event_start_date_id integer [not null, ref: > dim_dates.date_id]
   event_end_date_id integer [not null, ref: > dim_dates.date_id]
   event_id integer [not null, ref: > dim_tourism_events.event_id]
