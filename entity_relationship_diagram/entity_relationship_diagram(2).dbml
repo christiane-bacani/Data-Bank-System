@@ -1764,3 +1764,12 @@ Table fact_event_summary_reports [note: 'Increase percentage in tourism activiti
     (coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_lookup']
   }
 }
+
+
+
+// ===========================================
+// Indicator: Increase percentage in compliance with ecological and tourism fees
+// Lead Department: PTourism
+// Frequency:
+// Data Source:
+// ===========================================
