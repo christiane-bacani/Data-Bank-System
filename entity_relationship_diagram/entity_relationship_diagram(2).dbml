@@ -1709,9 +1709,24 @@ Table dim_tourism_events {
   description text
   event_location text
   event_type varchar(75)
-  event_date_from date
-  event_date_to date
   created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
+}
+
+Table fact_festival_participation_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals (Trade Fairs)'] {
+  // Data Collection: LGU/Festival Organizer estimates the participants and sends it to the Municipal/City Tourism Office then to the Ptourism
+  // Frequency: Per event
+  participation_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  event_start_date_id integer [not null, ref: > dim_dates.date_id]
+  event_end_date_id integer [not null, ref: > dim_dates.date_id]
+  event_id integer [not null, ref: > dim_tourism_events.event_id]
+  no_of_estimated_participants bigint
+  created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
+  updated_at timestamp // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
+
+  indexes {
+    (event_start_date_id, event_end_date_id, event_id) [name: 'idx_report_lookup']
+  }
 }
 
 Table fact_event_summary_reports {
