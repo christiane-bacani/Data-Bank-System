@@ -1705,11 +1705,11 @@ Table fact_tnvs_public_transport_slot_summaries [note: 'Increase percentage in T
 
 Table dim_tourism_events {
   event_id integer [pk, increment]
-  event_name varchar(255)
-  description text
-  includes_trade_fair boolean
-  event_type varchar(75)
-  event_location text
+  event_name varchar(255) // Banga Festival, Ibong Dayo Festival, Pawikan Festival
+  description text // Banga Festival, Ibong Dayo Festival, Conservation & beach festival in Morong
+  includes_trade_fair boolean // False, False, True
+  event_type varchar(75) // Festival, Festival, Festival
+  event_location text // Balanga City, Bataan; Balanga City, Bataan; Morong, Bataan
   created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
 }
 
@@ -1721,8 +1721,8 @@ Table fact_festival_participation_reports [note: 'Increase percentage in tourism
   event_start_date_id integer [not null, ref: > dim_dates.date_id]
   event_end_date_id integer [not null, ref: > dim_dates.date_id]
   event_id integer [not null, ref: > dim_tourism_events.event_id]
-  no_of_estimated_participants bigint
-  no_of_recorded_participants bigint
+  no_of_estimated_participants bigint // 1200, 5000, 8000 
+  no_of_recorded_participants bigint // 1200, 4500, 7800
   created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
   updated_at timestamp // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
 
@@ -1733,7 +1733,7 @@ Table fact_festival_participation_reports [note: 'Increase percentage in tourism
 
 Table dim_revenue_types {
   revenue_type_id integer [pk, increment]
-  revenue_type varchar(100)
+  revenue_type varchar(100) // Booth Rental Fees, Booth Rental Fees, Merchandise Sales
   created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
 }
 
@@ -1746,7 +1746,7 @@ Table fact_event_revenue_reports [note: 'Increase percentage in tourism activiti
   event_end_date_id integer [not null, ref: > dim_dates.date_id]
   event_id integer [not null, ref: > dim_tourism_events.event_id]
   revenue_type_id integer [not null, ref: > dim_revenue_types.revenue_type_id]
-  total_revenue decimal(17, 2)
+  total_revenue decimal(17, 2) // 150000.00, 200000.00. 200000.00
   created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
   updated_at timestamp // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
 
@@ -1762,7 +1762,7 @@ Table fact_event_summary_reports [note: 'Increase percentage in tourism activiti
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
-  no_of_tourism_events_conducted bigint
+  no_of_tourism_events_conducted bigint // 4, 3, 5
   created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18  
   updated_at timestamp // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18  
 
