@@ -1714,7 +1714,7 @@ Table dim_tourism_events {
   created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
 }
 
-Table dim_event_summary_reports {
+Table fact_event_summary_reports {
   summary_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
