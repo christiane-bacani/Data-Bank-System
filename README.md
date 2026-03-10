@@ -77,4 +77,5 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PCEDO           | % increase in SMEs using online systems for business permits | Done |
 | PCEDO           | % adoption of electric vehicles in public transport | Done |
 | PCEDO           | % increase in TNVS (Transport Network Vehicle Service) slots for public transport | Done |
-| PTourism        | % increase in tourism activities, festival participation and revenue from festivals (Trade Fairs) | Pending |
+| PTourism        | % increase in tourism activities, festival participation and revenue from festivals (Trade Fairs) | Done |
+| Ptourism        | % increase in compliance with ecological and tourism fees | Pending |
