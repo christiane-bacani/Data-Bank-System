@@ -1702,3 +1702,28 @@ Table fact_tnvs_public_transport_slot_summaries [note: 'Increase percentage in T
 // Frequency:
 // Data Source:
 // ===========================================
+
+Table dim_tourism_events {
+  event_id integer [pk, increment]
+  event_name varchar(255)
+  description text
+  event_location text
+  event_type varchar(75)
+  event_date_from date
+  event_date_to date
+  created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
+}
+
+Table dim_event_summary_reports {
+  summary_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  no_of_tourism_events_conducted bigint
+  created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18  
+  updated_at timestamp // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18  
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_lookup']
+  }
+}
