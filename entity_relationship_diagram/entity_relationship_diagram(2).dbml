@@ -936,7 +936,7 @@ Table dim_implementing_schools {
   created_at timestamp [default: 'now()'] // 2026-02-24 08:40:40, 2026-02-25 08:40:40, 2026-02-26 08:40:40
 }
 
-Table fact_school_accomplishment_reports [note: 'Integration percentage of values education in school curricula'] {
+Table fact_school_accomplishment_reports [note: 'Integration percentage of values education in school curricula (PGO)'] {
   school_accomplishment_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   academic_coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
