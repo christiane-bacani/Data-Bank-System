@@ -1528,7 +1528,7 @@ Table dim_business_permit_statuses {
   created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
 }
 
-Table fact_permit_applications [note: 'Increase percentage in SMEs using online systems for business permits (PCEDO)'] {
+Table fact_permit_applications [note: 'Audit table for measuring the increase percentage in SMEs using online systems for business permits (PCEDO)'] {
   application_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   application_date_id integer [not null, ref: > dim_dates.date_id]
