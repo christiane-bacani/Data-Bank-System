@@ -1670,6 +1670,7 @@ Table dim_tnvs_platforms {
   created_at timestamp [default: 'now()'] // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
 }
 
+
 Table fact_tnvs_public_transport_slots [note: 'Increase percentage in TNVS (Transport Network Vehicle Service) slots for public transport (PCEDO) (High Granularity for Auditing)'] {
   allocation_id integer [pk, increment]
   approval_date_id integer [not null, ref: > dim_dates.date_id]
@@ -1721,7 +1722,7 @@ Table dim_tourism_events {
   created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
 }
 
-Table fact_festival_participation_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals using Trade Fairs (PTourism) (This fact table is for analyzing the increase percentage of festival participations)'] {
+Table fact_festival_participation_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals using Trade Fairs (PTourism) (This fact table is for analyzing the increase pct of festival participations)'] {
   participation_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   event_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -1743,7 +1744,7 @@ Table dim_revenue_types {
   created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
 }
 
-Table fact_event_revenue_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals using Trade Fairs (PTourism) (This fact table is for analyzing the increase percentage of revenue from festivals specifically from Trade Fairs)'] {
+Table fact_event_revenue_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals using Trade Fairs (PTourism) (This fact table is for analyzing the increase pct of revenue from festivals)'] {
   revenue_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   event_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -1759,7 +1760,7 @@ Table fact_event_revenue_reports [note: 'Increase percentage in tourism activiti
   }
 }
 
-Table fact_event_summary_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals using Trade Fairs (PTourism) (This fact table is for analyzing the increase percentage of tourism activities)'] {
+Table fact_event_summary_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals using Trade Fairs (PTourism) (This fact table is for analyzing the increase pct of tourism activities)'] {
   summary_report_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
