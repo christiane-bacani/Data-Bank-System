@@ -1,6 +1,6 @@
 # Data Bank System for Provincial Government of Bataan
 
-An analytical data repository for the Provincial Government of Bataan that centralizes performance measurements across 37+ departments and/or offices. Built to track the **Governor's Joint Strategic Goals (GJSG)** priority indicators, this data repository reduces time-consuming coordination, redundant data request, improves inefficient service delivery, removes data fragmentation and silos, and promotes transparency and accountability. You can visit the Entity-Relationship Diagram [here](#https://dbdiagram.io/d/Initial_ERD_for_Data_Bank_System-2-69854dc7bd82f5fce2d4deb8)
+An analytical data repository for the Provincial Government of Bataan that centralizes performance measurements across 37+ departments and/or offices. Built to track the **Governor's Joint Strategic Goals (GJSG)** priority indicators, this data repository reduces time-consuming coordination, redundant data request, improves inefficient service delivery, removes data fragmentation and silos, and promotes transparency and accountability. You can visit the Entity-Relationship Diagram [here](https://dbdiagram.io/d/Initial_ERD_for_Data_Bank_System-2-69854dc7bd82f5fce2d4deb8)
 
 ## Table of contents
 - [Undercurrents of the Data Bank](#Undercurrents-of-the-Data-Bank)
