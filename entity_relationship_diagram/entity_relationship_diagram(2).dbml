@@ -1679,6 +1679,10 @@ Table fact_tnvs_public_transport_slots [note: 'Increase percentage in TNVS (Tran
   slots_allocated bigint // 50, 40, 60
   created_at timestamp [default: 'now()'] // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
   updated_at timestamp // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
+
+  indexes {
+    (approval_date_id, tnvs_slot_program_id, vehicle_location_id, tnvs_platform_id) [name: 'idx_report_lookup']
+  }
 }
 
 Table fact_tnvs_public_transport_slot_summaries [note: 'Increase percentage in TNVS (Transport Network Vehicle Service) slots for public transport (PCEDO) (Low Granularity for Analytics and creating two fact tables is the best approach for this indicator)'] {
