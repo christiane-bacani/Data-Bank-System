@@ -1227,7 +1227,7 @@ Table dim_economic_municipalities {
   created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
 }
 
-Table fact_gross_domestic_products [note: 'This is fact table are connected to the table "fact_infrastructure_status_reports" for measuring the improvement pct in infrastructure and market access using GDP as proxy indicator for market access'] {
+Table fact_gross_domestic_products [note: 'This fact table are connected to the table "fact_infrastructure_status_reports" for measuring the improvement pct in infrastructure and market access using GDP as proxy indicator for market access'] {
   gdp_id integer [pk, increment]
   reported_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
