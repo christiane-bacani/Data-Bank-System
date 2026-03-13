@@ -1,5 +1,8 @@
 // ============================================
-// Central Dimension Table
+//          Central Dimension Table
+// Central dimension table acts as a source table
+// for different facts table that measures different indicators to prevent
+// duplication when referencing the same attributes.
 // ============================================
 
 Table dim_dates {
