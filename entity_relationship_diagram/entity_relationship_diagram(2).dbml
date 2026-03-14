@@ -7,25 +7,24 @@
 // ============================================
 
 Table dim_dates {
-                                          // Example value
-  date_id integer [pk, increment]         // 1
-  full_date date [unique]                 // 2026-02-06
-  year year                               // 2026
-  quarter char(2)                         // Q1
-  month integer                           // 2
-  month_name varchar(20)                  // February
-  week_number integer                     // 16
-  day_name varchar(20)                    // Monday
-  is_weekend boolean                      // FALSE
-  is_holiday boolean                      // FALSE
-  created_at timestamp [default: `now()`] // 2026-02-06 15:58:00 
+                                                    // Example value
+  date_id integer [pk, increment]                   // 1
+  full_date date [unique]                           // 2026-02-06
+  year year                                         // 2026
+  quarter char(2)                                   // Q1
+  month integer                                      // 2
+  month_name varchar(20)                            // February
+  week_number integer                               // 16
+  day_name varchar(20)                              // Monday
+  is_weekend boolean                                // FALSE
+  is_holiday boolean                                // FALSE
+  created_at timestamp [default: `now()`]           // 2026-02-06 15:58:00 
 }
 
 Table dim_times {
-                                          // Example value
-  time_id integer [pk, increment]         // 1
-  time time                               // 08:38:38
-  time_period char(2)                     // AM
+  time_id integer [pk, increment]                   // 1
+  time time                                         // 08:38:38
+  time_period char(2)                               // AM
 }
 
 
