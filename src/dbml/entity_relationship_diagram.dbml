@@ -1,0 +1,1790 @@
+// ============================================
+//          Central Dimension Table
+// ============================================
+// Central dimension table acts as a source table
+// for different facts table that measures different indicators to prevent
+// duplication when referencing the same attributes.
+// ============================================
+
+Table dim_dates {
+                                                    // Example value
+  date_id integer [pk, increment]                   // 1
+  full_date date [unique]                           // 2026-02-06
+  year year                                         // 2026
+  quarter char(2)                                   // Q1
+  month integer                                      // 2
+  month_name varchar(20)                            // February
+  week_number integer                               // 16
+  day_name varchar(20)                              // Monday
+  is_weekend boolean                                // FALSE
+  is_holiday boolean                                // FALSE
+  created_at timestamp [default: `now()`]           // 2026-02-06 15:58:00 
+}
+
+Table dim_times {
+  time_id integer [pk, increment]                   // 1
+  time time                                         // 08:38:38
+  time_period char(2)                               // AM
+}
+
+
+
+
+
+// ============================================
+// Indicator: Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities
+// Lead Department: OPPDC
+// Support Department: OPA, VET
+// Frequency: Annually
+// Data Source: Provincial Online Price Monitoring System
+// ============================================
+
+Table dim_local_government_units {
+                                                    // Example value
+  local_government_unit_id integer [pk, increment]  // 1
+  district_name varchar(100)                        // District I
+  local_government_unit varchar(150)                // Abucay
+  created_at timestamp [default: 'now()']           // 2026-02-06 16:13:13
+}
+
+Table dim_agricultural_products {
+  product_id integer [pk, increment]                // 1
+  commodity_type varchar(255)                       // IMPORTED COMMERCIAL RICE
+  product_name varchar(255)                         // Special (Blue tag)
+  created_at timestamp [default: `now()`]           // 2026-02-06 16:13:13
+}
+
+Table dim_price_comparison_periods {
+  comparison_period_id integer [pk, increment]      // 1
+  comparison_period varchar(20)                     // CURRENT
+  created_at timestamp [default: `now()`]           // 2026-02-06 16:13:13
+}
+
+Table fact_prices [note: 'Table for measuring the reduction pct in inflation rates through price monitoring and direct selling of basic commodities\nLead Department: OPPDC\nSupport Department: OPA, VET'] {
+  price_id integer [pk, increment]
+  observation_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  local_government_unit_id integer [not null, ref: > dim_local_government_units.local_government_unit_id]
+  product_id integer [not null, ref: > dim_agricultural_products.product_id]
+  comparison_period_id integer [not null, ref: > dim_price_comparison_periods.comparison_period_id]
+  average_price decimal(10, 2)                      // 216.00
+  prevailing_price decimal(10, 2)                   // 225.00, 170.00, 220
+  created_at timestamp [default: `now()`]           // 2026-02-06 16:13:13
+  updated_at timestamp                              // 2026-02-06 16:13:13
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, product_id, comparison_period_id) [name: 'idx_general_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, local_government_unit_id, product_id, comparison_period_id) [name: 'idx_price_lookup']
+  }
+}
+
+
+
+// ============================================
+// Indicator: Increase percentage in barangays with completed Barangay Master Development Plans
+// Lead Department: OPPDC
+// Support Department: PITO, PGO
+// Frequency: Annually
+// Data Source: Submitted reports of district offices about the number of barangays who completed their master development plan per municipalities
+// ============================================
+
+Table dim_municipalities {
+                                                    // Example value
+  municipality_id integer [pk, increment]           // 1
+  district_name varchar(50)                         // District I
+  municipality_name varchar(100)                    // Hermosa
+  created_at timestamp [default: `now()`]           // 2026-02-06 16:18:18
+}
+
+Table fact_barangay_development_plans [note: 'Table for measuring the increase percentage in barangays with completed Barangay Master Development Plans\nLead Department: OPPDC\nSupport Department: PITO, PGO']{
+  plan_id integer [pk, increment]
+  observation_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  municipality_id integer [not null, ref: > dim_municipalities.municipality_id]
+  barangays_not_started integer                     // 10
+  barangays_in_progress intege                      // 3
+  barangays_with_completed_bdp integer              // 10
+  total_barangays integer                           // 23
+  completion_percentage decimal(5, 2)               // 43.48
+  created_at timestamp [default: `now()`]           // 2026-02-06 16:18:18
+  updated_at timestamp                              // 2026-02-06 16:18:18
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+
+
+// ============================================
+// Indicator: Increase percentage in citizen concerns addressed via the 8888 hotline
+// Lead Department: Legal & PHRMO
+// Frequency: Annually
+// Data Source: Submitted Performance Report transmitted by the 8888 Citizen's Complaint Center to the PGO
+// ============================================
+
+Table dim_ticket_names {
+  ticket_name_id integer [pk, increment]
+  ticket_classification_name varchar(255) // 2025 Graft and Corruption, 2025 Integrity and Conduct, 2025 Frontline Service Procedures
+  ticket_name varchar(255) // 2025 Against Government Official, 2025 - Integrity and Conduct - Official, 2025 - Discourtesy
+  year_applicable year // 2025/2026, 2025, 2024
+  created_at timestamp [default: `now()`] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
+}
+
+Table fact_performance_reports [note: 'Increase percentage in citizen concerns addressed via the 8888 hotline (Legal & PHRMO)']{
+  report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  reported_time_id integer [not null, ref: > dim_times.time_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  ticket_name_id integer [not null, ref: > dim_ticket_names.ticket_name_id]
+  tickets_resolved_count integer // 23, 24, 25
+  tickets_in_progress_count integer // 0, 1, 2
+  tickets_pending_count integer // 3, 2, 1
+  total_tickets integer // 26, 26, 28
+  resolution_rate decimal(5, 2) // 88.46, 92.30, 88.29
+  created_at timestamp [default: `now()`] // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
+  updated_at timestamp // 2026-02-07 19:23:59, 2026-02-07 21:23:59, 2026-02-07 12:23:59
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, ticket_name_id) [name: 'idx_general_report_lookup']
+  }
+}
+
+
+
+// ============================================
+// Indicator: Improvement percentage in government employee service quality
+// Lead Department: PHRMO
+// Frequency: Annually
+// Data Source: Information Table for the Outreach Program provided by the PHRMO
+// ============================================
+
+Table dim_locations {
+  location_id integer [pk, increment]
+  location varchar(75) // Limay, Mariveles, Bahay Puso
+  created_at timestamp [default: `now()`] // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
+}
+
+Table dim_implementing_offices {
+  implementing_office_id integer [pk, increment]
+  office_code varchar(50) // PIO, OPPDC, BPPIC
+  office_name varchar(150) // Provincial Information Office, Office of the Provincial Planning and Development Coordinator, Bataan Public-Private Partnership and Investment Center
+  created_at timestamp [default: `now()`] // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
+}
+
+Table dim_program_heads {
+  program_head_id integer [pk, increment]
+  program_head varchar(150) // Ms. Angel O.L Lara, Ar. Mc Jefferson M. Valerio, Mr. Abul Khayr Amalon M. Alonto II
+  created_at timestamp [default: `now()`] // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
+}
+
+Table dim_beneficiaries {
+  beneficiary_id integer [pk, increment]
+  beneficiary varchar(255) // Aeta Magbukun, Children of SOS Orphanage, Children of King's Garden Orphanage
+  created_at timestamp [default: `now()`] // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
+}
+
+Table fact_participation_rates [note: 'Improvement percentage in government employee service quality (PHRMO)']{
+  participation_rate_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  program_start_date_id integer [not null, ref: > dim_dates.date_id]
+  program_end_date_id integer [not null, ref: > dim_dates.date_id]
+  location_id integer [not null, ref: > dim_locations.location_id]
+  implementing_office_id integer [not null, ref: > dim_implementing_offices.implementing_office_id]
+  program_head_id integer [not null, ref: > dim_program_heads.program_head_id]
+  beneficiary_id integer [not null, ref: > dim_beneficiaries.beneficiary_id]
+  number_of_participated_employees bigint // 54, 35, 38
+  number_of_eligible_employees bigint // 188, 143, 146
+  participation_rate decimal(5, 2) // 28.72, 24.48, 26.02
+  created_at timestamp [default: `now()`] // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
+  updated_at timestamp // 2026-02-09 09:27:27, 2026-02-09 09:37:27, 2026-02-09 09:57:27
+
+  indexes {
+    (program_start_date_id, program_end_date_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+
+
+// ============================================
+// Indicator: Reduction percentage in crime rates through collaboration with law enforcement 
+// Lead Department: MBDA
+// Frequency: Annually
+// Data Source: Submitted crime reports of PNP/MBDA Daily
+// ============================================
+
+Table dim_police_stations {
+  police_station_id integer [pk, increment]
+  municipality_name varchar(150) // City of Balanga, Abucay, Dinalupihan
+  barangay_name varchar(150) // Malabia, Laon, San Ramon
+  police_station varchar(150) // Balanga City Police Station, Abucay Municipal Police Station, Dinalupihan Municipal Police Station
+  created_at timestamp [default: `now()`] // 2026-02-09 13:35:35, 2026-02-10 13:35:35, 2026-02-11 13:35:35
+}
+
+Table fact_crime_reports [note: 'Reduction percentage in crime rates through collaboration with law enforcement (MBDA)'] {
+  crime_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  reported_time_id integer [not null, ref: > dim_times.time_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  police_station_id integer [not null, ref: > dim_police_stations.police_station_id]
+  total_no_of_index_crime_reported bigint // 1068, 922, 1211 
+  total_no_of_crime_reported bigint // 345, 822, 1000
+  index_crime_rate decimal (5, 2) // 58.23, 22.13, 09.82
+  created_at timestamp [default: `now()`] // 2026-02-09 13:35:35, 2026-02-10 13:35:35, 2026-02-11 13:35:35
+  updated_at timestamp // 2026-02-09 13:35:35, 2026-02-10 13:35:35, 2026-02-11 13:35:35
+
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_general_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, police_station_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ============================================
+// Indicator: Reduction of percentage on accidents (place on occurence)
+// Lead Department: MBDA, PNP, and PDRRMO
+// Frequency: Monthly
+// Data Source: Accident Report Submitted by the MBDA, PNP, and PDRRMO
+// ============================================
+
+Table dim_barangay_locations {
+  barangay_location_id integer [pk, increment]
+  district_name varchar(50) // District I, District II, District III,
+  municipality_name varchar(100) // Abucay, City of Balanga, Dinalupihan
+  barangay_name varchar(150) // Calaylayan, San Jose, Poblacion
+  created_at timestamp [default: 'now()'] // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
+}
+
+Table dim_latlong_locations {
+  latlong_location_id integer [pk, increment]
+  location text // Intersection of ..., Near barangay hall of San Jose, Dinalupihan Memorial Park
+  latitude decimal(9, 6) // 40.758896, 51.508039, 35.661777
+  longitude decimal(10, 6) // -73.985130, -0.128020, 139.700478
+  created_at timestamp [default: 'now()'] // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
+}
+
+Table dim_accident_types {
+  accident_type_id integer [pk, increment]
+  accident_type varchar(150) // Vehicular Accidents, Fire Incidents, Others
+  created_at timestamp [default: 'now()'] // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
+}
+
+Table fact_accident_reports [note: 'Reduction of percentage on accidents (place on occurence) (MBDA, PNP, and PDRRMO)'] {
+  accident_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  reported_time_id integer [not null, ref: > dim_times.time_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  barangay_location_id integer [ref: > dim_barangay_locations.barangay_location_id]
+  latlong_location_id integer [ref: > dim_latlong_locations.latlong_location_id]
+  accident_type_id integer [not null, ref: > dim_accident_types.accident_type_id]
+  accident_count bigint // 1477, 2122, 902
+  created_at timestamp [default: 'now()'] // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
+  updated_at timestamp // 2026-02-10 13:19:19, 2026-02-11 13:19:19, 2026-02-12 13:19:19
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, barangay_location_id) [name: 'idx_report_lookup_for_pnp']
+    (coverage_start_date_id, coverage_end_date_id, latlong_location_id) [name: 'idx_report_lookup_for_mbda']
+  }
+}
+
+
+
+// ============================================
+// Indicator: Reduction percentage of injury among affected population during calamity
+// Lead Department: MBDA and PDRRMO
+// Frequency: During Situational Report (Can be Daily, Weekly, Monthly, Quarterly, and Annually)
+// Data Source: Situational Report Submitted by MBDA and/or PDRRMO
+// ============================================
+
+Table dim_reporting_agencies {
+  reporting_agency_id integer [pk, increment]
+  agency_code varchar(150) // MBDA, PDRMMO
+  agency_name varchar(255) // Metro Bataan Development Authority, Pronvicial Disaster Risk Reduction and Management Office
+  created_at timestamp [default: 'now()'] // 2026-02-16 09:23:23, 2026-02-17 09:23:23, 2026-02-18 09:23:23
+}
+
+enum population_type {
+  Province
+  District
+  Municipality
+  Barangay
+}
+
+Table dim_affected_populations {
+  affected_population_id integer [pk, increment]
+  population_type population_type // Province, District, Municipality
+  population_name varchar(255) // Bataan, District II, City of Balanga
+  created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+}
+
+Table dim_calamities {
+  calamity_id integer [pk, increment]
+  calamity_name varchar(255) // Typhoon Yolanda, Earthquake Magnitude 8.2, Robinson Fire
+  calamity_type varchar(255) // Meteorological, Geological, Technological
+  created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+}
+
+Table fact_situational_reports [note: 'Reduction percentage of injury and casualties among affected population during calamity (MBDA and PDRRMO)'] {
+  situational_report_id integer []
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  reported_time_id integer [not null, ref: > dim_times.time_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  reporting_agency_id integer [not null, ref: > dim_reporting_agencies.reporting_agency_id]
+  affected_population_id integer [not null, ref: > dim_affected_populations.affected_population_id]
+  calamity_id integer [ref: > dim_calamities.calamity_id]
+  total_no_of_reported_fatality bigint // 233, 123, 321
+  total_no_of_reported_injuries bigint // 435, 1288, 345
+  total_no_of_reported_missing_persons bigint // 28, 1, 3
+  total_no_of_casualties bigint // 696, 1412, 669
+  created_at timestamp [default: 'now()'] // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+  updated_at timestamp // 2026-02-10 14:06:06, 2026-02-11 14:06:06, 2026-02-12 14:06:06
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, affected_population_id, calamity_id) [name: 'idx_report_lookup_for_mbda']
+    (coverage_start_date_id, coverage_end_date_id, calamity_id) [name: 'idx_report_lookup_for_pdrrmo']
+  }
+}
+
+
+
+
+
+// ============================================
+// Indicator: Improvement percentage in government service delivery via social media
+// Lead Department: PIO
+// Frequency: Annually
+// Data Source: Reports submitted by the Digital Media Division of PIO for Social Media Analytics
+// ============================================
+
+Table dim_social_media_programs {
+  social_media_program_id integer [pk, increment]
+  program_category varchar(255) // Public Service Announcements, Community Engagement Campaigns, Event Promotion
+  program_name text // Kwentuhan Tayo, Bataeño, Bisita Bayan Outreach Program, Official News & Events Calendar
+  description text // A weekly public information and engagement program launched on July 4, 2022 and spearheaded by the Provincial Information Office under the Provincial Government of Bataan., A community outreach initiative that brings provincial leaders, local officials, and community stakeholders together to directly engage residents and address social issues at the local level., The provincial government promotes a wide range of official events via its news portal (1Bataan) and social media channels.
+  created_at timestamp [default: 'now()']
+}
+
+Table dim_social_media_platforms {
+  social_media_platform_id integer [pk, increment]
+  social_media_name varchar(255) // Facebook, TikTok, Instagram
+  created_at timestamp [default: 'now()'] // 2026-02-12 09:53:33, 2026-02-12 11:53:33, 2026-02-12 14:53:33
+}
+
+Table fact_engagement_reports [note: 'Improvement percentage in government service delivery via social media (PIO)'] {
+  engagement_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  social_media_program_id integer [not null, ref: > dim_social_media_programs.social_media_program_id]
+  social_media_platform_id integer [not null, ref: > dim_social_media_platforms.social_media_platform_id]
+  total_no_of_reach bigint // 15000, 16000, 17000 
+  total_no_of_likes bigint // 5099, 9905, 9059
+  total_no_of_shares bigint /// 123, 321, 213
+  total_no_of_comments bigint // 684, 784, 884
+  total_no_of_followers bigint // 13000, 14000, 15000
+  created_at timestamp [default: 'now()'] // 2026-02-12 10:18:18, 2026-02-12 11:18:18, 2026-02-12 12:18:18
+  updated_at timestamp // 2026-02-12 10:18:18, 2026-02-12 11:18:18, 2026-02-12 12:18:18
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, social_media_program_id) [name: 'idx_general_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, social_media_program_id, social_media_platform_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+
+
+// ============================================
+// Indicator: Increase percentage in implementation of digital governance systems
+// Lead Department: PITO
+// Frequency: Yearly analysis to compare the average increase percentage per year but weekly data collection and comparison
+// Data Source: System Proposal Submitted by PITO to PGO containing the API Credentials to use for system status checkings on a random day per week
+// ============================================
+
+Table dim_digital_governance_systems {
+  digital_governance_system_id integer [pk, increment]
+  system_category varchar(255) // Document Management Systems, Human Resource Information Systems, Financial Management Information Systems
+  system_category_code varchar(100) // DMS, HRIS, FMIS
+  system_platform varchar(50) // Website, Mobile, Desktop
+  system_name varchar(255) // Document Management System of OPPCC, HRIS of PHRMO, FMIS of BPPPIC
+  created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
+}
+
+Table dim_api_credentials {
+  api_credentials_id integer [pk, increment]
+  credential_type_name varchar(255) // OAuth, API Key, Json-Web Token
+  endpoint_url text // https://api.gov/hris/status, https://api.gov/fmis/status, https://api.gov/proc/status
+  credential_issuer varchar(150) // Name of the credential issuer to track the health status of the specified governance system
+  credential_expiration_date date // 2026-02-12, 2026-02-13, 2026-02-14
+  created_at timestamp [default: 'now()'] // 2026-02-12 13:20:20, 2026-02-12 14:20:20, 2026-02-12 13:20:20
+}
+
+Table dim_system_statuses {
+  system_status_id integer [pk, increment]
+  system_status varchar(50) // Online, Offline, Degraded, Maintenance, Error
+  created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
+}
+
+Table dim_last_active_users {
+  last_active_user_id integer [pk, increment]
+  user_last_activity_timestamp timestamp // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
+  user_id varchar(100) // USER001, USER002, USER003
+  username varchar(255) // u***r1, u***r2, u***r3
+  created_at timestamp [default: 'now()'] // 2026-02-21 10:57:57, 2026-02-22 10:57:57, 2026-02-23 10:57:57
+}
+
+Table fact_system_status_checks [note: 'Increase percentage in implementation of digital governance systems (PITO)'] {
+  system_status_check_id integer [pk, increment]
+  check_date_id integer [not null, ref: > dim_dates.date_id]
+  check_time_id integer [not null, ref: > dim_times.time_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  digital_governance_system_id integer [not null, ref: > dim_digital_governance_systems.digital_governance_system_id]
+  api_credentials_used_id integer [not null, ref: > dim_api_credentials.api_credentials_id]
+  system_status_id integer [not null, ref: > dim_system_statuses.system_status_id]
+  last_active_user_id integer [not null, ref: > dim_last_active_users.last_active_user_id]
+  response_time decimal(11, 2) // 84223.23, 123.23, 32.11
+  created_at timestamp [default: 'now()'] // 2026-02-12 15:18:18, 2026-02-13 15:18:18, 2026-02-14 16:18:18
+  updated_at timestamp // 2026-02-12 15:18:18, 2026-02-13 15:18:18, 2026-02-14 16:18:18
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, system_status_id, last_active_user_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+
+
+// ============================================
+// Indicator: Improvement percentage in citizen access to services
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source: Submitted Reports of PGO/POPCOM of the number of people who registered to the Bataeño Pass per Barangay
+// ============================================
+
+Table dim_barangays {
+  barangay_id integer [pk, increment]
+  district_name varchar(100) // District I, District II, District III
+  municipality_name varchar(255) //
+  barangay_name varchar(255) // Calaylayan, San Jose, Poblacion
+  created_at timestamp [default: 'now()'] // 2026-02-13 08:31:31, 2026-02-14 08:31:31, 2026-02-15 08:31:31
+}
+
+Table fact_registration_reports [note: 'Improvement percentage in citizen access to services (PGO)'] {
+  registration_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  barangay_id integer [not null, ref: > dim_barangays.barangay_id]
+  created_at timestamp [default: 'now()'] // 2026-02-13 08:31:31, 2026-02-14 08:31:31, 2026-02-15 08:31:31
+  total_no_of_registered_users bigint  // 54,546,561, 54,546,572, 54,546,944
+  total_population bigint // 109093123, 109093144, 109093888
+  updated_at timestamp // 2026-02-13 08:31:31, 2026-02-14 08:31:31, 2026-02-15 08:31:31
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, barangay_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Percentage of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source: Enrollment Status Report of every LGUs and cross-check to the PGS, Validated data of the submitted enrollment status report of every LGU from the PGO
+// ============================================
+
+Table dim_districts {
+  district_id integer [pk, increment]
+  district_name varchar(50) // District I, District II, District III
+  created_at timestamp [default: 'now()'] // 2026-02-13 14:03:26, 2026-02-14 14:13:26, 2026-02-15 14:13:26
+}
+
+Table fact_enrollment_statuses [note: 'Percentage of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives (PGO)'] {
+  enrollment_status_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  district_id integer [not null, ref: > dim_districts.district_id]
+  total_no_of_enrolled_lgus bigint // 8, 9, 6
+  enrolled_rate decimal(5, 2) // 66.67, 75.00, 50.00
+  created_at timestamp [default: 'now()'] // 2026-02-13 13:35:35, 2026-02-13 14:35:35, 2026-02-13 15:35:35
+  updated_at timestamp // 2026-02-13 13:35:35, 2026-02-13 14:35:35, 2026-02-13 15:35:35
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, district_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Increase percentage in innovation hubs established
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source: Barangay learning hub status reports submitted to the PGO
+// ============================================
+
+Table dim_brgy_learning_hubs {
+  learning_hub_id integer [pk, increment]
+  learning_hub_name varchar(255) // Cupang Barangay Learning Hub, Sto. Domingo Learning Hub, San Juan Innovation Hub
+  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
+}
+
+Table dim_learning_hub_locations {
+  location_id integer [pk, increment]
+  district varchar(50) // District II, District II
+  municipality varchar(100) // City of Balanga, City of Balanga, District II
+  barangay varchar(100) // Cupang, Sto. Domingo, San Juan
+  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
+}
+
+Table dim_learning_hub_statuses {
+  status_id integer [pk, increment]
+  status varchar(100) // Approved, Procurement, Ongoing Construction
+  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14  
+}
+
+Table fact_establishment_status_reports [note: 'Increase percentage in innovation hubs established (PGO)\nThis is the high granularity version for analyzing the indicator for auditing purposes instead of just summaries'] {
+  status_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  learning_hub_id integer [not null, ref: > dim_brgy_learning_hubs.learning_hub_id]  
+  location_id integer [not null, ref: > dim_learning_hub_locations.location_id]
+  status_id integer [not null, ref: > dim_learning_hub_statuses.status_id]
+  proposed_budget decimal(17, 2) // 500000.00, 400000.00, 600000.00
+  approved_budget decimal(17, 2) // 500000.00, 400000.00, 600000.00
+  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14  
+  updated_at timestamp // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14  
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, learning_hub_id, location_id, status_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table dim_learning_hub_municipalities {
+  municipality_id integer [pk, increment]
+  district varchar(100) // District II, District II, District II
+  municipality varchar(75) // City of Balanga, City of Balanga, City of Balanga
+  created_at timestamp [default: 'now()']
+}
+
+Table fact_hub_summary_reports [note: 'Increase percentage in innovation hubs established (PGO)\nThis is the low granularity version for analyzing the indicator for analysis purposes'] {
+  summary_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  municipality_id integer [not null, ref: > dim_learning_hub_municipalities.municipality_id]
+  total_no_of_established_hubs bigint // 1, 1, 1
+  created_at timestamp [default: 'now()'] // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
+  updated_at timestamp // 2026-02-18 10:14:14, 2026-02-19 10:14:14, 2026-02-20 10:14:14
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Percentage of growth in defense industry investments
+// Lead Department: PGO
+// Frequency: Quarterly
+// Data Source: Submitted spending reports of PGO that is coordinated with SPEDZA (pecial Defense Economic Zone Act)
+// ============================================
+
+enum ppa_type {
+  Projects
+  Programs
+  Activities  
+}
+
+Table dim_programs_projects_activities {
+  ppa_id integer [pk, increment]
+  ppa_type ppa_type // Projects, Programs, Activities
+  ppa_name varchar(255) // Defense Manufacturing & Assembly Programs, Military Vehicle & Naval Platform Assembly, Aerospace & Drone Development Programs
+  description text // Licensed production of small arms for military & law enforcement, Assembly of armored personnel carriers (APCs), ISR drone manufacturing
+  approved_by varchar(255) // Governor Joet Garcia, SPEDZA, PGO
+  created_at timestamp [default: 'now()'] // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
+}
+
+enum spending_type {
+  Investment
+  Disbursement
+  Expenditure
+}
+
+Table dim_spending_types {
+  spending_type_id integer [pk, increment]
+  spending_type spending_type // Investment, Expenditure, Disbursement
+  created_at timestamp [default: 'now()'] // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
+}
+
+Table dim_spending_currencies {
+  currency_id integer [pk, increment]
+  curreny_code varchar(10) // PHP, USD, JPY
+  currency_name varchar(100) // Philippine Peso, Us Dollars, Japanese Yen
+  created_at timestamp [default: 'now()'] // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
+}
+
+Table fact_spending_reports [note: 'Growth Percentage in defense industry investments (PGO)'] {
+  spending_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  ppa_id integer [not null, ref: > dim_programs_projects_activities.ppa_id]
+  spending_type_id integer [not null, ref: > dim_spending_types.spending_type_id]
+  currency_id integer [not null, ref: > dim_spending_currencies.currency_id]
+  total_amount decimal(17, 2) // 123345678.23, 987654321.99, 123123321.13
+  created_at timestamp [default: 'now()'] // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
+  updated_at timestamp // 2026-02-16 14:41:41, 2026-02-17 14:41:41, 2026-02-18 14:41:41
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, ppa_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table dim_items {
+  item_id integer [pk, increment]
+  item_name varchar(255) // Bullets, Guns, Tanks
+  item_description text // 5.56mm NATO rounds, AK-47, The Sabrah light tank
+  unit_of_measure varchar(50) // Pieces, Pieces, Units
+  created_at timestamp [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+}
+
+Table fact_spending_report_items [note: 'Growth Percentage in defense industry investments (PGO)'] {
+  spending_report_item_id integer [pk, increment]
+  spending_report_id integer [ref: > fact_spending_reports.spending_report_id]
+  item_id integer [not null, ref: > dim_items.item_id]
+  quantity bigint // 3, 2, 1
+  unit_price decimal(17, 2) // 123.29, 321.29, 212.23
+  created_at timestmap [default: 'now()'] // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+  updated_at timestamp // 2026-02-18 08:19:19, 2026-02-19 08:19:19, 2026-02-20 08:19:19
+
+  indexes {
+    (spending_report_id, item_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Increase percentage in community participation in fitness programs and increase percentage in participation in sports program (PGO)
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source: Sports Activity Organizers submits participation reports per event to the PGO
+// ===========================================
+
+Table dim_sports_organizers {
+  organizer_id integer [pk, increment]
+  organizer_name varchar(255) // The Schools Division Office of Bataan (DepEd-Bataan), The Schools Division Office of Bataan, Sunrise Events, Inc.
+  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
+}
+
+Table dim_sports_activities {
+  activity_id integer [pk, increment]
+  activity_name varchar(255) // 2024 Bataan Palarong Pampaaralan, 2025 Division Sports Training on Officiating, 5150 FAB Triathlon
+  description text // The 2024 Bataan Palarong Pampaaralan is a provincial scholastic sports meet organized by the Schools Division Office of Bataan.; The 2025 Division Sports Training on Officiating was a three-day workshop held at the Orani Sports Complex in Bataan from September 18–20, 2025.; The 5150 FAB Triathlon is a triathlon event held in the Freeport Area of Bataan (FAB), Mariveles, Philippines. Scheduled for November 16, 2025, it marks the first Olympic-distance triathlon in Bataan and is organized in partnership with the IRONMAN Group’s Sunrise Events Inc.
+  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
+}
+
+Table dim_sports_activity_locations {
+  activity_location_id integer [pk, increment]
+  location text // Dinalupihan Sports Complex, Bataan; Orani Sports Complex, Orani, Bataan; Freeport Area of Bataan (FAB), Mariveles, Bataan
+  description text // he Dinalupihan Sports Complex served as one of the primary sports hubs for the 2024 Bataan Palarong Pampaaralan, the provincial school sports meet for student-athletes in Bataan.; The Orani Sports Complex in the Municipality of Orani was the official venue for the 2025 Division Sports Training on Officiating, a three-day workshop held from September 18–20, 2025 aimed at improving the skills and professionalism of sports officials, teachers, and sports coordinators in Bataan.; The Freeport Area of Bataan (FAB) in Mariveles served as the venue for the 5150 FAB Triathlon.
+  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
+}
+
+Table fact_sports_participation_reports [note: 'Increase percentage in community participation in fitness programs and increase percentage in participation in sports program (PGO)'] {
+  sport_participation_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  organizer_id integer [not null, ref: > dim_sports_organizers.organizer_id]
+  activity_id integer [not null, ref: > dim_sports_activities.activity_id]
+  activity_location_id integer [not null, ref: > dim_sports_activity_locations.activity_location_id]
+  total_no_of_male_participants bigint // 1233, 3211, 3354
+  total_no_of_female_participants bigint // 2112, 2,222, 981
+  total_no_of_participants bigint // 3345, 5433, 4335
+  created_at timestamp [default: 'now()'] // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
+  updated_at timestamp // 2026-02-22 21:02:02, 2026-02-23 21:02:02, 2026-02-24 21:02:02
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Improvement percentage in school health programs and wellness programs (nutrition, physical activity, mental health)
+// Lead Department: PGO-BHSS
+// Frequency: Annually
+// Data Source: Submitted Summary Reports submitted and prepared by program coordinators
+// ===========================================
+
+Table dim_school_programs {
+  school_program_id integer [pk, increment]
+  school_program varchar(255) // School-Based Feeding Program (SBFP), Annual Intramurals, School Mental Health Awareness Seminar
+  description text // Weekly provision of balanced meals to students based on nutritionist‑approved menus to improve dietary intake and reduce malnutrition.; Activities that promote movement, fitness and healthy lifestyles, such as dance challenges, sports events, and exercise clubs.; School‑based mental health awareness, counseling support, training of peer facilitators, and programs designed to build emotional resilience.
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
+Table dim_program_categories {
+  program_category_id integer [pk, increment]
+  program_category varchar(100) // Nutrition Programs, Physical Activity & Wellness Programs, Mental Health & Psychosocial Programs
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
+Table dim_program_coordinators {
+  program_coordinator_id integer [pk, increment]
+  program_coordinator varchar(255) // John Doe, Jane Doe, Joe Brown
+  created_at timestamp [default: 'now()'] // 2026-02-20 08:05:05, 2026-02-21 08:05:05, 2026-02-22 08:05:05
+}
+
+Table dim_schools {
+  school_id integer [pk, increment]
+  school_name varchar(255) // Cataning Integrated School, Saguing Elementary School, Tenejero Elementary School
+  school_address text // Cataning Integrated School is located at Quirino Street, Balanga City, Bataan, Philippines.; Olongapo - Bataan Road, Purok 2, Saguing, Dinalupihan, Bataan 2110, Philippines.; Manahan Street, Balanga, Bataan
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
+Table fact_program_summary_reports [note: 'Improvement percentage in school health programs and wellness programs (nutrition, physical activity, mental health) (PGO)'] {
+  program_summary_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  program_start_date_id integer [not null, ref: > dim_dates.date_id]
+  program_end_date_id integer [not null, ref: > dim_dates.date_id]
+  school_program_id integer [not null, ref: > dim_school_programs.school_program_id]
+  program_category_id integer [not null, ref: > dim_program_categories.program_category_id]
+  program_coordinator_id integer [not null, ref: > dim_program_coordinators.program_coordinator_id]
+  school_id integer [not null, ref: > dim_schools.school_id]
+  total_no_of_individuals_reached bigint // 3888, 3889 3990
+  total_no_of_students_enrolled bigint // 3888, 9883, 9930
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+  updated_at timestamp // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+
+  indexes {
+    (program_start_date_id, program_end_date_id, school_program_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Reduction percentage in youth smoking and vaping rates
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source: Survey Reports Submitted to the PGO by PHO/OPPO
+// ===========================================
+
+Table dim_respondent_locations {
+  respondent_location_id integer [pk, increment]
+  district_name varchar(50) // District I, District II, District III
+  municipality_name varchar(150) // Abucay, City of Balanga, Dinalupihan
+  barangay_name varchar(150) // Calaylayan, San Jose, Poblacion
+  created_at timestamp [default: 'now()'] // 2026-02-20 16:17:17, 2026-02-21 16:17:17, 2026-02-22 16:17:17 
+}
+
+Table dim_age_groups {
+  age_group_id integer [pk, increment]
+  age_group varchar(255) // 13 years old and below, 14-18 years old, 19-30 years old
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
+Table dim_genders {
+  gender_id integer [pk, increment]
+  gender varchar(10) // Male, Female, Other
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
+Table fact_survey_reports [note: 'Reduction percentage in youth smoking and vaping rates (PGO)'] {
+  survey_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  survey_start_date_id integer [not null, ref: > dim_dates.date_id]
+  survey_end_date_id integer [not null, ref: > dim_dates.date_id]
+  respondent_location_id integer [not null, ref: > dim_respondent_locations.respondent_location_id]
+  dim_age_group_id integer [not null, ref: > dim_age_groups.age_group_id]
+  gender_id integer [not null, ref: > dim_genders.gender_id]
+  smoking_youths_count bigint // 12, 11, 10
+  vaping_youths_count bigint // 9, 8, 7
+  total_respondents bigint // 4333, 899, 322
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+  updated_at timestamp // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+
+  indexes {
+    (survey_start_date_id, survey_end_date_id, dim_age_group_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Increase percentage in scholarship recipients and licensure exam pass rates
+// Lead Department: PGO-INB
+// Frequency: Annually
+// Data Source: Summary Reports of Iskolar ng Bataan submitted to PGO
+// ===========================================
+
+Table dim_scholarship_districts {
+  district_id integer [pk, increment]
+  district_name varchar(100) // District I, District II, District III
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
+Table dim_scholarship_municipalities {
+  municipality_id integer [pk, increment]
+  municipality_name varchar(255) // Abucay, City of Balanga, Bagac
+  created_at timestamp [default: 'now()'] // 2026-02-19 16:25:25, 2026-02-20 16:25:25, 2026-02-21 16:25:25
+}
+
+Table fact_scholarship_summary_reports [note: 'Increase percentage in scholarship recipients and licensure exam pass rates (PGO-INB)'] {
+  summary_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  district_id integer [not null, ref: > dim_scholarship_districts.district_id]
+  municipality_id integer [not null, ref: > dim_scholarship_municipalities.municipality_id]
+  total_no_of_new_beneficiaries bigint [note: 'New scholarship recipients in this period']  // 688, 2240, 489
+  total_no_of_exam_passers bigint [note: 'Scholarship students (new + continuing) who passed exams this period'] // 333, 444, 666
+  total_no_of_exam_takers bigint [note: 'Scholarship students (new + continuing) who took exams this period'] // 666, 555, 777
+  created_at timestamp [default: 'now()'] // 2026-02-23 10:17:17, 2026-02-24 10:17:17, 2026-02-25 10:17:17
+  updated_at timestamp // 2026-02-23 10:17:17, 2026-02-24 10:17:17, 2026-02-25 10:17:17
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, district_id) [name: 'idx_general_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Increase percentage in teacher capacity building and use of Learning Management Systems (LMS)
+// Lead Department: PGO
+// Frequency: Monthly
+// Data Source: Learning Management System with API Credentials provided by PITO
+// ===========================================
+
+Table dim_school_municipalities {
+  school_municipality_id integer [pk, increment]
+  district_name varchar(50) // District II, District II, District II
+  municipality_name varchar(150) // City of Balanga, City of Balanga, City of Balangaa
+  created_at timestamp [default: 'now()'] // 2026-02-24 08:40:40, 2026-02-25 08:40:40, 2026-02-26 08:40:40
+}
+
+Table dim_schools_adopting_lms {
+  school_id integer [pk, increment]
+  school_name varchar(255) // Bataan Peninsula State University - Main Campus, Bataan Heroes College, Cataning Integrated School
+  school_address text // Capitol Drive, Balanga City, Bataan, 2100, Philippines; Roman Super Highway, Balanga, Bataan; Quirino Street, Balanga, Bataan, Philippines
+  created_at timestamp [default: 'now()'] // 2026-02-24 08:40:40, 2026-02-25 08:40:40, 2026-02-26 08:40:40
+}
+
+Table fact_system_usage_reports [note: 'Increase percentage in teacher capacity building and use of Learning Management Systems (PGO)'] {
+  system_usage_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  school_municipality_id integer [not null, ref: > dim_school_municipalities.school_municipality_id]
+  school_id integer [not null, ref: > dim_schools_adopting_lms.school_id]
+  total_no_of_active_users bigint // 5677, 7655, 3221
+  total_no_of_new_courses_created bigint // 321, 123, 231
+  total_no_of_new_quizzes_created bigint // 678, 876, 768
+  total_no_of_new_assessments_created bigint // 820, 208, 903
+  created_at timestamp [default: 'now()'] // 2026-02-24 08:40:40, 2026-02-25 08:40:40, 2026-02-26 08:40:40
+  updated_at timestamp // 2026-02-24 08:40:40, 2026-02-25 08:40:40, 2026-02-26 08:40:40
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, school_municipality_id) [name: 'idx_general_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, school_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Integration percentage of values education in school curricula
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source: School Reports submitted to PSWDO then PGO
+// ===========================================
+
+Table dim_implementing_school_municipalities {
+  municipality_id integer [pk, increment]
+  district_name varchar(50) // District II, District II, District II
+  municipality_name varchar(150) // City of Balanga, City of Balanga, City of Balangaa
+  created_at timestamp [default: 'now()'] // 2026-02-24 08:40:40, 2026-02-25 08:40:40, 2026-02-26 08:40:40  
+}
+
+enum school_level {
+  BasicEducation
+  HigherEducation
+}
+
+Table dim_implementing_schools {
+  school_id integer [pk, increment]
+  school_name varchar(255) // Bataan Peninsula State University - Main Campus, Bataan Heroes College, Cataning Integrated School
+  school_level school_level // Higher Education, Higher Education, Basic Education
+  school_address text // Capitol Drive, Balanga City, Bataan, 2100, Philippines; Roman Super Highway, Balanga, Bataan; Quirino Street, Balanga, Bataan, Philippines
+  created_at timestamp [default: 'now()'] // 2026-02-24 08:40:40, 2026-02-25 08:40:40, 2026-02-26 08:40:40
+}
+
+Table fact_school_accomplishment_reports [note: 'Integration percentage of values education in school curricula (PGO)'] {
+  school_accomplishment_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  academic_coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  academic_coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  municipality_id integer [not null, ref: > dim_implementing_school_municipalities.municipality_id]
+  school_id integer [not null, ref: > dim_implementing_schools.school_id]
+  total_no_of_courses_subjects_integrating_values bigint // 30, 29, 28
+  total_no_of_courses_subjects bigint // 41, 40, 44
+  integration_percentage decimal(5, 2) // 73.17, 72.50, 63.64
+  created_at timestamp [default: 'now()'] // 2026-02-24 11:29:29, 2026-02-25 11:29:29, 2026-02-26 11:29:29
+  updated_at timestamp //  2026-02-24 11:29:29, 2026-02-25 11:29:29, 2026-02-26 11:29:29
+
+  indexes {
+    (academic_coverage_start_date_id, academic_coverage_end_date_id, school_id) [name: 's']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Reduction percentage in out-of-school youth through skills and employment programs
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source: PSWDO Out-of-School-Youths population report and OPESM program reported submitted to PGO
+// ===========================================
+
+Table dim_osy_populations {
+  population_id integer [pk, increment]
+  district_name varchar(50) // District I, District II, District III
+  municipality_name varchar(150) // Abucay, City of Balanga, Dinalupihan
+  created_at timestamp [default: 'now()'] // 2026-02-25 08:47:47, 2026-02-26 08:47:47, 2026-02-27 08:47:47
+}
+
+Table fact_osy_population_reports [note: 'Reduction percentage in out-of-school youth through skills and employment programs (PGO) (This fact table tracks the impact of the skills and employment programs)'] {
+  population_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  population_id integer [not null, ref: > dim_osy_populations.population_id]
+  no_of_out_of_school_youths bigint // 123, 321, 231
+  created_at timestamp [default: 'now()'] // 2026-02-25 08:47:47, 2026-02-26 08:47:47, 2026-02-27 08:47:47
+  updated_at timestamp // 2026-02-25 08:47:47, 2026-02-26 08:47:47, 2026-02-27 08:47:47
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, population_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table dim_skills_and_employment_programs {
+  program_id integer [pk, increment]
+  program_name varchar(255) // Government Internship Program, Alternative Learning System (ALS), Training for Work Scholarship Program (TESDA)
+  description text //Though specific offerings vary by locality, this program gives work experience and earning opportunities to out‑of‑school youth aged roughly 18–30.; Managed by the Department of Education (DepEd) to help learners who dropped out of formal schooling complete basic education basic education outside the mainstream system.; Provides free tech‑voc training and employment bridging opportunities for OSY to move into jobs or self‑employment.
+  created_at timestamp [default: 'now()'] // 2026-02-25 08:47:47, 2026-02-26 08:47:47, 2026-02-27 08:47:47
+}
+
+Table fact_osy_program_reports [note: 'Reduction percentage in out-of-school youth through skills and employment programs (PGO) (This fact table tracks the outcome of the skills and employment programs)'] {
+  program_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  program_start_date_id integer [not null, ref: > dim_dates.date_id]
+  program_end_date_id integer [not null, ref: > dim_dates.date_id]
+  program_id integer [not null, ref: > dim_skills_and_employment_programs.program_id]
+  total_no_of_program_beneficiaries bigint // 567, 432, 321
+  total_no_of_beneficiaries_completed bigint // 560, 420, 320
+  created_at timestamp [default: 'now()'] // 2026-02-25 08:47:47, 2026-02-26 08:47:47, 2026-02-27 08:47:47
+  updated_at timestamp // 2026-02-25 08:47:47, 2026-02-26 08:47:47, 2026-02-27 08:47:47
+
+  indexes {
+    (program_start_date_id, program_end_date_id, program_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Increase percentage in family engagement in children's education through EduChild Campaign
+// Lead Department: PGO
+// Frequency: Quarterly
+// Data Source: PSWO Submits the program reports to the PGO
+// ===========================================
+
+Table dim_educhild_programs {
+  educhild_program_id integer [pk, increment]
+  program_name varchar(255) // EduChild Parenting Program, Child Development Worker (CDW) Support & EduChild Rollout Training, ERPAT (Empowerment and Reaffirmation of Paternal Abilities) 
+  program_category varchhar(100) // Parenting, Training, Fatherhood
+  description text // It is a structured parenting education course for parents and caregivers that focuses on equipping them with essential knowledge and skills to raise and support their children effectively.; As part of early childhood care and education, PSWDO supports Child Development Workers at the local level. These workers are frontline facilitators of early childhood programs, including EduChild modules, within communities and daycare centers across the province.; ERPAT is a specialized community-based training program organized by PSWDO that focuses on building positive fatherhood and responsible parental roles.
+  created_at timestamp [default: 'now()'] // 2026-02-25 10:34:34, 2026-02-26 10:34:34, 2026-02-27 10:34:34
+}
+
+Table dim_educhild_program_sessions {
+  program_session_id integer [pk, increment]
+  program_batch_id integer [not null, ref: > dim_educhild_programs.educhild_program_id]
+  session_location text // Barangay Maligaya, Mariveles, Bataan; Balanga City Hall, Balanga City, Bataan; One Bataan Command Center, Orani, Bataan
+  created_at timestamp [default: 'now()'] // 2026-02-25 10:34:34, 2026-02-26 10:34:34, 2026-02-27 10:34:34
+}
+
+Table fact_educhild_program_reports [note: 'Increase percentage in family engagement in children\'s education through EduChild Campaign (PGO)'] {
+  program_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  program_start_date_id integer [not null, ref: > dim_dates.date_id]
+  program_end_date_id integer [not null, ref: > dim_dates.date_id]
+  educhild_program_id integer [not null, ref: > dim_educhild_programs.educhild_program_id]
+  total_no_of_participants bigint
+  total_graduates bigint
+  created_at timestamp [default: 'now()'] // 2026-02-25 10:34:34, 2026-02-26 10:34:34, 2026-02-27 10:34:34
+  updated_at timestamp // 2026-02-25 10:34:34, 2026-02-26 10:34:34, 2026-02-27 10:34:34
+
+  indexes {
+    (program_start_date_id, program_end_date_id, educhild_program_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Increase percentage in adult literacy and participation in lifelong learning programs
+// Lead Department: PGO
+// Frequency: Annually
+// Data Source: PSA Survey Data about the adult literacy and OPESM and other support department that manages and organizers different lifelong learning programs focusing on out of school youths
+// ===========================================
+
+Table dim_implementing_agencies {
+  implementing_agency_id integer [pk, increment]
+  agency_name varchar(255) // Department of Education, Technical Education and Skills Development Authority, Local Youth Development Offices
+  created_at timestamp [default: 'now()']  // 2026-02-26 15:55:55, 2026-02-27 15:55:55, 2026-02-28 15:55:55
+}
+
+Table dim_lifelong_learning_programs {
+  program_id integer [pk, increment]
+  program_name varchar(255) // Alternative Learning System (ALS), TESDA Skills Training Programs, Kabataan 21 / Youth Development Programs
+  program_batch_name varchar(255) // ALS Batch 2025 – Junior High Level, Shielded Metal Arc Welding NC II – Batch 1 (2025), Sewing and Craft Training – Batch 1 (2025)
+  program_category varchar(100) // Lifelong Learning Program, Skills Development, Livelihood Development
+  description text // ALS provides flexible, modular education for OSYs and adults who did not finish elementary or high school.; TESDA provides short-term skills training to improve employability of OSYs. Many ALS graduates transition to TESDA programs.; This batch provides hands-on skills training in sewing, tailoring, and basic craft-making for out-of-school youth (OSYs) and vulnerable youth participants.
+  created_at timestamp [default: 'now()']  // 2026-02-26 15:55:55, 2026-02-27 15:55:55, 2026-02-28 15:55:55
+}
+
+Table fact_program_participant_reports [note: 'Increase percentage in adult literacy and participation in lifelong learning programs (PGO)'] {
+  summary_report_id integer [pk, increment]
+  program_start_date_id integer [not null, ref: > dim_dates.date_id]
+  program_end_date_id integer [not null, ref: > dim_dates.date_id]
+  implementing_agency_id integer [not null, ref: > dim_implementing_agencies.implementing_agency_id]
+  program_id integer [not null, ref: > dim_lifelong_learning_programs.program_id]
+  total_no_of_participants bigint // 378, 783, 837
+  created_at timestamp [default: 'now()'] // 2026-02-26 15:55:55, 2026-02-27 15:55:55, 2026-02-28 15:55:55
+  updated_at timestamp // 2026-02-26 15:55:55, 2026-02-27 15:55:55, 2026-02-28 15:55:55
+
+  indexes {
+    (program_start_date_id, program_end_date_id, program_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table dim_adult_populations {
+  population_id integer [pk, increment]
+  district_name varchar(50) // District I, District II, District III
+  municipality_name varchar(100) // Abucay, City of Balanga, Dinalupihana
+  barangay_name varchar(150) // Calaylayan, Cataning, Poblacion
+}
+
+Table fact_osy_literacy_reports [note: 'Increase percentage in adult literacy and participation in lifelong learning programs (PGO)'] {
+  literacy_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  population_id integer [not null, ref: > dim_adult_populations.population_id]
+  total_no_of_out_of_school_youths bigint // 123, 231, 321
+  total_no_of_functional_literate bigint // 101, 222, 153
+  created_at timestamp [default: 'now()'] // 2026-02-27 08:50:50, 2026-02-28 08:50:50, 2026-02-29 08:50:50
+  updated_at timestamp // 2026-02-27 08:50:50, 2026-02-28 08:50:50, 2026-02-29 08:50:50
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, population_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+
+
+// ===========================================
+// Indicator: Improvement percentage in management and efficiency of public enterprises
+// Lead Department: PGSO-PMO
+// Frequency: Annually
+// Data Source: Statement of the Appropriation, Allotment, Obligation, and Budget to a specific Public Enterprises and satisfaction ratings measured annually
+// ===========================================
+
+Table dim_public_enterprises {
+  public_enterprise_id integer [pk, increment]
+  public_enterprise_name varchar(255) // Bataan People's Center, Capitol Compound Parking, The Bunker
+  location text // Balanga, Bataan, Philippines; Provincial Capitol Compound in Balanga City, Bataan, Philippine; Capitol Compound, San Jose, Balanga City, Bataan 2100, Philippines
+  public_enterprise_type varchar(150) // Sports Venue, Service Facility, Government Office Building
+  created_at timestamp [default : 'now()'] // 2026-02-25 08:47:47, 2026-02-26 08:47:47, 2026-02-27 08:47:47
+}
+
+Table dim_fund_currencies {
+  fund_currency_id integer [pk, increment]
+  currency_name varchar(100) // Philippine Peso, Us Dollars, Japanese Yen
+  currency_code varchar(15) // PHP, USD, JPY
+  created_at timestamp [default: 'now()'] // 2026-02-25 08:47:47, 2026-02-26 08:47:47, 2026-02-27 08:47:47
+}
+
+Table fact_public_enterprise_funds [note: 'Improvement percentage in management and efficiency of public enterprises (PGSO-PMO)'] {
+  enterprise_fund_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]  
+  public_enterprise_id integer [not null, ref: > dim_public_enterprises.public_enterprise_id]
+  fund_currency_id integer [not null, ref: > dim_fund_currencies.fund_currency_id]
+  appropriation_amount bigint // 10000000, 3000000, 5000000
+  allotment_amount bigint // 6000000, 2000000, 3500000
+  obligation_amount bigint // 4000000, 1500000, 2500000
+  remaining_balance bigint // 2000000, 500000, 1000000
+  created_at timestamp [default: 'now()'] // 2026-02-25 08:47:47, 2026-02-26 08:47:47, 2026-02-27 08:47:47
+  updated_at timestamp // 2026-02-25 08:47:47, 2026-02-26 08:47:47, 2026-02-27 08:47:47
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, public_enterprise_id) [name: 'idx_general_report_lookup']
+    (coverage_start_date_id, coverage_end_date_id, public_enterprise_id, fund_currency_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table fact_satisfaction_ratings [note: 'Improvement percentage in management and efficiency of public enterprises (PGSO-PMO)'] {
+  satisfaction_rating_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  public_enterprise_id integer [not null, ref: > dim_public_enterprises.public_enterprise_id]
+  average_satisfaction_rating decimal(5, 2) // 82.23, 92.99, 73.33
+  created_at timestamp [default: 'now()'] // 2026-02-25 08:47:47, 2026-02-26 08:47:47, 2026-02-27 08:47:47
+  updated_at timestamp // 2026-02-25 08:47:47, 2026-02-26 08:47:47, 2026-02-27 08:47:47
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, public_enterprise_id) [name: 'idx_report_lookup']
+  }  
+}
+
+
+
+
+
+// ===========================================
+// Indicator: Increase percentage in disaster-resilient infrastructure, improvement percentage in infrastructure and market access, and increase percentage in school infrastructure development (PEO)
+// Lead Department: PEO
+// Frequency: Quarterly
+// Data Source: Infrastructure status report of PEO and GDP per municipality from PSA
+// ===========================================
+
+Table dim_infrastructures {
+  infrastructure_id integer [pk, increment]
+  infrastructure_name varchar(255) // Bataan-Cavite Interlink Bridge, Roman Highway, Bataan Port
+  infrastructure_category varchar(150) // Transporation Infrastructures, Transporation Infrastructures, Transporation Infrastructures
+  is_disaster_resilient bool // True, True, False
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+}
+
+Table dim_infrastructure_statuses {
+  status_id integer [pk, increment]
+  status varchar(100) // Completed, Completed, Completed
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+}
+
+Table dim_currencies {
+  currency_id integer [pk, increment]
+  currency_name varchar(100) // Philippine Peso, Philippine Peso, Philippine Peso
+  currency_code varchar(5) // PHP, PHP, PHP
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+}
+
+Table fact_infrastructure_status_reports [note: 'Increase percentage in disaster-resilient infrastructure, improvement percentage in infrastructure and market access, and increase percentage in school infrastructure development (PEO)'] {
+  status_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  currency_id integer [not null, ref: > dim_currencies.currency_id]
+  infrastructure_id integer [not null, ref: > dim_infrastructures.infrastructure_id]
+  status_id integer [not null, ref: > dim_infrastructure_statuses.status_id]
+  total_investment_amount decimal(17, 2) // 123456789.23, 987654321.23, 654321789.12
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+  updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, infrastructure_id, status_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table dim_economic_municipalities {
+  municipality_id integer [pk, increment]
+  district_name varchar(255) // District I, District II, District III
+  municipality_name varchar(150) // Abucay, City of Balanga, Dinalupihan
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+}
+
+Table fact_gross_domestic_products [note: 'This fact table are connected to the table "fact_infrastructure_status_reports" for measuring the improvement pct in infrastructure and market access using GDP as proxy indicator for market access'] {
+  gdp_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  currency_id integer [not null, ref: > dim_currencies.currency_id]
+  municipality_id integer [not null, ref: > dim_economic_municipalities.municipality_id]
+  gross_domestic_product decimal(17, 2) // 123456789.23, 987654321.23, 654321789.12
+  created_at timestamp [default: 'now'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+  updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Increase percentage in access to healthcare facilities
+// Lead Department: PEO
+// Frequency: Annually
+// Data Source: Infrastructure reports from PEO for facilities and Health Access Coverage Report of PHO and consolidated by PGO
+// ===========================================
+
+Table dim_facilities {
+  facility_id integer [pk, increment]
+  facility_name varchar(255) // Bataan General Hospital and Medical Center, Solar‑Powered Water System — Roosevelt Elementary School, Dinalupihan; Water System Project — Sitio Bani, Barangay Cataning, Balanga City
+  facility_type varchar(100) // Tertiary Level Government Hospital, Solar‑Powered Potable Water Supply System, Community Water Distribution System
+  facility_sector varchar(50) // Health Care, Water & Sanitation, Water & Sanitation
+  facility_status varchar(50) // Operational, Completed, Completed
+  location text // Brgy. Tejenero, Balanga City Bataan; Mariveles, Bataan; Orani, Bataan
+  operational_start_date date // 2026-03-03, 2026-03-04, 2026-03-05
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+}
+
+Table dim_covered_populations {
+  covered_population_id integer [pk, increment]
+  district_name varchar(50) // District II, District III, District I
+  municipality_name varchar(100) // City of Balanga, Mariveles, Orani
+  barangay_name varchar(100) // Tenejero, Malaya, Doña
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+}
+
+Table fact_population_coverage_reports [note: 'Increase percentage in access to healthcare facilities (PEO)'] {
+  coverage_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  facility_id integer [not null, ref: > dim_facilities.facility_id]
+  covered_population_id integer [not null, ref: > dim_covered_populations.covered_population_id]
+  no_of_population_with_access bigint // 12333, 45666, 3221
+  total_no_of_population bigint // 12333, 55666, 3229
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+  updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+
+  indexes {
+    (reported_date_id, coverage_start_date_id, coverage_end_date_id, facility_id, covered_population_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Increase percentage in access to clean water and sanitation facilities
+// Lead Department: PEO
+// Frequency: Annually
+// Data Source: Infrastructure reports from PEO for facilities and Health Access Coverage Report of PHO and consolidated by PGO
+// ===========================================
+
+Table fact_household_coverage_reports [note: 'Increase percentage in access to clean water and sanitation facilities (PEO)'] {
+  coverage_report_id integer [pk, increment]  
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  facility_id integer [not null, ref: > dim_facilities.facility_id]
+  covered_population_id integer [not null, ref: > dim_covered_populations.covered_population_id]
+  no_of_households_with_access bigint // 321, 123, 231
+  total_no_of_households bigint // 432, 521, 231
+  created_at timestamp [default: 'now()'] // 2026-03-02 09:46:46, 026-03-03 09:46:46, 2026-03-04 09:46:46
+  updated_at timestamp // 2026-03-02 09:46:46, 2026-03-03 09:46:46, 2026-03-04 09:46:46
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, facility_id, covered_population_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+
+
+// ===========================================
+// Indicator: Increase percentage in locators in FAB Expansion Areas (Registered)
+// Lead Department: PPPIC
+// Frequency: Quarterly
+// Data Source: Business Registration Forms/Documents submitted to the offices who manage FAB
+// ===========================================
+
+Table dim_fab_areas {
+  fab_area_id integer [pk, increment]
+  municipality_name varchar(50) // Mariveles, Dinalupihan, City of Balanga
+  fab_area_name varchar(150) // FAB-Mariveles Ecozone, FAB-Dinalupihan Industrial Park, FAB-Balanga Business Hub
+  is_expansion_area boolean // False, True, True
+  location text // Brgy. Alas-asin, Mariveles, Bataan; Brgy. San Benito, Dinalupihan, Bataan; Brgy. Tuyo, Balanga City, Bataan
+  created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+}
+
+Table dim_businesses {
+  business_id integer [pk, increment]
+  business_name varchar(255) // Mattel Philippines, Inc.; Softnet Information Technology Center (SITC); Hap Chan Mariveles
+  registered_business_name varchar(255) // Mattel Philippines, Inc.; Softnet Information Technology Center; Hap Chan Mariveles
+  created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+}
+
+Table dim_business_categories {
+  business_category_id integer [pk, increment]
+  business_category varchar(100) // Manufacturing, IT/BPO, Food and Beverages
+  created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+}
+
+Table dim_registration_statuses {
+  registration_status_id integer [pk, increment]
+  registration_status varchar(100) // Registered, Registered, Registered
+  created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+}
+
+Table dim_revenue_currencies {
+  currency_id integer [pk, increment]
+  currency_name varchar(75) // Us Dollars, Philippine Peso, Philippine Peso
+  currency_code varchar(25) // USD, PHP, PHP
+  created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+}
+
+Table dim_business_reports [note: 'Increase percentage in locators in FAB Expansion Areas (Registered) (PPPIC)'] {
+  business_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  permission_start_date_id integer [not null, ref: > dim_dates.date_id] // Business Permit validity (Permit valid from Jan 1, 2024 - Dec 31, 2024)
+  permission_end_date_id integer [not null, ref: > dim_dates.date_id]
+  fab_area_id integer [not null, ref: > dim_fab_areas.fab_area_id]
+  business_id integer [not null, ref: > dim_businesses.business_id]
+  business_category_id integer [not null, ref: > dim_business_categories.business_category_id]
+  registration_status_id integer [not null, ref: > dim_registration_statuses.registration_status_id]
+  revenue_currency_id integer [not null, ref: > dim_revenue_currencies.currency_id]
+  projected_annual_revenue decimal(17, 2) // 1000000000.00, 12345667.81, 987654.11
+  created_at timestamp [default: 'now()'] // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+  updated_at timestamp // 2026-03-04 08:38:38, 2026-03-05 08:38:38, 2026-03-05 08:38:38
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, fab_area_id, business_id, registration_status_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Increase percentage in public-private partnerships (PPPs)
+// Lead Department: PPPIC
+// Frequency: Quarterly
+// Data Source: Public-Private Partnership Contracts from PPPIC
+// ===========================================
+
+Table dim_companies {
+  company_id integer [pk, increment]
+  company_name varchar(255) // SolarEnergy Inc.; EVCharge PH, Bunker Solutions
+  industry_name varchar(255) // Renewable Energy, EV Infrastructure, ICT / Energy
+  nationality varchar(150) // PH, PH, PH
+  created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18
+}
+
+Table dim_ppp_projects [note: 'Public-Private Partnership Projects'] {
+  project_id integer [pk, increment]
+  sector_name varchar(150) // Renewable Energy; EV Charging; ICT / Energy
+  ppp_type varchar(100) // BOT, BOO, JV
+  project_name varchar(255) // Solar Farm Cebu, Metro Manila EV Network, Bunker Smart Grid
+  project_status varchar(75) // Operational, Planning, Signed
+  is_strategic boolean // True, True, True
+  created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
+}
+
+Table dim_contract_statuses {
+  contract_status_id integer [pk, increment]
+  contract_status_name varchar(50) // Signed, Signed, Terminated
+  created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
+}
+
+Table dim_investment_currencies {
+  currency_id integer [pk, increment]
+  currency_name varchar(150) // Philippine Peso, Philippine Peso, US Dollar
+  currency_code varchar(15) // PHP, PHP, USD
+  created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
+}
+
+Table fact_contract_reports [note: 'Increase percentage in public-private partnerships (PPPs) (PPPIC)'] {
+  contract_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  contract_start_date_id integer [not null, ref: > dim_dates.date_id]
+  contract_end_date_id integer [not null, ref: > dim_dates.date_id]
+  company_id integer [not null, ref: > dim_companies.company_id]
+  project_id integer [not null, ref: > dim_ppp_projects.project_id]
+  contract_status_id integer [not null, ref: > dim_contract_statuses.contract_status_id]
+  investment_currency_id integer [not null, ref: > dim_investment_currencies.currency_id]
+  total_investment_amount decimal(17, 2) // 500000000.23, 200000000.99, 300000000.11
+  created_at timestamp [default: 'now()'] // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
+  updated_at timestamp // 2026-03-04 14:18:18, 2026-03-05 14:18:18, 2026-03-06 14:18:18 
+
+  indexes {
+    (contract_start_date_id, contract_end_date_id, company_id, project_id, contract_status_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+
+
+// ===========================================
+// Indicator: Increase percentage in government revenue
+// Lead Department: LFC
+// Frequency: Quarterly
+// Data Source: Revenue and Expenditures reported to the BLGF
+// ===========================================
+
+Table dim_responsible_departments {
+  department_id integer [pk, increment]
+  department_name varchar(255) // Provincial Treasurer, Provincial Treasurer, Local Finance Committee
+  department_code varchar(25) // TREAS, LFC, BUDG
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+}
+
+Table dim_revenue_classes {
+  revenue_class_id integer [pk, increment]
+  revenue_class_name varchar(255) // Locally Sourced Revenue, Locally Sourced Revenue, External Revenue
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+}
+
+Table dim_revenue_categories {
+  revenue_category_id integer [pk, increment]
+  revenue_category varchar(255) // Tax Revenue, Non-Tax Revenue, National Tax Allotment
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
+}
+
+Table dim_revenue_sources {
+  revenue_source_id integer [pk, increment]
+  revenue_source_name varchar(255) // Real Property Tax, Local Business Tax, National Tax Allotment
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
+}
+
+Table fact_government_revenues [note: 'Increase percentage in government revenue (LFC)'] {
+  revenue_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]  
+  responsible_department_id integer [not null, ref: > dim_responsible_departments.department_id]
+  revenue_class_id integer [not null, ref: > dim_revenue_classes.revenue_class_id]
+  revenue_category_id integer [not null, ref: > dim_revenue_categories.revenue_category_id]
+  revenue_source_id integer [not null, ref: > dim_revenue_sources.revenue_source_id]
+  amount_assessed decimal(17, 2) // 15,680,000.00; 15,680,000.00; 1,200,000.00
+  amount_collected decimal(17, 2) // 14,200,000.00; 14,200,000.00; 1,100,000.00
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+  updated_at timestamp // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+
+  indexes {
+    (reported_date_id, coverage_start_date_id, coverage_end_date_id, responsible_department_id, revenue_class_id, revenue_category_id, revenue_source_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+
+
+// ===========================================
+// Indicator: Increase percentage in SMEs using online systems for business permits
+// Lead Department: PCEDO
+// Frequency: Monthly Data Collection but Quarterly Data Analysis
+// Data Source: Municipal Business Permit and Licensing Systems, if None collect it to the agency who manages the application of business permits and licenses
+// ===========================================
+
+Table dim_enterprises {
+  enterprise_id integer [pk, increment]
+  enterprise_name varchar(255) // Orani Café & Bakery, Mariveles Hardware, Balanga IT Solutions
+  enterprise_size varchar(100) // Small, Medium, Small
+  enterprise_sector varchar(100) // Food & Beverage, Retail, IT Services
+  enterprise_status varchar(75) // Active, Active, Active
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+}
+
+Table dim_business_permits {
+  business_permit_id integer [pk, increment]
+  business_permit_name varchar(150) // Mayor’s Permit, Sanitary Permit, Fire Safety Permit
+  permit_valid_from date // 2026-01-01, 2026-01-01, 2026-01-01
+  permit_valid_to date // 2026-12-31, 2026-12-31, 2026-12-31
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
+}
+
+Table dim_business_permit_statuses {
+  permit_status_id integer [pk, increment]
+  permit_status varchar(100) // New, Renewed, Active
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+}
+
+Table fact_permit_applications [note: 'Audit table for measuring the increase percentage in SMEs using online systems for business permits (PCEDO)'] {
+  application_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  application_date_id integer [not null, ref: > dim_dates.date_id]
+  enterprise_id integer [not null, ref: > dim_enterprises.enterprise_id]
+  issued_business_permit_id integer [ref: > dim_business_permits.business_permit_id]
+  permit_status_id integer [not null, ref: > dim_business_permit_statuses.permit_status_id]
+  total_payment decimal(17, 2) // 500.00, 200.00, 1000.00
+  is_online boolean // True, True, False
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+  updated_at timestamp // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41
+
+  indexes {
+    (enterprise_id,  permit_status_id) [name: 'idx_report_looukp']
+  }
+}
+
+Table dim_submitted_licenses {
+  license_id integer [pk, increment]
+  application_id integer [not null, ref: > fact_permit_applications.application_id]
+  license_name varchar(255) // Mayor’s License, Sanitary License, Fire Safety
+  license_type varchar(150) // Business, Compliance, Compliance
+  license_valid_from date // 2026-03-01, 2026-03-01, 2026-03-03
+  license_valid_to date // 2027-03-01, 2027-03-01, 2027-03-03
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
+}
+
+Table dim_business_municipalities {
+  municipality_id integer [pk, increment]
+  district_name varchar(100) // District I, District II, District III
+  municipality_name varchar(150) // Abucay, City of Balanga, Dinalupihan
+  created_at timestamp [default: 'now()'] // 2026-03-05 09:41:41, 2026-03-06 09:41:41, 2026-03-07 09:41:41  
+}
+
+Table fact_issued_permit_reports [note: 'Summary report for measuring the increase percentage in SMEs using online systems for business permits (PCEDO)'] {
+  summary_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  municipality_id integer [not null, ref: > dim_business_municipalities.municipality_id]
+  no_of_new_issued_permits bigint // 1, 1, 1
+  no_of_renewed_permits bigint // 0, 0, 0
+  no_of_active_permits bigint // 1, 1, 1
+  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15
+  updated_at timestamp // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Adoption percentage of electric vehicles in public transport
+// Lead Department: PCEDO
+// Frequency: Annually
+// Data Source: LTO for registration of plate number and LTFRB for registration of franchise number
+// ===========================================
+
+Table dim_vehicle_locations {
+  vehicle_location_id integer [pk, increment]
+  district varchar(75) // District I, District II, District III
+  municipality varchar(75) // Abucay, City of Balanga, Dinalupihan
+  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15  
+}
+
+Table dim_transport_operators {
+  operator_id integer [pk, increment]
+  operator_name varchar(255) // Balanga Jeepney Coop, Orion Transit Bus, Dinalupihan UV Express
+  operator_type varchar(150) // Cooperative, Company, Cooperative
+  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15    
+}
+
+Table dim_vehicles {
+  vehicle_id integer [pk, increment]
+  plate_number varchar(100) // ABC123, XYZ456, EVJ789
+  vehicle_type varchar(150) // Jeepney, Bus, Electric Jeepney
+  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15    
+}
+
+Table dim_fuel_types {
+  fuel_type_id integer [pk, increment]
+  fuel_type varchar(75) // Diesel, Electric, Gasoline
+  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15    
+}
+
+Table fact_registered_public_vehicles [note: 'Adoption percentage of electric vehicles in public transport (PCEDO) (High Granularity for Auditing)'] {
+  public_vehicle_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  franchise_valid_from_id integer [not null, ref: > dim_dates.date_id]
+  franchise_valid_to_id integer [not null, ref: > dim_dates.date_id]
+  vehicle_location_id integer [not null, ref: > dim_vehicle_locations.vehicle_location_id]
+  operator_id integer [ref: > dim_transport_operators.operator_id]
+  vehicle_id integer [not null, ref: > dim_vehicles.vehicle_id]
+  fuel_type_id integer [not null, ref: > dim_fuel_types.fuel_type_id]
+  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15        
+  updated_at timestamp // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15
+
+  indexes {
+    (vehicle_location_id, vehicle_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table fact_vehicle_summary_reports [note: 'Adoption percentage of electric vehicles in public transport (PCEDO) (Low Granularity for Analytics and creating two fact tables is the best approach for this indicator)'] {
+  summary_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  vehicle_location_id integer [not null, ref: > dim_vehicle_locations.vehicle_location_id]
+  no_of_electric_public_vehicles bigint // 0, 5, 8
+  no_of_public_vehicles bigint // 10, 15, 12
+  created_at timestamp [default: 'now()'] // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15        
+  updated_at timestamp // 2026-03-06 11:15:15, 2026-03-07 11:15:15, 2026-03-08 11:15:15
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, vehicle_location_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+// Indicator: Increase percentage in TNVS (Transport Network Vehicle Service) slots for public transport
+// Lead Department: PCEDO
+// Frequency: Quarterly Data Collection but Annual Data Analysis
+// Data Source: Slots Expansion Program of PCEDO approved by the LTFRB
+// ===========================================
+
+Table dim_tnvs_slot_programs {
+  tnvs_slot_program_id integer [pk, increment]
+  program_name varchar(255) // TNVS Slots Expansion FY25, TNVS Slots Expansion FY25, TNVS Slots Expansion FY26Q1
+  description text // Implement 150 additional slots for TNVS in Bataan; Implement 100 additional slots for TNVS in Bataan for Q1 FY26; Implement 120 additional slots for TNVS in Bataan for Q2 FY26 
+  created_at timestamp [default: 'now()'] // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
+}
+
+Table dim_tnvs_platforms {
+  tnvs_platform_id integer [pk, increment]
+  platform_name varchar(255) // Grab, JoyRide, Angkas
+  created_at timestamp [default: 'now()'] // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
+}
+
+
+Table fact_tnvs_public_transport_slots [note: 'Increase percentage in TNVS (Transport Network Vehicle Service) slots for public transport (PCEDO) (High Granularity for Auditing)'] {
+  allocation_id integer [pk, increment]
+  approval_date_id integer [not null, ref: > dim_dates.date_id]
+  tnvs_slot_program_id integer [not null, ref: > dim_tnvs_slot_programs.tnvs_slot_program_id]
+  vehicle_location_id integer [not null, ref: > dim_vehicle_locations.vehicle_location_id]
+  tnvs_platform_id integer [not null, ref: > dim_tnvs_platforms.tnvs_platform_id]
+  slots_allocated bigint // 50, 40, 60
+  created_at timestamp [default: 'now()'] // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
+  updated_at timestamp // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
+
+  indexes {
+    (approval_date_id, tnvs_slot_program_id, vehicle_location_id, tnvs_platform_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table fact_tnvs_public_transport_slot_summaries [note: 'Increase percentage in TNVS (Transport Network Vehicle Service) slots for public transport (PCEDO) (Low Granularity for Analytics and creating two fact tables is the best approach for this indicator)'] {
+  summary_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  tnvs_slot_program_id integer [not null, ref: > dim_tnvs_slot_programs.tnvs_slot_program_id]
+  total_approved_slots bigint // 150, 120, 130
+  created_at timestamp [default: 'now()'] // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
+  updated_at timestamp // 2026-03-09 08:45:45, 2026-03-10 08:45:45, 2026-03-11 08:45:45
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id, tnvs_slot_program_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+
+
+// ===========================================
+// Indicator: Increase percentage in tourism activities, festival participation and revenue from festivals (Trade Fairs)
+// Lead Department: PTourism
+// Frequency: Quarterly
+// Data Source: Consolidated Reports of participation, revenue, and events conducted from the LGUs to the Ptourism office
+// ===========================================
+
+Table dim_tourism_events {
+  event_id integer [pk, increment]
+  event_name varchar(255) // Banga Festival, Ibong Dayo Festival, Pawikan Festival
+  description text // Banga Festival, Ibong Dayo Festival, Conservation & beach festival in Morong
+  includes_trade_fair boolean // False, False, True
+  event_type varchar(75) // Festival, Festival, Festival
+  event_location text // Balanga City, Bataan; Balanga City, Bataan; Morong, Bataan
+  created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
+}
+
+Table fact_festival_participation_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals using Trade Fairs (PTourism) (This fact table is for analyzing the increase pct of festival participations)'] {
+  participation_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  event_start_date_id integer [not null, ref: > dim_dates.date_id]
+  event_end_date_id integer [not null, ref: > dim_dates.date_id]
+  event_id integer [not null, ref: > dim_tourism_events.event_id]
+  no_of_estimated_participants bigint // 1200, 5000, 8000 
+  no_of_recorded_participants bigint // 1200, 4500, 7800
+  created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
+  updated_at timestamp // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
+
+  indexes {
+    (event_start_date_id, event_end_date_id, event_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table dim_revenue_types {
+  revenue_type_id integer [pk, increment]
+  revenue_type varchar(100) // Booth Rental Fees, Booth Rental Fees, Merchandise Sales
+  created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
+}
+
+Table fact_event_revenue_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals using Trade Fairs (PTourism) (This fact table is for analyzing the increase pct of revenue from festivals)'] {
+  revenue_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  event_start_date_id integer [not null, ref: > dim_dates.date_id]
+  event_end_date_id integer [not null, ref: > dim_dates.date_id]
+  event_id integer [not null, ref: > dim_tourism_events.event_id]
+  revenue_type_id integer [not null, ref: > dim_revenue_types.revenue_type_id]
+  total_revenue decimal(17, 2) // 150000.00, 200000.00. 200000.00
+  created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
+  updated_at timestamp // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18
+
+  indexes {
+    (event_start_date_id, event_end_date_id, event_id) [name: 'idx_report_lookup']
+  }
+}
+
+Table fact_event_summary_reports [note: 'Increase percentage in tourism activities, festival participation and revenue from festivals using Trade Fairs (PTourism) (This fact table is for analyzing the increase pct of tourism activities)'] {
+  summary_report_id integer [pk, increment]
+  reported_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
+  coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
+  no_of_tourism_events_conducted bigint // 4, 3, 5
+  created_at timestamp [default: 'now()'] // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18  
+  updated_at timestamp // 2026-03-10 10:18:18, 2026-03-11 10:18:18, 2026-03-12 10:18:18  
+
+  indexes {
+    (coverage_start_date_id, coverage_end_date_id) [name: 'idx_report_lookup']
+  }
+}
+
+
+
+// ===========================================
+//      CONTINUE MORE INDICATORS SOON....
+// ===========================================
