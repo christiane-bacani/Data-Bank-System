@@ -47,7 +47,7 @@ An analytical data repository for the Provincial Government of Bataan that centr
 | PHRMO           | % improvement in government employee service quality | Done |
 | MBDA            | % reduction in crime rates through collaboration with law enforcement | Done|
 | MBDA, PNP, and PDRRMO | % reductions on accidents (place of occurrence) | Done |
-| MBDA and PDRMOO | % reduction of injury among affected population during calamity | Done |
+| MBDA and PDRRMO | % reduction of injury among affected population during calamity | Done |
 | PIO             | % improvement in government service delivery via social media | Done |
 | PITO            | % increase in implementation of digital governance systems | Done |
 | PGO             | % improvement in citizen access to services | Done |
