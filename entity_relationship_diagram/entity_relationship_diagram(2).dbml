@@ -35,28 +35,30 @@ Table dim_times {
 // ============================================
 // Indicator: Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities
 // Lead Department: OPPDC
+// Support Department: OPA, VET
 // Frequency: Annually
 // Data Source: Provincial Online Price Monitoring System
 // ============================================
 
 Table dim_local_government_units {
-  local_government_unit_id integer [pk, increment]
-  district_name varchar(100) // District I, District II, District III
-  local_government_unit varchar(150) // Abucay, City of Balanga, Dinalupihan 
-  created_at timestamp [default: 'now()'] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
+                                                    // Example value
+  local_government_unit_id integer [pk, increment]  // 1
+  district_name varchar(100)                        // District I
+  local_government_unit varchar(150)                // Abucay
+  created_at timestamp [default: 'now()']           // 2026-02-06 16:13:13
 }
 
 Table dim_agricultural_products {
-  product_id integer [pk, increment]
-  commodity_type varchar(255) // IMPORTED COMMERCIAL RICE, FISH (per kg), HIGHLAND VEGETABLES (per kg)
-  product_name varchar(255) // Special (Blue tag), Galunggong (Local), Pechay (Baguio)
-  created_at timestamp [default: `now()`] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
+  product_id integer [pk, increment]                // 1
+  commodity_type varchar(255)                       // IMPORTED COMMERCIAL RICE
+  product_name varchar(255)                         // Special (Blue tag)
+  created_at timestamp [default: `now()`]           // 2026-02-06 16:13:13
 }
 
 Table dim_price_comparison_periods {
-  comparison_period_id integer [pk, increment]
-  comparison_period varchar(20) // CURRENT, PREVIOUS, OTHER
-  created_at timestamp [default: `now()`] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
+  comparison_period_id integer [pk, increment]      // 1
+  comparison_period varchar(20)                     // CURRENT
+  created_at timestamp [default: `now()`]           // 2026-02-06 16:13:13
 }
 
 Table fact_prices [note: 'Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities (OPPDC)'] {
@@ -67,10 +69,10 @@ Table fact_prices [note: 'Reduction percentage in inflation rates through price 
   local_government_unit_id integer [not null, ref: > dim_local_government_units.local_government_unit_id]
   product_id integer [not null, ref: > dim_agricultural_products.product_id]
   comparison_period_id integer [not null, ref: > dim_price_comparison_periods.comparison_period_id]
-  average_price decimal(10, 2) // 216.00, 172.50, 216
-  prevailing_price decimal(10, 2) // 225.00, 170.00, 220
-  created_at timestamp [default: `now()`] // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13 
-  updated_at timestamp // 2026-02-06 16:13:13, // 2026-02-06 20:13:13, // 2026-02-07 16:13:13
+  average_price decimal(10, 2)                      // 216.00
+  prevailing_price decimal(10, 2)                   // 225.00, 170.00, 220
+  created_at timestamp [default: `now()`]           // 2026-02-06 16:13:13
+  updated_at timestamp                              // 2026-02-06 16:13:13
 
   indexes {
     (coverage_start_date_id, coverage_end_date_id, product_id, comparison_period_id) [name: 'idx_general_report_lookup']
