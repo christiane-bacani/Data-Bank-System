@@ -84,15 +84,17 @@ Table fact_prices [note: 'Reduction percentage in inflation rates through price 
 // ============================================
 // Indicator: Increase percentage in barangays with completed Barangay Master Development Plans
 // Lead Department: OPPDC
+// Support Department: PITO, PGO
 // Frequency: Annually
-// Data Source: Submitted reports of District Offices about the number of barangays who completed their master development plan per municipalities divided by the number of barangays per municipalities
+// Data Source: Submitted reports of district offices about the number of barangays who completed their master development plan per municipalities
 // ============================================
 
 Table dim_municipalities {
-  municipality_id integer [pk, increment]
-  district_name varchar(50) // District I, District II, District III
-  municipality_name varchar(100) // Hermosa, City of Balanga, Bagac
-  created_at timestamp [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
+                                                    // Example value
+  municipality_id integer [pk, increment]           // 1
+  district_name varchar(50)                         // District I
+  municipality_name varchar(100)                    // Hermosa
+  created_at timestamp [default: `now()`]           // 2026-02-06 16:18:18
 }
 
 Table fact_barangay_development_plans [note: 'Increase percentage in barangays with completed Barangay Master Development Plans (OPPDC)']{
@@ -101,13 +103,13 @@ Table fact_barangay_development_plans [note: 'Increase percentage in barangays w
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_end_date_id integer [not null, ref: > dim_dates.date_id]
   municipality_id integer [not null, ref: > dim_municipalities.municipality_id]
-  barangays_not_started integer // 10, 0, 6
-  barangays_in_progress intege // 3, 12, 2
-  barangays_with_completed_bdp integer // 10, 13, 6
-  total_barangays integer // 23, 25, 14
-  completion_percentage decimal(5, 2) // 43.48, 52, 42.86
-  created_at timestamp [default: `now()`] // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
-  updated_at timestamp // 2026-02-06 16:18:18, 2026-02-06 17:18:18, 2026-02-06 20:18:18
+  barangays_not_started integer                     // 10
+  barangays_in_progress intege                      // 3
+  barangays_with_completed_bdp integer              // 10
+  total_barangays integer                           // 23
+  completion_percentage decimal(5, 2)               // 43.48
+  created_at timestamp [default: `now()`]           // 2026-02-06 16:18:18
+  updated_at timestamp                              // 2026-02-06 16:18:18
 
   indexes {
     (coverage_start_date_id, coverage_end_date_id, municipality_id) [name: 'idx_report_lookup']
