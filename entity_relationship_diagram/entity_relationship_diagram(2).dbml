@@ -60,7 +60,7 @@ Table dim_price_comparison_periods {
   created_at timestamp [default: `now()`]           // 2026-02-06 16:13:13
 }
 
-Table fact_prices [note: 'Reduction percentage in inflation rates through price monitoring and direct selling of basic commodities (OPPDC)'] {
+Table fact_prices [note: 'Table for measuring the reduction pct in inflation rates through price monitoring and direct selling of basic commodities\nLead Department: OPPDC\nSupport Department: OPA, VET'] {
   price_id integer [pk, increment]
   observation_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
@@ -97,7 +97,7 @@ Table dim_municipalities {
   created_at timestamp [default: `now()`]           // 2026-02-06 16:18:18
 }
 
-Table fact_barangay_development_plans [note: 'Increase percentage in barangays with completed Barangay Master Development Plans (OPPDC)']{
+Table fact_barangay_development_plans [note: 'Table for measuring the increase percentage in barangays with completed Barangay Master Development Plans\nLead Department: OPPDC\nSupport Department: PITO, PGO']{
   plan_id integer [pk, increment]
   observation_date_id integer [not null, ref: > dim_dates.date_id]
   coverage_start_date_id integer [not null, ref: > dim_dates.date_id]
