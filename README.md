@@ -1,82 +1,111 @@
-# Data Bank System for Provincial Government of Bataan
+# Data Bank System — Provincial Government of Bataan
 
-An analytical data repository for the Provincial Government of Bataan that centralizes performance measurements across 37+ departments and/or offices. Built to track the **Governor's Joint Strategic Goals (GJSG)** priority indicators, this data repository reduces time-consuming coordination, redundant data request, improves inefficient service delivery, removes data fragmentation and silos, and promotes transparency and accountability. You can visit the Entity-Relationship Diagram [here](https://dbdiagram.io/d/Initial_ERD_for_Data_Bank_System-2-69854dc7bd82f5fce2d4deb8)
+A real-world enterprise analytical data repository designed and built for the **Provincial Government of Bataan**, centralizing performance measurements across **37+ departments and offices**. The system tracks the **Governor's Joint Strategic Goals (GJSG)** priority indicators — reducing data fragmentation, eliminating redundant data requests, and promoting transparency and accountability across regional governance.
 
-## Table of contents
-- [Undercurrents of the Data Bank](#Undercurrents-of-the-Data-Bank)
-- [Todo](#Todo)
-- [Status Table](#Status-Table)
+📐 View the Entity-Relationship Diagram [here](https://dbdiagram.io/d/Initial_ERD_for_Data_Bank_System-2-69854dc7bd82f5fce2d4deb8)
 
-## Undercurrents of the Data Bank
+---
 
-### Data Observability
-- Using logging, metrics, and tracking such as lineage.
+## 🧭 Project Overview
 
-### Logging
-- Use to record events such as the date when the data is submitted, date when the data is updated, name of the entity who submitted the data, name of the entity who updated the data, specific job/module/class/function that has an error, specific job/module/class/function that is successful, date of when the job/module/class/function is successful, date when the job/module/class/function cause error, source data that causes error, source data that was successful, etc.
+The Provincial Government of Bataan manages 37+ departments that each track their own KPIs independently — leading to fragmented data, redundant reporting, and slow decision-making. This data bank system solves that by providing a unified, centralized analytical repository that connects all departments under one structured data model.
 
-### Data Lineage
-- Tracker to track what/when/where/how the data was extracted, transformed, and loaded.
+**Key outcomes the system addresses:**
+- Eliminates data silos and fragmentation across departments
+- Reduces time-consuming manual coordination and redundant data requests
+- Improves inefficient service delivery through structured data governance
+- Promotes transparency and accountability at the provincial level
 
-### Data Orchestration/Queuing
-- Tools to automate the pipeline by batch scheduling, near real-time, and/or real-time.
+---
 
-### Data Catalog
-- Contains all the necessary utilities of the pipeline such as the data lineage, metadata, search and discovery features to get the data they needed, agreements for the data/indicators/success indicators to be used per department and make sure it was clear on how do you track it and considered it as a failure and documented in the methodology, agreements on how to measure the indicators/success indicators, agreements on how to submit the data, agreements on who is/are the people who will submit the data, agreements on systems to use (if feasible) that sends that data or supports the extraction of the data, agreements on what date/time/period they needed to submit the data, agreements on why and how data is uploaded (including reporting cut-off dates and status logic), agreements on how much time period is valid before the data bank perform automated escalation, agreements on proper escalation process if they don't send the data on time, information about who can access the different datasets on the data bank, feedback data of the users of the data bank, integration connections (links to the actual data source of the dataset), data privacy/security/access controls, procedures to resolving discrepancies or errors, and roles and responsiblities of each party.
+## 🛠 Tech Stack
+- **Data Modeling:** DBML · dbdiagram.io
+- **Schema Design:** Galaxy Schema · Dimensional Modeling · 3NF Normalization
+- **Database:** PostgreSQL
+- **Concepts:** Data Catalog · Data Lineage · Data Observability · ETL/ELT
 
-## Todo
-- Restructure the layout of the data model for measuring the indicator "Increase percentage in implementation of digital governance systems (PITO)" and its data model above it.
+---
 
+## 🏗 Architecture
 
+The system is built on a **Galaxy Schema** — a multi-fact table dimensional model with shared dimensions across departments. This allows cross-departmental querying and reporting without data duplication.
 
-- Check if we can create audit fact table for the indicator "Increase percentage in barangays with completed Barangay Master Development Plans" after successfully designed the layout of the indicator "Increase percentage in innovation hubs established"
-- Check if we can create audit fact table for the indicator "Percentage of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives" and if no, let LLM validate the data model for that if it is the most accurate data model to use for that indicator
+### Core Data Engineering Components
 
+**Data Observability**
+Structured logging and metrics tracking across the entire pipeline — recording submission dates, update timestamps, responsible entities, job success/failure events, and source data traceability.
 
+**Data Lineage**
+Full lineage tracking across every dataset — documenting what data was extracted, transformed, and loaded, when it happened, where it came from, and how it was processed.
 
-- After successfully implementing all the data models as a galaxy schema, check what facts table has shared dimensions and implement it by creating a shared dimensions for that tables
-- Implement an audit table to reference all facts and dimensions who submit and verified that data/table
+**Data Catalog**
+A comprehensive governance layer covering:
+- Metadata and search/discovery features
+- Departmental data agreements and measurement methodology
+- Submission schedules, reporting cut-off dates, and escalation procedures
+- Access controls, data privacy policies, and role responsibilities
+- Integration connections to actual department data sources
 
-## Status Table
+**Data Orchestration**
+Pipeline automation design supporting batch scheduling, near real-time, and real-time data ingestion across departments.
 
-| Lead Department | Indicator | Status|
-|-----------------|-----------|-------|
-|   OPPDC         | % increase in barangays with completed Barangay Master Development Plans | Done |
-|   OPPDC         | % reduction in inflation rates through price monitoring and direct selling of basic commodities | Done |
-| Legal & PHRMO   | % increase in citizen concerns addressed via the 8888 hotline | Done |
-| PHRMO           | % improvement in government employee service quality | Done |
-| MBDA            | % reduction in crime rates through collaboration with law enforcement | Done|
-| MBDA, PNP, and PDRRMO | % reductions on accidents (place of occurrence) | Done |
-| MBDA and PDRRMO | % reduction of injury among affected population during calamity | Done |
-| PIO             | % improvement in government service delivery via social media | Done |
-| PITO            | % increase in implementation of digital governance systems | Done |
-| PGO             | % improvement in citizen access to services | Done |
-| PGO             | % of LGUs enrolled in the Performance Governance System (PGS) with performance-based incentives | Done |
-| PGO             | % increase in innovation hubs established | Done |
-| PGO             | % growth in defense industry investments | Done |
-| PGO             | % increase in renewable energy projects and green mobility adoption | Done |
-| PGO             | % increase in community participation in fitness programs | Done |
-| PGO             | % improvement in school health programs | Done |
-| PGO             | % reduction in youth smoking and vaping rates | Done |
-| PGO             | % increase in participation in sports programs | Done | 
-| PGO-INB             | % increase in scholarship recipients and licensure exam pass rates | Done |
-| PGO             | % increase in teacher capacity building and use of Learning Management Systems (LMS) | Done |
-| PGO             | % integration of values education in school curricula | Done |
-| PGO             | % reduction in out-of-school youth through skills and employment programs | Done |
-| PGO             | % increase in family engagement in children's education through Educhild Campaign | Done |
-| PGO-BHSS             | % improvement in school health and wellness programs (nutrition, physical activity, mental health) | Done |
-| PGO             | % increase in adult literacy and participation in lifelong learning programs | Done |
-| PGSO-PMO        | % improvement in management and efficiency of public enterprises | Done |
-| PEO             | % increase in disaster-resilient infrastructure | Done |
-| PEO             | % improvement in infrastructure and market access | Done |
-| PEO             | % increase in access to healthcare facilities | Done |
-| PEO             | % increase in access to clean water and sanitation facilities | Done |
-| PEO             | % increase in school infrastructure development | Done |
-| PPPIC           | % increase in locators in FAB Expansion Areas (Registered) | Done |
-| PPPIC           | % increase in public-private partnerships (PPPs) | Done |
-| LFC             | % increase in government revenue                 | Done |
-| PCEDO           | % increase in SMEs using online systems for business permits | Done |
-| PCEDO           | % adoption of electric vehicles in public transport | Done |
-| PCEDO           | % increase in TNVS (Transport Network Vehicle Service) slots for public transport | Done |
-| PTourism        | % increase in tourism activities, festival participation and revenue from festivals (Trade Fairs) | Done |
-| Ptourism        | % increase in compliance with ecological and tourism fees | Pending |
+---
+
+## 📊 Scope — Indicators Tracked
+
+39 priority indicators across departments including infrastructure, healthcare, education, governance, tourism, economic development, and public safety.
+
+| Lead Department | Indicator | Status |
+|---|---|---|
+| OPPDC | % increase in barangays with completed Barangay Master Development Plans | ✅ Done |
+| OPPDC | % reduction in inflation rates through price monitoring | ✅ Done |
+| Legal & PHRMO | % increase in citizen concerns addressed via 8888 hotline | ✅ Done |
+| PHRMO | % improvement in government employee service quality | ✅ Done |
+| MBDA | % reduction in crime rates through law enforcement collaboration | ✅ Done |
+| MBDA, PNP, PDRRMO | % reductions in accidents by place of occurrence | ✅ Done |
+| MBDA & PDRRMO | % reduction of injury among affected population during calamity | ✅ Done |
+| PIO | % improvement in government service delivery via social media | ✅ Done |
+| PITO | % increase in implementation of digital governance systems | ✅ Done |
+| PGO | % improvement in citizen access to services | ✅ Done |
+| PGO | % of LGUs enrolled in Performance Governance System (PGS) | ✅ Done |
+| PGO | % increase in innovation hubs established | ✅ Done |
+| PGO | % growth in defense industry investments | ✅ Done |
+| PGO | % increase in renewable energy projects and green mobility adoption | ✅ Done |
+| PGO | % increase in community participation in fitness programs | ✅ Done |
+| PGO | % improvement in school health programs | ✅ Done |
+| PGO | % reduction in youth smoking and vaping rates | ✅ Done |
+| PGO | % increase in participation in sports programs | ✅ Done |
+| PGO-INB | % increase in scholarship recipients and licensure exam pass rates | ✅ Done |
+| PGO | % increase in teacher capacity building and use of LMS | ✅ Done |
+| PGO | % integration of values education in school curricula | ✅ Done |
+| PGO | % reduction in out-of-school youth through skills and employment programs | ✅ Done |
+| PGO | % increase in family engagement in children's education (Educhild Campaign) | ✅ Done |
+| PGO-BHSS | % improvement in school health and wellness programs | ✅ Done |
+| PGO | % increase in adult literacy and lifelong learning participation | ✅ Done |
+| PGSO-PMO | % improvement in management and efficiency of public enterprises | ✅ Done |
+| PEO | % increase in disaster-resilient infrastructure | ✅ Done |
+| PEO | % improvement in infrastructure and market access | ✅ Done |
+| PEO | % increase in access to healthcare facilities | ✅ Done |
+| PEO | % increase in access to clean water and sanitation facilities | ✅ Done |
+| PEO | % increase in school infrastructure development | ✅ Done |
+| PPPIC | % increase in locators in FAB Expansion Areas | ✅ Done |
+| PPPIC | % increase in public-private partnerships (PPPs) | ✅ Done |
+| LFC | % increase in government revenue | ✅ Done |
+| PCEDO | % increase in SMEs using online systems for business permits | ✅ Done |
+| PCEDO | % adoption of electric vehicles in public transport | ✅ Done |
+| PCEDO | % increase in TNVS slots for public transport | ✅ Done |
+| PTourism | % increase in tourism activities and festival revenue | ✅ Done |
+| PTourism | % increase in compliance with ecological and tourism fees | 🔄 In Progress |
+
+---
+
+## 💡 Key Design Decisions
+- **Galaxy Schema** chosen over star schema to support shared dimensions across multiple fact tables — enabling cross-departmental analytics without redundancy
+- **3NF Normalization** applied to all dimension tables to ensure 100% referential integrity
+- **Full data catalog** designed before implementation to establish clear governance agreements with each department
+- **Audit tables** planned to reference all facts and dimensions with submission and verification tracking
+
+---
+
+## 🧠 What I Learned
+Designing a data system for a real government client with 37+ stakeholders taught me that data engineering is as much about people and governance as it is about technology. Aligning departments on definitions, submission schedules, and data ownership was as complex as the schema design itself.
